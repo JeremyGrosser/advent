@@ -26,7 +26,7 @@ package Intcode is
     procedure Peek (Address : in Pointer_Type; Value : out Word);
     procedure Poke (Address : in Pointer_Type; Value : in Word);
 
-private
     Memory : Memory_Type;
+private
     Pointer : Pointer_Type := Memory'First;
 end Intcode;

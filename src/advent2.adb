@@ -26,36 +26,46 @@ procedure Advent2 is
         end loop;
     end Get_Natural;
 
-    procedure Test (A : in Intcode.Word; B : in Intcode.Word) is
+    procedure Test (Noun : in Intcode.Word; Verb : in Intcode.Word) is
         Word : Intcode.Word;
     begin
         Intcode.Reset;
-        loop
-            exit when End_of_File (Standard_Input);
 
-            -- Read an opcode
-            Get_Natural (Standard_Input, Word);
-            Intcode.Load_Word (Word);
-        end loop;
+        Intcode.Poke (1, Noun);
+        Intcode.Poke (2, Verb);
 
-        Intcode.Poke (1, A);
-        Intcode.Poke (2, B);
+        begin
+            Intcode.Run;
+        exception
+            when Intcode.Invalid_Opcode => null;
+        end;
 
-        Intcode.Run;
         Intcode.Peek(0, Word);
+        --Put_Line(Noun'Image & Verb'Image & Word'Image);
         if Word = 19690720 then
-            Put_Line("A = " & A'Image);
-            Put_Line("B = " & B'Image);
-            return;
+            Put_Line("Noun = " & Noun'Image);
+            Put_Line("Verb = " & Verb'Image);
+            Word := 100 * Noun + Verb;
+            Put_Line(Word'Image);
         end if;
-    exception
-        when Intcode.Invalid_Opcode => return;
     end Test;
 
+    Word : Intcode.Word;
+    Program : Intcode.Memory_Type;
 begin
-    for A in 0 .. 65536 loop
-        for B in 0 .. 65536 loop
-            Test (A, B);
+    loop
+        exit when End_of_File (Standard_Input);
+
+        -- Read an opcode
+        Get_Natural (Standard_Input, Word);
+        Intcode.Load_Word (Word);
+    end loop;
+    Program := Intcode.Memory;
+
+    for Noun in 0 .. 99 loop
+        for Verb in 0 .. 99 loop
+            Intcode.Memory := Program;
+            Test (Noun, Verb);
         end loop;
     end loop;
 end Advent2;
