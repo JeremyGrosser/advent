@@ -19,20 +19,27 @@ package body Intcode is
         Put_Line ("");
     end Dump;
 
-    procedure Run is
-        Op : Opcode;
-        Arg0, Arg1, Arg2, Arg3 : Word;
+    procedure Reset is
     begin
         Pointer := Memory'First;
+    end Reset;
+
+    procedure Run is
+        Op : Opcode;
+        Args : Arguments_Type;
+        Num_Args : Natural;
+    begin
+        Reset;
         loop
-            exit when Halted;
-            Fetch (Arg0);
-            Fetch (Arg1);
-            Fetch (Arg2);
-            Fetch (Arg3);
-            Op := Decode (Arg0);
-            --Put_Line(Op'Image & Arg1'Image & Arg2'Image & Arg3'Image);
-            Execute (Op, Arg1, Arg2, Arg3);
+            Fetch (Args (0));
+            Decode (Args (0), Op, Num_Args);
+            if Op = Halt then
+                return;
+            end if;
+            for I in 1 .. Num_Args loop
+                Fetch (Args (I));
+            end loop;
+            Execute (Op, Args);
         end loop;
     end Run;
 
@@ -42,27 +49,29 @@ package body Intcode is
         Pointer := Pointer + 1;
     end Fetch;
 
-    function Decode (W : in Word) return Opcode is
+    procedure Decode (W : in Word; Op : out Opcode; Num_Args : out Natural) is
     begin
         case W is
-            when 99 => return Halt;
-            when 1  => return Add;
-            when 2  => return Multiply;
+            when 99 => Op := Halt;
+                       Num_Args := 0;
+            when 1  => Op := Add;
+                       Num_Args := 3;
+            when 2  => Op := Multiply;
+                       Num_Args := 3;
             when others => raise Invalid_Opcode with W'Image;
         end case;
     end Decode;
 
     procedure Execute (Op : in Opcode;
-                       Arg1 : in Word;
-                       Arg2 : in Word;
-                       Arg3 : in Word) is
+                       Args : in Arguments_Type) is
     begin
+        --Put (Op'Image & Args(1)'Image & Args(2)'Image & Args(3)'Image);
         case Op is
             when Add => 
-                Memory (Arg3) := Memory (Arg1) + Memory (Arg2);
+                Memory (Args (3)) := Memory (Args (1)) + Memory (Args (2));
             when Multiply => 
-                Memory (Arg3) := Memory (Arg1) * Memory (Arg2);
-            when Halt => Halted := True;
+                Memory (Args (3)) := Memory (Args (1)) * Memory (Args (2));
+            when Halt => raise Halted;
         end case;
     end Execute;
 

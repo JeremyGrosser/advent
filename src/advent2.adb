@@ -26,21 +26,36 @@ procedure Advent2 is
         end loop;
     end Get_Natural;
 
-    Word : Intcode.Word;
+    procedure Test (A : in Intcode.Word; B : in Intcode.Word) is
+        Word : Intcode.Word;
+    begin
+        Intcode.Reset;
+        loop
+            exit when End_of_File (Standard_Input);
+
+            -- Read an opcode
+            Get_Natural (Standard_Input, Word);
+            Intcode.Load_Word (Word);
+        end loop;
+
+        Intcode.Poke (1, A);
+        Intcode.Poke (2, B);
+
+        Intcode.Run;
+        Intcode.Peek(0, Word);
+        if Word = 19690720 then
+            Put_Line("A = " & A'Image);
+            Put_Line("B = " & B'Image);
+            return;
+        end if;
+    exception
+        when Intcode.Invalid_Opcode => return;
+    end Test;
+
 begin
-    loop
-        exit when End_of_File (Standard_Input);
-
-        -- Read an opcode
-        Get_Natural (Standard_Input, Word);
-        Intcode.Load_Word (Word);
+    for A in 0 .. 65536 loop
+        for B in 0 .. 65536 loop
+            Test (A, B);
+        end loop;
     end loop;
-
-    -- Fix 1202 alarm
-    Intcode.Poke (1, 12);
-    Intcode.Poke (2, 2);
-
-    Intcode.Run;
-
-    Intcode.Dump;
 end Advent2;
