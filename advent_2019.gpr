@@ -1,5 +1,5 @@
 project Advent_2019 is
-  for Main use ("advent1.adb");
+  for Main use ("advent1.adb", "advent2.adb");
   for Languages use ("Ada");
   for Source_Dirs use ("src");
   for Object_Dir use "obj";
