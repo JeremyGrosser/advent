@@ -1,10 +1,21 @@
+with Ada.Containers.Vectors;
+
 package Intcode is
     subtype Word is Natural;
 
     type Opcode is (Halt, Add, Multiply, Input, Output);
+    type Parameter_Mode is (Position_Mode, Immediate_Mode);
     type Memory_Type is array (Natural range 0 .. 128) of Word;
     subtype Pointer_Type is Natural range Memory_Type'Range;
-    type Arguments_Type is array (Natural range 0 .. 4) of Word;
+
+    type Argument is record
+        Mode : Parameter_Mode;
+        Value : Word;
+    end record;
+
+    package Arguments_Vector is new Ada.Containers.Vectors
+        (Index_Type => Positive,
+         Element_Type => Argument);
 
     Invalid_Opcode : exception;
     Halted : exception;
@@ -19,10 +30,10 @@ package Intcode is
 
     procedure Decode (W : in Word;
                       Op : out Opcode;
-                      Num_Args : out Natural);
+                      Arguments : out Arguments_Vector.Vector);
 
     procedure Execute (Op : in Opcode;
-                       Args : in Arguments_Type);
+                       Args : in Arguments_Vector.Vector);
 
     procedure Peek (Address : in Pointer_Type; Value : out Word);
     procedure Poke (Address : in Pointer_Type; Value : in Word);
