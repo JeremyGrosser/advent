@@ -47,6 +47,29 @@ procedure Advent4 is
         return Adjacent_Digits > 0;
     end Has_Adjacent_Digits;
 
+    function Has_Double_Group (N : Password) return Boolean is
+        Digit, Last_Digit : Natural := 0;
+        Group_Length : Positive := 1;
+    begin
+        Last_Digit := Get_Digit (N, 5);
+        for Magnitude in reverse 0 .. 4 loop
+            Digit := Get_Digit(N, Magnitude);
+            if Last_Digit = Digit then
+                Group_Length := Group_Length + 1;
+            else
+                if Group_Length = 2 then
+                    return True;
+                end if;
+                Group_Length := 1;
+            end if;
+            Last_Digit := Digit;
+        end loop;
+        if Group_Length = 2 then
+            return True;
+        end if;
+        return False;
+    end Has_Double_Group;
+
     function Never_Decrease (N : Password) return Boolean is
         Digit, Last_Digit : Natural;
     begin
@@ -70,8 +93,8 @@ begin
     Get_Natural (Standard_Input, Range_End);
 
     for I in Range_Start .. Range_End loop
-        Put_Line (I'Image & " " & Has_Adjacent_Digits (I)'Image & " " & Never_Decrease (I)'Image);
-        if Has_Adjacent_Digits (I) and Never_Decrease (I) then
+        Put_Line (I'Image & " " & Has_Adjacent_Digits (I)'Image & " " & Never_Decrease (I)'Image & " " & Has_Double_Group (I)'Image);
+        if Has_Adjacent_Digits (I) and Never_Decrease (I) and Has_Double_Group (I) then
             Count := Count + 1;
         end if;
     end loop;
