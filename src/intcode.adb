@@ -58,9 +58,18 @@ package body Intcode is
                        Num_Args := 3;
             when 2  => Op := Multiply;
                        Num_Args := 3;
+            when 3  => Op := Input;
+                       Num_Args := 1;
+            when 4  => Op := Output;
+                       Num_Args := 1;
             when others => raise Invalid_Opcode with W'Image;
         end case;
     end Decode;
+
+    procedure Read_Input (Value : out Natural) is
+    begin
+        Value := Natural'Value (Get_Line (Standard_Input));
+    end Read_Input;
 
     procedure Execute (Op : in Opcode;
                        Args : in Arguments_Type) is
@@ -72,6 +81,10 @@ package body Intcode is
             when Multiply => 
                 Memory (Args (3)) := Memory (Args (1)) * Memory (Args (2));
             when Halt => raise Halted;
+            when Input =>
+                Read_Input (Memory (Args (1)));
+            when Output =>
+                Put_Line (Memory (Args (1))'Image);
         end case;
     end Execute;
 

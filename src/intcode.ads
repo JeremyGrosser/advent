@@ -1,7 +1,7 @@
 package Intcode is
     subtype Word is Natural;
 
-    type Opcode is (Halt, Add, Multiply);
+    type Opcode is (Halt, Add, Multiply, Input, Output);
     type Memory_Type is array (Natural range 0 .. 128) of Word;
     subtype Pointer_Type is Natural range Memory_Type'Range;
     type Arguments_Type is array (Natural range 0 .. 4) of Word;
