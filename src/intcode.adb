@@ -1,4 +1,5 @@
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Characters.Latin_1;
 
 package body Intcode is
     procedure Load_Word (W : in Word) is
@@ -10,6 +11,41 @@ package body Intcode is
             Pointer := Pointer + 1;
         end if;
     end Load_Word;
+
+    procedure Get_Natural (File : in File_Type; Item : out Natural) is
+        use Ada.Characters.Latin_1;
+        subtype Digit is Character range '0' .. '9';
+        C : Character;
+    begin
+        Item := 0;
+        loop
+            exit when End_of_File (File);
+            Get (File, C);
+            case C is
+                when Digit =>
+                    Item := (Item * 10) +
+                            (Digit'Pos (C) -
+                             Digit'Pos(Digit'First));
+                when Space => null;
+                when CR => null;
+                when LF  => null;
+                when HT => null;
+                when others => return;
+            end case;
+        end loop;
+    end Get_Natural;
+
+    procedure Load_From_File (Filename : in String) is
+        File : File_Type;
+        W : Word;
+    begin
+        Open (File, In_File, Filename);
+        loop
+            exit when End_of_File (File);
+            Get_Natural (File, W);
+            Intcode.Load_Word (W);
+        end loop;
+    end Load_From_File;
 
     procedure Dump is
     begin

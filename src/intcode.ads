@@ -10,6 +10,7 @@ package Intcode is
     Halted : exception;
 
     procedure Load_Word (W : in Word);
+    procedure Load_From_File (Filename : in String);
     procedure Dump;
     procedure Run;
     procedure Reset;
