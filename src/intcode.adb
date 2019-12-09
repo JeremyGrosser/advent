@@ -49,11 +49,7 @@ package body Intcode is
     procedure Load_Word (W : in Word) is
     begin
         Memory (Pointer) := W;
-        if Pointer = Memory'Last then
-            Pointer := Memory'First;
-        else
-            Pointer := Pointer + 1;
-        end if;
+        Pointer := Pointer + 1;
     end Load_Word;
 
     procedure Store (W : in Word; Pointer : Pointer_Type) is
