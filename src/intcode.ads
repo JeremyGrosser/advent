@@ -4,7 +4,16 @@ with Stack;
 package Intcode is
     subtype Word is Integer;
 
-    type Opcode is (Halt, Add, Multiply, Input, Output);
+    type Opcode is (
+        Halt,
+        Add,
+        Multiply,
+        Input,
+        Output,
+        Jump_If_True,
+        Jump_If_False,
+        Less_Than,
+        Equals);
     type Parameter_Mode is (Position_Mode, Immediate_Mode);
     type Memory_Type is array (Natural range 0 .. 8192) of Word;
     subtype Pointer_Type is Natural range Memory_Type'Range;

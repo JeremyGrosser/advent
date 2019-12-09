@@ -40,9 +40,9 @@ package body Intcode is
         return (N / (Base ** Magnitude)) mod Base;
     end Get_Digit;
 
-    procedure Read_Input (Value : out Natural) is
+    procedure Read_Input (Value : out Integer) is
     begin
-        Value := Natural'Value (Get_Line (Standard_Input));
+        Value := Integer'Value (Get_Line (Standard_Input));
     end Read_Input;
 
     procedure Load_Word (W : in Word) is
@@ -117,6 +117,14 @@ package body Intcode is
                        Num_Args := 0;
             when 4  => Op := Output;
                        Num_Args := 1;
+            when 5  => Op := Jump_If_True;
+                       Num_Args := 2;
+            when 6  => Op := Jump_If_False;
+                       Num_Args := 2;
+            when 7  => Op := Less_Than;
+                       Num_Args := 2;
+            when 8  => Op := Equals;
+                       Num_Args := 2;
             when others => raise Invalid_Opcode with Opcode_Num'Image;
         end case;
 
@@ -127,8 +135,13 @@ package body Intcode is
                 when others => Arg.Mode := Position_Mode;
             end case;
             Fetch (Arg.Value);
+            if Arg.Mode = Position_Mode then
+                Arg.Value := Memory (Arg.Value);
+            end if;
             Arguments.Push (Arg);
         end loop;
+
+        Put_Line ("Decode Op=" & Op'Image & " Args=" & Arguments.Size'Image);
     end Decode;
 
     procedure Execute (Op : in Opcode;
@@ -141,50 +154,55 @@ package body Intcode is
         case Op is
             when Add =>
                 Fetch (Destination);
-                Args.Pop (Operand_1);
                 Args.Pop (Operand_2);
-                if not Args.Empty then
-                    raise Too_Many_Args;
-                end if;
-
-                if Operand_1.Mode = Position_Mode then
-                    Operand_1.Value := Memory (Operand_1.Value);
-                end if;
-
-                if Operand_2.Mode = Position_Mode then
-                    Operand_2.Value := Memory (Operand_2.Value);
-                end if;
-
+                Args.Pop (Operand_1);
                 Result := Operand_1.Value + Operand_2.Value;
                 Put_Line (Operand_1.Value'Image & " + " & Operand_2.Value'Image & " = " & Result'Image);
                 Store (Result, Destination);
             when Multiply =>
                 Fetch (Destination);
-                Args.Pop (Operand_1);
                 Args.Pop (Operand_2);
-
-                if Operand_1.Mode = Position_Mode then
-                    Operand_1.Value := Memory (Operand_1.Value);
-                end if;
-
-                if Operand_2.Mode = Position_Mode then
-                    Operand_2.Value := Memory (Operand_2.Value);
-                end if;
-
+                Args.Pop (Operand_1);
                 Result := Operand_1.Value * Operand_2.Value;
                 Put_Line (Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
                 Store (Result, Destination);
-
             when Input =>
                 Fetch (Destination);
                 Read_Input (Result);
                 Store (Result, Destination);
             when Output =>
                 Args.Pop (Operand_1);
-                if Operand_1.Mode = Position_Mode then
-                    Operand_1.Value := Memory (Operand_1.Value);
-                end if;
                 Put_Line (Operand_1.Value'Image);
+            when Jump_If_True =>
+                Args.Pop (Operand_2);
+                Args.Pop (Operand_1);
+                if Operand_1.Value /= 0 then
+                    Pointer := Operand_2.Value;
+                end if;
+            when Jump_If_False =>
+                Args.Pop (Operand_2);
+                Args.Pop (Operand_1);
+                if Operand_1.Value = 0 then
+                    Pointer := Operand_2.Value;
+                end if;
+            when Less_Than =>
+                Fetch (Destination);
+                Args.Pop (Operand_2);
+                Args.Pop (Operand_1);
+                if Operand_1.Value < Operand_2.Value then
+                    Store (1, Destination);
+                else
+                    Store (0, Destination);
+                end if;
+            when Equals =>
+                Fetch (Destination);
+                Args.Pop (Operand_2);
+                Args.Pop (Operand_1);
+                if Operand_1.Value = Operand_2.Value then
+                    Store (1, Destination);
+                else
+                    Store (0, Destination);
+                end if;
             when Halt => raise Halted;
         end case;
         if not Args.Empty then
@@ -202,10 +220,6 @@ package body Intcode is
         loop
             Fetch (W);
             Decode (W, Op, Args);
-            Put_Line ("Op=" & Op'Image & " Args=" & Args.Size'Image);
-            if Op = Halt then
-                return;
-            end if;
             Execute (Op, Args);
             Put_Line ("");
         end loop;
