@@ -1,9 +1,9 @@
 project Advent_2019 is
   for Main use (
+      "run.adb",
       "advent1.adb",
       "advent3.adb",
       "advent4.adb",
-      "advent5.adb",
       "advent7.adb");
   for Languages use ("Ada");
   for Source_Dirs use ("src");
