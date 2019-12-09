@@ -1,6 +1,7 @@
 with Stack;
 
 package Intcode is
+    type Machine is tagged private;
     subtype Word is Long_Long_Integer;
 
     type Opcode is (
@@ -14,11 +15,8 @@ package Intcode is
         Less_Than,
         Equals,
         Set_Relative);
-    type Parameter_Mode is (Position_Mode, Immediate_Mode, Relative_Mode);
 
-    Memory_Size : constant Word := 8192;
-    type Memory_Type is array (Word range 0 .. Memory_Size) of Word;
-    subtype Pointer_Type is Word range Memory_Type'Range;
+    type Parameter_Mode is (Position_Mode, Immediate_Mode, Relative_Mode);
 
     type Argument is record
         Mode     : Parameter_Mode;
@@ -29,32 +27,59 @@ package Intcode is
     package Arguments_Stack is new Stack
         (Element_Type => Argument);
 
+    Memory_Size : constant Word := 8192;
+    type Memory_Type is array (Word range 0 .. Memory_Size) of Word;
+    subtype Pointer_Type is Word range Memory_Type'Range;
+
     Invalid_Opcode          : exception;
     Invalid_Operand_Mode    : exception;
     Too_Many_Args           : exception;
     Halted                  : exception;
 
-    procedure Load_Word (W : in Word);
-    procedure Load_From_File (Filename : in String);
-    procedure Dump;
-    procedure Run;
-    procedure Reset;
+    procedure Load_Word (
+        M : in out Machine;
+        W : in Word);
 
-    procedure Fetch (W : out Word);
+    procedure Load_From_File (
+        M        : in out Machine;
+        Filename : in String);
 
-    procedure Decode (W : in Word;
-                      Op : out Opcode;
-                      Arguments : out Arguments_Stack.Stack);
+    procedure Run (M : in out Machine);
 
-    procedure Execute (Op : in Opcode;
-                       Args : in out Arguments_Stack.Stack);
+    procedure Reset (M : in out Machine);
 
-    procedure Peek (Address : in Pointer_Type; Value : out Word);
-    procedure Poke (Address : in Pointer_Type; Value : in Word);
+    procedure Fetch (
+        M : in out Machine;
+        W : out Word);
 
-    Memory : Memory_Type;
+    procedure Decode (
+        M  : in out Machine;
+        W  : in Word;
+        Op : out Opcode;
+        Arguments : out Arguments_Stack.Stack);
+
+    procedure Execute (
+        M    : in out Machine;
+        Op   : in Opcode;
+        Args : in out Arguments_Stack.Stack);
+
+    procedure Peek (
+        M       : in Machine;
+        Address : in Pointer_Type;
+        Value   : out Word);
+
+    procedure Poke (
+        M       : out Machine;
+        Address : in Pointer_Type;
+        Value   : in Word);
+
 private
-    Pointer         : Pointer_Type := Memory'First;
-    Relative_Base   : Pointer_Type := Memory'First;
-    Max_Memory_Used : Pointer_Type := Memory'First;
+
+    type Machine is tagged record
+        Memory          : Memory_Type;
+        Pointer         : Pointer_Type := Memory_Type'First;
+        Relative_Base   : Pointer_Type := Memory_Type'First;
+        Max_Memory_Used : Pointer_Type := Memory_Type'First;
+    end record;
+
 end Intcode;

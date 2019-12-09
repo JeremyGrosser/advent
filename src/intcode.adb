@@ -46,22 +46,29 @@ package body Intcode is
         Value := Word'Value (Get_Line (Standard_Input));
     end Read_Input;
 
-    procedure Load_Word (W : in Word) is
+    procedure Load_Word (
+        M : in out Machine;
+        W : in Word) is
     begin
-        Memory (Pointer) := W;
-        Pointer := Pointer + 1;
+        M.Memory (M.Pointer) := W;
+        M.Pointer := M.Pointer + 1;
     end Load_Word;
 
-    procedure Store (W : in Word; Pointer : Pointer_Type) is
+    procedure Store (
+        M : in out Machine;
+        W : in Word;
+        Pointer : Pointer_Type) is
     begin
         --Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
-        Memory (Pointer) := W;
-        if Pointer > Max_Memory_Used then
-            Max_Memory_Used := Pointer;
+        M.Memory (Pointer) := W;
+        if Pointer > M.Max_Memory_Used then
+            M.Max_Memory_Used := Pointer;
         end if;
     end Store;
 
-    procedure Load_From_File (Filename : in String) is
+    procedure Load_From_File (
+        M : in out Machine;
+        Filename : in String) is
         File : File_Type;
         W : Word;
     begin
@@ -69,40 +76,32 @@ package body Intcode is
         loop
             exit when End_of_File (File);
             Get_Word (File, W);
-            Intcode.Load_Word (W);
+            M.Load_Word (W);
         end loop;
     end Load_From_File;
 
-    procedure Dump is
+    procedure Reset (M : in out Machine) is
     begin
-        for I in Memory'Range loop
-            Put ( Memory (I)'Image & " " );
-            if (I mod 32) = 0 then
-                Put_Line ("");
-                Put (I'Image & "  ");
-            end if;
-        end loop;
-        Put_Line ("");
-    end Dump;
-
-    procedure Reset is
-    begin
-        Pointer := Memory'First;
+        M.Pointer := M.Memory'First;
     end Reset;
 
-    procedure Fetch (W : out Word) is
+    procedure Fetch (
+        M : in out Machine;
+        W : out Word) is
     begin
-        W := Memory (Pointer);
-        --Put_Line ("Fetch [" & Pointer'Image & "] = " & W'Image);
-        if Pointer > Max_Memory_Used then
-            Max_Memory_Used := Pointer;
+        W := M.Memory (M.Pointer);
+        --Put_Line ("Fetch [" & M.Pointer'Image & "] = " & W'Image);
+        if M.Pointer > M.Max_Memory_Used then
+            M.Max_Memory_Used := M.Pointer;
         end if;
-        Pointer := Pointer + 1;
+        M.Pointer := M.Pointer + 1;
     end Fetch;
 
-    procedure Decode (  W : in Word;
-                        Op : out Opcode;
-                        Arguments : out Arguments_Stack.Stack) is
+    procedure Decode (
+        M : in out Machine;
+        W : in Word;
+        Op : out Opcode;
+        Arguments : out Arguments_Stack.Stack) is
         Opcode_Num : Natural range 0 .. 99;
         Num_Args : Natural;
         Arg : Argument;
@@ -141,24 +140,27 @@ package body Intcode is
                 when others => Arg.Mode := Position_Mode;
             end case;
 
-            Fetch (Arg.Literal);
+            M.Fetch (Arg.Literal);
 
             case Arg.Mode is
                 when Position_Mode =>
-                    Arg.Value := Memory (Arg.Literal);
+                    Arg.Value := M.Memory (Arg.Literal);
                 when Immediate_Mode =>
                     Arg.Value := Arg.Literal;
                 when Relative_Mode =>
-                    Arg.Literal := Arg.Literal + Relative_Base;
-                    Arg.Value := Memory (Arg.Literal);
+                    Arg.Literal := Arg.Literal + M.Relative_Base;
+                    Arg.Value := M.Memory (Arg.Literal);
             end case;
 
+            --Put_Line ("Arg Mode=" & Arg.Mode'Image & " Literal=" & Arg.Literal'Image & " Value=" & Arg.Value'Image);
             Arguments.Push (Arg);
         end loop;
     end Decode;
 
-    procedure Execute (Op : in Opcode;
-                       Args : in out Arguments_Stack.Stack) is
+    procedure Execute (
+        M : in out Machine;
+        Op : in Opcode;
+        Args : in out Arguments_Stack.Stack) is
         Operand_1, Operand_2, Operand_3 : Argument;
         Result : Word;
     begin
@@ -171,18 +173,18 @@ package body Intcode is
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value + Operand_2.Value;
                 --Put_Line (Operand_1.Value'Image & " + " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Operand_3.Literal);
+                M.Store (Result, Operand_3.Literal);
             when Multiply =>
                 Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value * Operand_2.Value;
                 --Put_Line (Operand_3.Value'Image & " := " & Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Operand_3.Literal);
+                M.Store (Result, Operand_3.Literal);
             when Input =>
                 Args.Pop (Operand_1);
                 Read_Input (Result);
-                Store (Result, Operand_1.Literal);
+                M.Store (Result, Operand_1.Literal);
             when Output =>
                 Args.Pop (Operand_1);
                 Put_Line (Operand_1.Value'Image);
@@ -190,39 +192,39 @@ package body Intcode is
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value /= 0 then
-                    Pointer := Operand_2.Value;
+                    M.Pointer := Operand_2.Value;
                 end if;
             when Jump_If_False =>
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value = 0 then
-                    Pointer := Operand_2.Value;
+                    M.Pointer := Operand_2.Value;
                 end if;
             when Less_Than =>
                 Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value < Operand_2.Value then
-                    Store (1, Operand_3.Literal);
+                    M.Store (1, Operand_3.Literal);
                 else
-                    Store (0, Operand_3.Literal);
+                    M.Store (0, Operand_3.Literal);
                 end if;
             when Equals =>
                 Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value = Operand_2.Value then
-                    Store (1, Operand_3.Literal);
+                    M.Store (1, Operand_3.Literal);
                 else
-                    Store (0, Operand_3.Literal);
+                    M.Store (0, Operand_3.Literal);
                 end if;
             when Set_Relative =>
                 Args.Pop (Operand_1);
                 --Put_Line ("Relative_Base := " & Relative_Base'Image & " + " & Operand_1.Value'Image);
-                Relative_Base := Relative_Base + Operand_1.Value;
+                M.Relative_Base := M.Relative_Base + Operand_1.Value;
                 --Put_Line (Relative_Base'Image);
             when Halt => 
-                Put_Line ("Memory Used: " & Max_Memory_Used'Image);
+                Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
                 raise Halted;
         end case;
         if not Args.Empty then
@@ -231,28 +233,34 @@ package body Intcode is
         end if;
     end Execute;
 
-    procedure Run is
+    procedure Run (M : in out Machine) is
         W : Word;
         Op : Opcode;
         Args : Arguments_Stack.Stack;
     begin
-        Reset;
+        M.Reset;
         loop
-            Fetch (W);
-            Decode (W, Op, Args);
-            Execute (Op, Args);
+            M.Fetch (W);
+            M.Decode (W, Op, Args);
+            M.Execute (Op, Args);
             --Put_Line ("");
         end loop;
     end Run;
 
-    procedure Peek (Address : in Pointer_Type; Value : out Word) is
+    procedure Peek (
+        M       : in Machine;
+        Address : in Pointer_Type;
+        Value   : out Word) is
     begin
-        Value := Memory (Address);
+        Value := M.Memory (Address);
     end Peek;
 
-    procedure Poke (Address : in Pointer_Type; Value : in Word) is
+    procedure Poke (
+        M       : out Machine;
+        Address : in Pointer_Type;
+        Value : in Word) is
     begin
-        Memory (Address) := Value;
+        M.Memory (Address) := Value;
     end Poke;
 
 end Intcode;
