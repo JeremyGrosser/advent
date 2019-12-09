@@ -23,7 +23,7 @@ package Intcode is
     type Argument is record
         Mode     : Parameter_Mode;
         Value    : Word;
-        Relative : Word;
+        Literal  : Word;
     end record;
 
     package Arguments_Stack is new Stack

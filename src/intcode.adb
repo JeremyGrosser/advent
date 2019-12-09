@@ -58,7 +58,7 @@ package body Intcode is
 
     procedure Store (W : in Word; Pointer : Pointer_Type) is
     begin
-        Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
+        --Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
         Memory (Pointer) := W;
     end Store;
 
@@ -94,7 +94,7 @@ package body Intcode is
     procedure Fetch (W : out Word) is
     begin
         W := Memory (Pointer);
-        Put_Line ("Fetch [" & Pointer'Image & "] = " & W'Image);
+        --Put_Line ("Fetch [" & Pointer'Image & "] = " & W'Image);
         Pointer := Pointer + 1;
     end Fetch;
 
@@ -123,9 +123,9 @@ package body Intcode is
             when 6  => Op := Jump_If_False;
                        Num_Args := 2;
             when 7  => Op := Less_Than;
-                       Num_Args := 2;
+                       Num_Args := 3;
             when 8  => Op := Equals;
-                       Num_Args := 2;
+                       Num_Args := 3;
             when 9  => Op := Set_Relative;
                        Num_Args := 1;
             when others => raise Invalid_Opcode with Opcode_Num'Image;
@@ -139,16 +139,16 @@ package body Intcode is
                 when others => Arg.Mode := Position_Mode;
             end case;
 
-            Fetch (Arg.Value);
+            Fetch (Arg.Literal);
 
             case Arg.Mode is
                 when Position_Mode =>
-                    Arg.Value := Memory (Arg.Value);
-                when Relative_Mode =>
-                    Arg.Relative := Arg.Value + Relative_Base;
-                    Arg.Value := Memory (Arg.Relative);
+                    Arg.Value := Memory (Arg.Literal);
                 when Immediate_Mode =>
-                    null;
+                    Arg.Value := Arg.Literal;
+                when Relative_Mode =>
+                    Arg.Literal := Arg.Literal + Relative_Base;
+                    Arg.Value := Memory (Arg.Literal);
             end case;
 
             Arguments.Push (Arg);
@@ -158,9 +158,9 @@ package body Intcode is
     procedure Execute (Op : in Opcode;
                        Args : in out Arguments_Stack.Stack) is
         Operand_1, Operand_2, Operand_3 : Argument;
-        Destination, Result : Word;
+        Result : Word;
     begin
-        Put_Line ("Execute " & Op'Image);
+        --Put_Line ("Execute " & Op'Image);
 
         case Op is
             when Add =>
@@ -169,18 +169,18 @@ package body Intcode is
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value + Operand_2.Value;
                 --Put_Line (Operand_1.Value'Image & " + " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Operand_3.Value);
+                Store (Result, Operand_3.Literal);
             when Multiply =>
                 Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value * Operand_2.Value;
-                Put_Line (Operand_3.Value'Image & " := " & Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Operand_3.Value);
+                --Put_Line (Operand_3.Value'Image & " := " & Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
+                Store (Result, Operand_3.Literal);
             when Input =>
                 Args.Pop (Operand_1);
                 Read_Input (Result);
-                Store (Result, Operand_1.Relative);
+                Store (Result, Operand_1.Literal);
             when Output =>
                 Args.Pop (Operand_1);
                 Put_Line (Operand_1.Value'Image);
@@ -197,28 +197,28 @@ package body Intcode is
                     Pointer := Operand_2.Value;
                 end if;
             when Less_Than =>
-                Fetch (Destination);
+                Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value < Operand_2.Value then
-                    Store (1, Destination);
+                    Store (1, Operand_3.Literal);
                 else
-                    Store (0, Destination);
+                    Store (0, Operand_3.Literal);
                 end if;
             when Equals =>
-                Fetch (Destination);
+                Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 if Operand_1.Value = Operand_2.Value then
-                    Store (1, Destination);
+                    Store (1, Operand_3.Literal);
                 else
-                    Store (0, Destination);
+                    Store (0, Operand_3.Literal);
                 end if;
             when Set_Relative =>
                 Args.Pop (Operand_1);
-                Put_Line ("Relative_Base := " & Relative_Base'Image & " + " & Operand_1.Value'Image);
+                --Put_Line ("Relative_Base := " & Relative_Base'Image & " + " & Operand_1.Value'Image);
                 Relative_Base := Relative_Base + Operand_1.Value;
-                Put_Line (Relative_Base'Image);
+                --Put_Line (Relative_Base'Image);
             when Halt => raise Halted;
         end case;
         if not Args.Empty then
