@@ -1,4 +1,3 @@
-with Ada.Containers.Vectors;
 with Stack;
 
 package Intcode is
