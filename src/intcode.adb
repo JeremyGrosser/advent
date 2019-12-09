@@ -33,9 +33,9 @@ package body Intcode is
         end loop;
     end Get_Word;
 
-    function Get_Digit(	N : Natural;
-					   	Magnitude : Natural;
-						Base : Positive := 10) return Natural is
+    function Get_Digit( N : Natural;
+                        Magnitude : Natural;
+                        Base : Positive := 10) return Natural is
     begin
         return (N / (Base ** Magnitude)) mod Base;
     end Get_Digit;
