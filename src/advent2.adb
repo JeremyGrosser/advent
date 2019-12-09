@@ -57,7 +57,7 @@ begin
         exit when End_of_File (Standard_Input);
 
         -- Read an opcode
-        Get_Natural (Standard_Input, Word);
+        Get_Natural (Standard_Input, Long_Integer'Value(Word));
         Intcode.Load_Word (Word);
     end loop;
     Program := Intcode.Memory;

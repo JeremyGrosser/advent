@@ -3,7 +3,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Characters.Latin_1;
 
 package body Intcode is
-    procedure Get_Integer (File : in File_Type; Item : out Integer) is
+    procedure Get_Word (File : in File_Type; Item : out Word) is
         use Ada.Characters.Latin_1;
         subtype Digit is Character range '0' .. '9';
         C : Character;
@@ -31,7 +31,7 @@ package body Intcode is
                     return;
             end case;
         end loop;
-    end Get_Integer;
+    end Get_Word;
 
     function Get_Digit(	N : Natural;
 					   	Magnitude : Natural;
@@ -40,9 +40,10 @@ package body Intcode is
         return (N / (Base ** Magnitude)) mod Base;
     end Get_Digit;
 
-    procedure Read_Input (Value : out Integer) is
+    procedure Read_Input (Value : out Word) is
     begin
-        Value := Integer'Value (Get_Line (Standard_Input));
+        Put("> ");
+        Value := Word'Value (Get_Line (Standard_Input));
     end Read_Input;
 
     procedure Load_Word (W : in Word) is
@@ -55,7 +56,7 @@ package body Intcode is
         end if;
     end Load_Word;
 
-    procedure Store (W : in Word; Pointer : Natural) is
+    procedure Store (W : in Word; Pointer : Pointer_Type) is
     begin
         Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
         Memory (Pointer) := W;
@@ -68,7 +69,7 @@ package body Intcode is
         Open (File, In_File, Filename);
         loop
             exit when End_of_File (File);
-            Get_Integer (File, W);
+            Get_Word (File, W);
             Intcode.Load_Word (W);
         end loop;
     end Load_From_File;
@@ -104,17 +105,17 @@ package body Intcode is
         Num_Args : Natural;
         Arg : Argument;
     begin
-        Opcode_Num := W mod 100;
+        Opcode_Num := Natural(W) mod 100;
 
         case Opcode_Num is
             when 99 => Op := Halt;
                        Num_Args := 0;
             when 1  => Op := Add;
-                       Num_Args := 2;
+                       Num_Args := 3;
             when 2  => Op := Multiply;
-                       Num_Args := 2;
+                       Num_Args := 3;
             when 3  => Op := Input;
-                       Num_Args := 0;
+                       Num_Args := 1;
             when 4  => Op := Output;
                        Num_Args := 1;
             when 5  => Op := Jump_If_True;
@@ -125,51 +126,61 @@ package body Intcode is
                        Num_Args := 2;
             when 8  => Op := Equals;
                        Num_Args := 2;
+            when 9  => Op := Set_Relative;
+                       Num_Args := 1;
             when others => raise Invalid_Opcode with Opcode_Num'Image;
         end case;
 
         for I in 0 .. (Num_Args - 1) loop
-            case Get_Digit (W, (I + 2)) is
+            case Get_Digit (Natural (W), (I + 2)) is
                 when 0 => Arg.Mode := Position_Mode;
                 when 1 => Arg.Mode := Immediate_Mode;
+                when 2 => Arg.Mode := Relative_Mode;
                 when others => Arg.Mode := Position_Mode;
             end case;
+
             Fetch (Arg.Value);
-            if Arg.Mode = Position_Mode then
-                Arg.Value := Memory (Arg.Value);
-            end if;
+
+            case Arg.Mode is
+                when Position_Mode =>
+                    Arg.Value := Memory (Arg.Value);
+                when Relative_Mode =>
+                    Arg.Relative := Arg.Value + Relative_Base;
+                    Arg.Value := Memory (Arg.Relative);
+                when Immediate_Mode =>
+                    null;
+            end case;
+
             Arguments.Push (Arg);
         end loop;
-
-        Put_Line ("Decode Op=" & Op'Image & " Args=" & Arguments.Size'Image);
     end Decode;
 
     procedure Execute (Op : in Opcode;
                        Args : in out Arguments_Stack.Stack) is
-        Operand_1, Operand_2 : Argument;
+        Operand_1, Operand_2, Operand_3 : Argument;
         Destination, Result : Word;
     begin
         Put_Line ("Execute " & Op'Image);
 
         case Op is
             when Add =>
-                Fetch (Destination);
+                Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value + Operand_2.Value;
-                Put_Line (Operand_1.Value'Image & " + " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Destination);
+                --Put_Line (Operand_1.Value'Image & " + " & Operand_2.Value'Image & " = " & Result'Image);
+                Store (Result, Operand_3.Value);
             when Multiply =>
-                Fetch (Destination);
+                Args.Pop (Operand_3);
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
                 Result := Operand_1.Value * Operand_2.Value;
-                Put_Line (Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
-                Store (Result, Destination);
+                Put_Line (Operand_3.Value'Image & " := " & Operand_1.Value'Image & " * " & Operand_2.Value'Image & " = " & Result'Image);
+                Store (Result, Operand_3.Value);
             when Input =>
-                Fetch (Destination);
+                Args.Pop (Operand_1);
                 Read_Input (Result);
-                Store (Result, Destination);
+                Store (Result, Operand_1.Relative);
             when Output =>
                 Args.Pop (Operand_1);
                 Put_Line (Operand_1.Value'Image);
@@ -203,6 +214,11 @@ package body Intcode is
                 else
                     Store (0, Destination);
                 end if;
+            when Set_Relative =>
+                Args.Pop (Operand_1);
+                Put_Line ("Relative_Base := " & Relative_Base'Image & " + " & Operand_1.Value'Image);
+                Relative_Base := Relative_Base + Operand_1.Value;
+                Put_Line (Relative_Base'Image);
             when Halt => raise Halted;
         end case;
         if not Args.Empty then
@@ -221,7 +237,7 @@ package body Intcode is
             Fetch (W);
             Decode (W, Op, Args);
             Execute (Op, Args);
-            Put_Line ("");
+            --Put_Line ("");
         end loop;
     end Run;
 

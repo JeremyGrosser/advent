@@ -1,7 +1,7 @@
 with Stack;
 
 package Intcode is
-    subtype Word is Integer;
+    subtype Word is Long_Long_Integer;
 
     type Opcode is (
         Halt,
@@ -12,14 +12,18 @@ package Intcode is
         Jump_If_True,
         Jump_If_False,
         Less_Than,
-        Equals);
-    type Parameter_Mode is (Position_Mode, Immediate_Mode);
-    type Memory_Type is array (Natural range 0 .. 8192) of Word;
-    subtype Pointer_Type is Natural range Memory_Type'Range;
+        Equals,
+        Set_Relative);
+    type Parameter_Mode is (Position_Mode, Immediate_Mode, Relative_Mode);
+
+    Memory_Size : constant Word := 67_108_864;
+    type Memory_Type is array (Word range 0 .. Memory_Size) of Word;
+    subtype Pointer_Type is Word range Memory_Type'Range;
 
     type Argument is record
-        Mode    : Parameter_Mode;
-        Value   : Word;
+        Mode     : Parameter_Mode;
+        Value    : Word;
+        Relative : Word;
     end record;
 
     package Arguments_Stack is new Stack
@@ -50,5 +54,6 @@ package Intcode is
 
     Memory : Memory_Type;
 private
-    Pointer : Pointer_Type := Memory'First;
+    Pointer         : Pointer_Type := Memory'First;
+    Relative_Base   : Pointer_Type := Memory'First;
 end Intcode;

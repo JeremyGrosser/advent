@@ -1,7 +1,6 @@
 project Advent_2019 is
   for Main use (
       "advent1.adb",
-      "advent2.adb",
       "advent3.adb",
       "advent4.adb",
       "advent5.adb");
