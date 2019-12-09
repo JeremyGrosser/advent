@@ -60,6 +60,9 @@ package body Intcode is
     begin
         --Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
         Memory (Pointer) := W;
+        if Pointer > Max_Memory_Used then
+            Max_Memory_Used := Pointer;
+        end if;
     end Store;
 
     procedure Load_From_File (Filename : in String) is
@@ -95,6 +98,9 @@ package body Intcode is
     begin
         W := Memory (Pointer);
         --Put_Line ("Fetch [" & Pointer'Image & "] = " & W'Image);
+        if Pointer > Max_Memory_Used then
+            Max_Memory_Used := Pointer;
+        end if;
         Pointer := Pointer + 1;
     end Fetch;
 
@@ -219,7 +225,9 @@ package body Intcode is
                 --Put_Line ("Relative_Base := " & Relative_Base'Image & " + " & Operand_1.Value'Image);
                 Relative_Base := Relative_Base + Operand_1.Value;
                 --Put_Line (Relative_Base'Image);
-            when Halt => raise Halted;
+            when Halt => 
+                Put_Line ("Memory Used: " & Max_Memory_Used'Image);
+                raise Halted;
         end case;
         if not Args.Empty then
             Put_Line (Args.Size'Image);

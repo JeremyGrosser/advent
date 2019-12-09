@@ -16,7 +16,7 @@ package Intcode is
         Set_Relative);
     type Parameter_Mode is (Position_Mode, Immediate_Mode, Relative_Mode);
 
-    Memory_Size : constant Word := 67_108_864;
+    Memory_Size : constant Word := 8192;
     type Memory_Type is array (Word range 0 .. Memory_Size) of Word;
     subtype Pointer_Type is Word range Memory_Type'Range;
 
@@ -56,4 +56,5 @@ package Intcode is
 private
     Pointer         : Pointer_Type := Memory'First;
     Relative_Base   : Pointer_Type := Memory'First;
+    Max_Memory_Used : Pointer_Type := Memory'First;
 end Intcode;
