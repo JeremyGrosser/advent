@@ -82,6 +82,7 @@ private
         Pointer         : Pointer_Type := Memory_Type'First;
         Relative_Base   : Pointer_Type := Memory_Type'First;
         Max_Memory_Used : Pointer_Type := Memory_Type'First;
+        Cycle_Count     : Natural := 0;
     end record;
 
 end Intcode;

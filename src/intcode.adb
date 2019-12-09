@@ -227,6 +227,7 @@ package body Intcode is
             when Halt => 
                 Put_Line ("--------------------------");
                 Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
+                Put_Line ("Cycle count: " & M.Cycle_Count'Image);
                 raise Halted;
         end case;
         if not Args.Empty then
@@ -243,6 +244,7 @@ package body Intcode is
         M.Fetch (W);
         M.Decode (W, Op, Args);
         M.Execute (Op, Args);
+        M.Cycle_Count := M.Cycle_Count + 1;
     end Step;
 
     procedure Run (M : in out Machine) is
