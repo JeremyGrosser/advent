@@ -225,9 +225,6 @@ package body Intcode is
                 M.Relative_Base := M.Relative_Base + Operand_1.Value;
                 --Put_Line (Relative_Base'Image);
             when Halt => 
-                Put_Line ("--------------------------");
-                Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
-                Put_Line ("Cycle count: " & M.Cycle_Count'Image);
                 raise Halted;
         end case;
         if not Args.Empty then
@@ -252,6 +249,12 @@ package body Intcode is
         loop
             M.Step;
         end loop;
+    exception
+        when Halted =>
+            Put_Line ("HALT");
+            Put_Line ("--------------------------");
+            Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
+            Put_Line ("Cycle count: " & M.Cycle_Count'Image);
     end Run;
 
     procedure Peek (
