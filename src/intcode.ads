@@ -44,6 +44,8 @@ package Intcode is
         M        : in out Machine;
         Filename : in String);
 
+    procedure Step (M : in out Machine);
+
     procedure Run (M : in out Machine);
 
     procedure Reset (M : in out Machine);

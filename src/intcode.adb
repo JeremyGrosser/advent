@@ -78,6 +78,7 @@ package body Intcode is
             Get_Word (File, W);
             M.Load_Word (W);
         end loop;
+        Close (File);
     end Load_From_File;
 
     procedure Reset (M : in out Machine) is
@@ -224,6 +225,7 @@ package body Intcode is
                 M.Relative_Base := M.Relative_Base + Operand_1.Value;
                 --Put_Line (Relative_Base'Image);
             when Halt => 
+                Put_Line ("--------------------------");
                 Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
                 raise Halted;
         end case;
@@ -233,17 +235,20 @@ package body Intcode is
         end if;
     end Execute;
 
-    procedure Run (M : in out Machine) is
+    procedure Step (M : in out Machine) is
         W : Word;
         Op : Opcode;
         Args : Arguments_Stack.Stack;
     begin
-        M.Reset;
+        M.Fetch (W);
+        M.Decode (W, Op, Args);
+        M.Execute (Op, Args);
+    end Step;
+
+    procedure Run (M : in out Machine) is
+    begin
         loop
-            M.Fetch (W);
-            M.Decode (W, Op, Args);
-            M.Execute (Op, Args);
-            --Put_Line ("");
+            M.Step;
         end loop;
     end Run;
 
