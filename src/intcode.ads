@@ -1,24 +1,26 @@
 with Ada.Containers.Vectors;
+with Stack;
 
 package Intcode is
-    subtype Word is Natural;
+    subtype Word is Integer;
 
     type Opcode is (Halt, Add, Multiply, Input, Output);
     type Parameter_Mode is (Position_Mode, Immediate_Mode);
-    type Memory_Type is array (Natural range 0 .. 128) of Word;
+    type Memory_Type is array (Natural range 0 .. 8192) of Word;
     subtype Pointer_Type is Natural range Memory_Type'Range;
 
     type Argument is record
-        Mode : Parameter_Mode;
-        Value : Word;
+        Mode    : Parameter_Mode;
+        Value   : Word;
     end record;
 
-    package Arguments_Vector is new Ada.Containers.Vectors
-        (Index_Type => Positive,
-         Element_Type => Argument);
+    package Arguments_Stack is new Stack
+        (Element_Type => Argument);
 
-    Invalid_Opcode : exception;
-    Halted : exception;
+    Invalid_Opcode          : exception;
+    Invalid_Operand_Mode    : exception;
+    Too_Many_Args           : exception;
+    Halted                  : exception;
 
     procedure Load_Word (W : in Word);
     procedure Load_From_File (Filename : in String);
@@ -30,10 +32,10 @@ package Intcode is
 
     procedure Decode (W : in Word;
                       Op : out Opcode;
-                      Arguments : out Arguments_Vector.Vector);
+                      Arguments : out Arguments_Stack.Stack);
 
     procedure Execute (Op : in Opcode;
-                       Args : in Arguments_Vector.Vector);
+                       Args : in out Arguments_Stack.Stack);
 
     procedure Peek (Address : in Pointer_Type; Value : out Word);
     procedure Poke (Address : in Pointer_Type; Value : in Word);
