@@ -57,7 +57,7 @@ package body Intcode is
     procedure Store (
         M : in out Machine;
         W : in Word;
-        Pointer : Pointer_Type) is
+        Pointer : in Pointer_Type) is
     begin
         --Put_Line ("Store [" & Pointer'Image & "] := " & W'Image);
         M.Memory (Pointer) := W;
