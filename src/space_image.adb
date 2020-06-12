@@ -38,4 +38,32 @@ package body Space_Image is
 
         return Ones * Twos;
     end Checksum;
+    
+    procedure Read
+        (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+         Item   : out SIF_Image) is
+         Pixel : SIF_Color;
+    begin
+        for Y in Item'Range (2) loop
+            for X in Item'Range (1) loop
+                SIF_Color'Read (Stream, Pixel);
+                Item (X, Y) := Pixel;
+            end loop;
+        end loop;
+    end Read;
+
+    procedure Read_File
+        (File   : in Ada.Streams.Stream_IO.File_Type;
+         Layers : out Image_Vector.Vector) is
+        use Ada.Streams;
+        Stream : Stream_IO.Stream_Access;
+        Image  : SIF_Image;
+    begin
+        Stream := Stream_IO.Stream (File);
+        loop
+            SIF_Image'Read (Stream, Image);
+            Layers.Append (Image);
+            exit when Stream_IO.End_Of_File (File);
+        end loop;
+    end Read_File;
 end Space_Image;
