@@ -1,16 +1,33 @@
 with Terminal_Interface.Curses;
 use Terminal_Interface.Curses;
 
-package Space_Image.Display is
+package body Space_Image.Display is
+    Black_Color       : constant Color_Pair := 1;
+    White_Color       : constant Color_Pair := 2;
+    Transparent_Color : constant Color_Pair := 3;
+    Error_Color       : constant Color_Pair := 4;
+
     procedure Initialize is
     begin
         Init_Screen;
         Set_Cbreak_Mode (True);
         Set_Echo_Mode (False);
         Set_NL_Mode (True);
+
+        Start_Color;
+        Init_Pair (Pair => Black_Color, Fore => Black, Back => Black);
+        Init_Pair (Pair => White_Color, Fore => White, Back => White);
+        Init_Pair (Pair => Transparent_Color, Fore => Magenta, Back => Magenta);
+        Init_Pair (Pair => Error_Color, Fore => Red, Back => Red);
+        
+        Erase;
     end Initialize;
 
     procedure Show (Image : in SIF_Image) is
+        AC : Attributed_Character := (
+            Ch    => 'X',
+            Color => Color_Pair (2),
+            Attr  => (others => False));
     begin
         --Set_Flush_On_Interrupt_Mode (Win, False);
         --Set_KeyPad_Mode (Win, True);
@@ -20,7 +37,13 @@ package Space_Image.Display is
                 Move_Cursor
                     (Line   => Line_Position (Y),
                      Column => Column_Position (X));
-                Add (Ch => Character (Image (X, Y)));
+                case Image (X, Y) is
+                    when '0'     => AC.Color := Black_Color;
+                    when '1'     => AC.Color := White_Color;
+                    when '2'     => AC.Color := Transparent_Color;
+                    when others  => AC.Color := Error_Color;
+                end case;
+                Add (Standard_Window, AC);
             end loop;
         end loop;
 

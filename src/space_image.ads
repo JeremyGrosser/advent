@@ -8,13 +8,15 @@ package Space_Image is
     Width  : constant Positive := 25;
     Height : constant Positive := 6;
     type SIF_Image is array (1 .. Width, 1 .. Height) of SIF_Color
-        with Default_Component_Value => '0';
+        with Default_Component_Value => SIF_Color'First;
 
     procedure Read
         (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
          Item   : out SIF_Image);
     
 	for SIF_Image'Read use Read;
+
+    Transparent_Image : constant SIF_Image := (others => (others => '2'));
 
     package Image_Vector is new Ada.Containers.Vectors
         (Index_Type   => Positive,
