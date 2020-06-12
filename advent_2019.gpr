@@ -1,3 +1,5 @@
+with "ncursesada";
+
 project Advent_2019 is
   for Main use (
       "run.adb",
@@ -5,7 +7,8 @@ project Advent_2019 is
       "advent3.adb",
       "advent4.adb",
       "advent6.adb",
-      "advent7.adb");
+      "advent7.adb",
+      "advent8.adb");
   for Languages use ("Ada");
   for Source_Dirs use ("src");
   for Object_Dir use "obj";
