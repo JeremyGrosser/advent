@@ -6,6 +6,7 @@ package body Space_Image.Display is
     White_Color       : constant Color_Pair := 2;
     Transparent_Color : constant Color_Pair := 3;
     Error_Color       : constant Color_Pair := 4;
+    Visibility        : Cursor_Visibility := Invisible;
 
     procedure Initialize is
     begin
@@ -13,6 +14,7 @@ package body Space_Image.Display is
         Set_Cbreak_Mode (True);
         Set_Echo_Mode (False);
         Set_NL_Mode (True);
+        Set_Cursor_Visibility (Visibility);
 
         Start_Color;
         Init_Pair (Pair => Black_Color, Fore => Black, Back => Black);
