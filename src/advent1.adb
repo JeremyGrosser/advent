@@ -32,5 +32,5 @@ begin
         end loop;
     end loop;
 
-    Put_Line (Standard_Output, Sum'Image);
+    Put_Line (Standard_Output, Natural'Image (Sum));
 end Advent1;

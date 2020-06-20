@@ -4,7 +4,7 @@ with Intcode;
 procedure Run is
     M : Intcode.Machine;
 begin
-    M.Load_From_File(Ada.Command_Line.Argument (1));
-    M.Reset;
-    M.Run;
+    Intcode.Load_From_File(M, Ada.Command_Line.Argument (1));
+    Intcode.Reset (M);
+    Intcode.Run (M);
 end Run;
