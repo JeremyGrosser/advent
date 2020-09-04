@@ -16,7 +16,7 @@ project Advent_2019 is
   for Create_Missing_Dirs use "True";
 
   package Compiler is
-      for Default_Switches ("Ada") use ("-g", "-gnata", "-O0", "-fstack-check");
+      for Default_Switches ("Ada") use ("-g", "-gnata", "-O0", "-fstack-check", "-E");
   end Compiler;
 
   package Binder is
