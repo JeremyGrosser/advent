@@ -9,14 +9,16 @@ procedure Advent6 is
     Input_Changed_Error : exception;
 
     subtype Orbital_Body is String (1 .. 1);
-    type Orbital_Index is new Positive;
+    subtype Orbital_Index is Positive;
+    subtype Real is Float;
+
+    package Real_IO is new Ada.Text_IO.Float_IO (Real);
 
     package Orbital_Vector is new Ada.Containers.Vectors
         (Element_Type => Orbital_Body,
          Index_Type   => Orbital_Index);
 
-    package Orbital_Matrix is new Ada.Numerics.Generic_Real_Arrays
-        (Real => Float);
+    package Orbital_Matrix is new Ada.Numerics.Generic_Real_Arrays (Real);
     use Orbital_Matrix;
 
     procedure Next_Edge
@@ -56,6 +58,16 @@ procedure Advent6 is
         end loop;
     end Print;
 
+    function Degree (M : in Orbital_Matrix.Real_Matrix;
+                     I : in Orbital_Index) return Real is
+        D : Real := 0.0;
+    begin
+        for J in M'Range (2) loop
+            D := D + M (I, J);
+        end loop;
+        return D;
+    end Degree;
+
     Input_File : Ada.Streams.Stream_IO.File_Type;
     Input_Stream : Ada.Streams.Stream_IO.Stream_Access;
 
@@ -77,7 +89,7 @@ begin
     end loop;
 
     declare
-        N : constant Positive := Positive (V.Length);
+        N : constant Orbital_Index := Orbital_Index (V.Length);
         subtype Adjacency_Matrix is Orbital_Matrix.Real_Matrix (1 .. N, 1 .. N);
 
         M : Adjacency_Matrix := (others => (others => 0.0));
@@ -96,7 +108,17 @@ begin
             M (Integer (I), Integer (J)) := 1.0;
         end loop;
 
-        Print (M);
+        --Print (M);
+
+        Real_IO.Default_Fore := 0;
+        Real_IO.Default_Aft := 0;
+        Real_IO.Default_Exp := 0;
+
+        for I in M'Range (1) loop
+            Ada.Text_IO.Put (V (I) & " ");
+            Real_IO.Put (Degree (M, I));
+            Ada.Text_IO.Put_Line ("");
+        end loop;
     end;
 
     Ada.Streams.Stream_IO.Close (Input_File);
