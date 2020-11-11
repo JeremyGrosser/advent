@@ -48,4 +48,32 @@ package body Solutions.Day_1 is
 
       return 0;
    end Part_2;
+
+   procedure Run is
+      Result : Integer;
+   begin
+      if Part_1 ("input/day1.1a") /= 3 then
+         return;
+      end if;
+      Result := Part_1 ("input/day1");
+      Put_Line ("Solution 1.1: " & Result'Image);
+
+      if Part_2 ("input/day1.2a") /= 0 then
+         return;
+      end if;
+
+      if Part_2 ("input/day1.2b") /= 10 then
+         return;
+      end if;
+
+      if Part_2 ("input/day1.2c") /= 5 then
+         return;
+      end if;
+      
+      if Part_2 ("input/day1.2d") /= 14 then
+         return;
+      end if;
+      Result := Solutions.Day_1.Part_2 ("input/day1");
+      Put_Line ("Solution 1.2: " & Result'Image);
+   end Run;
 end Solutions.Day_1;
