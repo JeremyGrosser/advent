@@ -1,3 +1,4 @@
 package Solutions.Day_1 is
-   procedure Run (Filename : String);
+   function Part_1 (Filename : String) return Integer;
+   function Part_2 (Filename : String) return Integer;
 end Solutions.Day_1;
