@@ -164,7 +164,12 @@ package body Solutions.Day_6 is
       --Print (From);
       --Put ("To:   ");
       --Print (To);
-      return Natural (abs (From.Length - To.Length));
+      for I in 0 .. Natural (From.Length) loop
+         if From (I) /= To (I) then
+            return Natural'Max (Natural (From.Length), Natural (To.Length)) - I;
+         end if;
+      end loop;
+      return 0;
    end Part_2;
 
    procedure Run is
