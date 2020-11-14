@@ -1,13 +1,18 @@
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Ordered_Maps;
+with Ada.Containers.Vectors;
+with Ada.Unchecked_Deallocation;
 with Ada.Text_IO; use Ada.Text_IO;
 with Str; use Str;
+with Graphs;
 
 package body Solutions.Day_6 is
    Not_Found : exception;
 
+   type Index_Type is new Positive;
    package String_Vectors is new Ada.Containers.Indefinite_Vectors
-      (Index_Type   => Positive,
+      (Index_Type   => Index_Type,
        Element_Type => String);
    use type String_Vectors.Vector;
 
@@ -96,7 +101,6 @@ package body Solutions.Day_6 is
       return Star_Map;
    end Read;
 
-
    function Part_1 (Filename : String)
       return Natural
    is
@@ -113,37 +117,6 @@ package body Solutions.Day_6 is
       return Total;
    end Part_1;
 
-   function Path
-      (M            : String_Maps.Map;
-       Origin, Dest : String)
-       return String_Vectors.Vector
-   is
-      Vec : String_Vectors.Vector;
-   begin
-      if not M.Contains (Origin) then
-         return String_Vectors.Empty_Vector;
-      else
-         Vec := M.Element (Origin);
-      end if;
-
-      if Vec.Contains (Dest) then
-         return Vec;
-      else
-         for Cursor in Vec.Iterate loop
-            declare
-               use type Ada.Containers.Count_Type;
-               Key : String := String_Vectors.Element (Cursor);
-               V   : String_Vectors.Vector := Path (M, Key, Dest);
-            begin
-               if V.Length > 0 then
-                  return Vec & V;
-               end if;
-            end;
-         end loop;
-         return String_Vectors.Empty_Vector;
-      end if;
-   end Path;
-
    procedure Print (V : String_Vectors.Vector) is
    begin
       for Cursor in V.Iterate loop
@@ -152,24 +125,48 @@ package body Solutions.Day_6 is
       Put_Line ("");
    end Print;
 
-   function Part_2 (Filename : String)
+   function Part_2
+      (Filename : String)
       return Natural
    is
-      use type Ada.Containers.Count_Type;
-      Star_Map : String_Maps.Map := Read (Filename);
-      From     : String_Vectors.Vector := Path (Star_Map, "COM", "YOU");
-      To       : String_Vectors.Vector := Path (Star_Map, "COM", "SAN");
+      package Index_Graph is new Graphs (Index_Type);
+      Input  : File_Type;
+      Names  : String_Vectors.Vector;
+      G      : Index_Graph.Graph;
+      Result : Index_Graph.Element_Vectors.Vector;
    begin
-      --Put ("From: ");
-      --Print (From);
-      --Put ("To:   ");
-      --Print (To);
-      for I in 0 .. Natural (From.Length) loop
-         if From (I) /= To (I) then
-            return Natural'Max (Natural (From.Length), Natural (To.Length)) - I;
-         end if;
+      Open (Input, In_File, Filename);
+      loop
+         exit when End_Of_File (Input);
+         declare
+            Line : constant String := Get_Line (Input);
+            A    : constant String := Split (Line, ')', 0);
+            B    : constant String := Split (Line, ')', 1);
+            AI, BI : Index_Type;
+         begin
+            if not Names.Contains (A) then
+               Names.Append (A);
+            end if;
+            AI := Names.Find_Index (A);
+
+            if not Names.Contains (B) then
+               Names.Append (B);
+            end if;
+            BI := Names.Find_Index (B);
+
+            G.Add (AI, BI);
+            G.Add (BI, AI);
+         end;
       end loop;
-      return 0;
+      Close (Input);
+
+      Result := G.Path (Names.Find_Index ("YOU"), Names.Find_Index ("SAN"));
+      --for Cursor in Result.Iterate loop
+      --   Put (Names (Index_Graph.Element_Vectors.Element (Cursor)) & " ");
+      --end loop;
+      --Put_Line ("");
+      G.Clear;
+      return Natural (Result.Length) - 1;
    end Part_2;
 
    procedure Run is

@@ -1,23 +1,38 @@
-with "ncursesada";
+--with "ncursesada";
 
 project Advent_2019 is
   for Main use (
-      "run.adb",
-      "advent1.adb",
-      "advent3.adb",
-      "advent4.adb",
-      "advent6.adb",
-      "advent7.adb",
-      "advent8.adb",
-      "advent10.adb");
+--      "run.adb",
+--      "advent1.adb",
+--      "advent3.adb",
+--      "advent4.adb",
+      "advent6.adb"
+--      "advent7.adb",
+--      "advent8.adb",
+--      "advent10.adb");
+      );
   for Languages use ("Ada");
   for Source_Dirs use ("src");
   for Object_Dir use "obj";
   for Create_Missing_Dirs use "True";
 
   package Compiler is
-      for Default_Switches ("Ada") use ("-g", "-gnata", "-O0", "-fstack-check", "-E");
+      for Default_Switches ("Ada") use (
+          "-g",
+--          "-pg",
+          "-gnata",
+          "-O2",
+          "-fstack-check",
+          "-fstack-usage"
+--          "-E"
+      );
   end Compiler;
+
+  package Linker is
+      for Default_Switches ("Ada") use (
+--          "-pg"
+       );
+  end Linker;
 
   package Binder is
       for Default_Switches ("Ada") use ("-d1000m", "-Es");
