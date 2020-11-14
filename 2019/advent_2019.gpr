@@ -6,6 +6,7 @@ project Advent_2019 is
       "advent1.adb",
       "advent3.adb",
       "advent4.adb",
+      "advent6.adb",
       "advent7.adb",
       "advent8.adb",
       "advent10.adb");
@@ -19,6 +20,6 @@ project Advent_2019 is
   end Compiler;
 
   package Binder is
-      for Default_Switches ("Ada") use ("-d1000m");
+      for Default_Switches ("Ada") use ("-d1000m", "-Es");
   end Binder;
 end Advent_2019;
