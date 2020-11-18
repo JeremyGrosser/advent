@@ -1,0 +1,9 @@
+name = "advent2020"
+description = "Advent of Code 2020"
+version = "1.0.0"
+
+authors = ["Jeremy Grosser"]
+maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
+maintainers-logins = ["JeremyGrosser"]
+
+executables = ["advent2020"]
