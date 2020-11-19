@@ -2,12 +2,12 @@
 
 project Advent_2019 is
   for Main use (
---      "run.adb",
+      "run.adb",
 --      "advent1.adb",
 --      "advent3.adb",
 --      "advent4.adb",
-      "advent6.adb"
---      "advent7.adb",
+--      "advent6.adb"
+      "advent7.adb"
 --      "advent8.adb",
 --      "advent10.adb");
       );

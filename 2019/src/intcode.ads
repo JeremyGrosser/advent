@@ -1,3 +1,4 @@
+with Ada.Containers.Vectors;
 with Stack;
 
 package Intcode is
@@ -34,6 +35,7 @@ package Intcode is
     Invalid_Opcode          : exception;
     Invalid_Operand_Mode    : exception;
     Too_Many_Args           : exception;
+    Buffer_Underrun         : exception;
     Halted                  : exception;
 
     procedure Load_Word (
@@ -48,7 +50,13 @@ package Intcode is
 
     procedure Run (M : in out Machine);
 
+    procedure Run_Until_Output (M : in out Machine);
+
     procedure Reset (M : in out Machine);
+
+    procedure Clear_Memory (M : in out Machine);
+    
+    procedure Print_Summary (M : Machine);
 
     procedure Fetch (
         M : in out Machine;
@@ -75,7 +83,19 @@ package Intcode is
         Address : in Pointer_Type;
         Value   : in Word);
 
+    procedure Write_Input (
+       M : in out Machine;
+       W : in Word);
+
+    procedure Read_Output (
+       M : in out Machine;
+       W : out Word);
+
+    function Has_Output (M : Machine) return Boolean;
+
 private
+   
+   package Word_Vector is new Ada.Containers.Vectors (Positive, Word);
 
     type Machine is tagged record
         Memory          : Memory_Type;
@@ -83,6 +103,8 @@ private
         Relative_Base   : Pointer_Type := Memory_Type'First;
         Max_Memory_Used : Pointer_Type := Memory_Type'First;
         Cycle_Count     : Natural := 0;
+        Input           : Word_Vector.Vector;
+        Output          : Word_Vector.Vector;
     end record;
 
 end Intcode;

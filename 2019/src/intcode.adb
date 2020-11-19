@@ -40,10 +40,14 @@ package body Intcode is
         return (N / (Base ** Magnitude)) mod Base;
     end Get_Digit;
 
-    procedure Read_Input (Value : out Word) is
+    procedure Read_Input (M : in out Machine; Value : out Word) is
     begin
-        Put("> ");
-        Value := Word'Value (Get_Line (Standard_Input));
+       if M.Input.Is_Empty then
+          raise Buffer_Underrun;
+       else
+          Value := M.Input.First_Element;
+          M.Input.Delete_First;
+       end if;
     end Read_Input;
 
     procedure Load_Word (
@@ -84,7 +88,14 @@ package body Intcode is
     procedure Reset (M : in out Machine) is
     begin
         M.Pointer := M.Memory'First;
+        M.Input.Clear;
+        M.Output.Clear;
     end Reset;
+
+    procedure Clear_Memory (M : in out Machine) is
+    begin
+       M.Memory := (others => 0);
+    end Clear_Memory;
 
     procedure Fetch (
         M : in out Machine;
@@ -132,6 +143,7 @@ package body Intcode is
                        Num_Args := 1;
             when others => raise Invalid_Opcode with Opcode_Num'Image;
         end case;
+        --Put_Line ("Op=" & Op'Image);
 
         for I in 0 .. (Num_Args - 1) loop
             case Get_Digit (Natural (W), (I + 2)) is
@@ -184,11 +196,11 @@ package body Intcode is
                 M.Store (Result, Operand_3.Literal);
             when Input =>
                 Args.Pop (Operand_1);
-                Read_Input (Result);
+                Read_Input (M, Result);
                 M.Store (Result, Operand_1.Literal);
             when Output =>
                 Args.Pop (Operand_1);
-                Put_Line (Operand_1.Value'Image);
+                M.Output.Append (Operand_1.Value);
             when Jump_If_True =>
                 Args.Pop (Operand_2);
                 Args.Pop (Operand_1);
@@ -252,10 +264,24 @@ package body Intcode is
     exception
         when Halted =>
             Put_Line ("HALT");
-            Put_Line ("--------------------------");
-            Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
-            Put_Line ("Cycle count: " & M.Cycle_Count'Image);
+            M.Print_Summary;
     end Run;
+
+    procedure Print_Summary (M : Machine) is
+    begin
+        Put_Line ("--------------------------");
+        Put_Line ("Memory Used: " & M.Max_Memory_Used'Image);
+        Put_Line ("Cycle count: " & M.Cycle_Count'Image);
+    end Print_Summary;
+
+    procedure Run_Until_Output (M : in out Machine)
+    is
+    begin
+       loop
+          exit when not M.Output.Is_Empty;
+          M.Step;
+       end loop;
+    end Run_Until_Output;
 
     procedure Peek (
         M       : in Machine;
@@ -272,5 +298,25 @@ package body Intcode is
     begin
         M.Memory (Address) := Value;
     end Poke;
+
+    procedure Write_Input (
+       M : in out Machine;
+       W : in Word) is
+    begin
+       M.Input.Append (W);
+    end Write_Input;
+
+    procedure Read_Output (
+       M : in out Machine;
+       W : out Word) is
+    begin
+       W := M.Output.First_Element;
+       M.Output.Delete_First;
+    end Read_Output;
+
+    function Has_Output (M : Machine) return Boolean is
+    begin
+       return not M.Output.Is_Empty;
+    end Has_Output;
 
 end Intcode;
