@@ -6,21 +6,10 @@ package body Advent.D1 is
    function Part_1 (Filename : in String)
       return Integer
    is
-      package Integer_Vectors is new Ada.Containers.Vectors (Positive, Integer);
       use type Ada.Containers.Count_Type;
-
-      Input : File_Type;
-      Nums : Integer_Vectors.Vector;
+      Nums : constant Integer_Vectors.Vector := Read_Integers (Filename);
       X, Y : Integer;
    begin
-      Open (Input, In_File, Filename);
-      loop
-         exit when End_Of_File (Input);
-         Nums.Append (Integer'Value (Get_Line (Input)));
-      end loop;
-
-      Close (Input);
-
       for A in Nums.Iterate loop
          for B in Nums.Iterate loop
             X := Integer_Vectors.Element (A);
@@ -30,27 +19,16 @@ package body Advent.D1 is
             end if;
          end loop;
       end loop;
-      return 0;
+      raise No_Answer;
    end Part_1;
 
    function Part_2 (Filename : in String)
       return Integer
    is
-      package Integer_Vectors is new Ada.Containers.Vectors (Positive, Integer);
       use type Ada.Containers.Count_Type;
-
-      Input : File_Type;
-      Nums : Integer_Vectors.Vector;
+      Nums    : constant Integer_Vectors.Vector := Read_Integers (Filename);
       X, Y, Z : Integer;
    begin
-      Open (Input, In_File, Filename);
-      loop
-         exit when End_Of_File (Input);
-         Nums.Append (Integer'Value (Get_Line (Input)));
-      end loop;
-
-      Close (Input);
-
       for A in Nums.Iterate loop
          for B in Nums.Iterate loop
             for C in Nums.Iterate loop
@@ -63,7 +41,7 @@ package body Advent.D1 is
             end loop;
          end loop;
       end loop;
-      return 0;
+      raise No_Answer;
    end Part_2;
 
    procedure Run is
