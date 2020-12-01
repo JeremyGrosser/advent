@@ -1,12 +1,10 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
-with Ada.Containers;
 
 package body Advent.D1 is
    function Part_1 (Filename : in String)
       return Integer
    is
-      use type Ada.Containers.Count_Type;
       use Integer_Vectors;
       Nums : constant Vector := Read_Integers (Filename);
       X, Y : Integer;
@@ -26,7 +24,6 @@ package body Advent.D1 is
    function Part_2 (Filename : in String)
       return Integer
    is
-      use type Ada.Containers.Count_Type;
       use Integer_Vectors;
       Nums    : constant Vector := Read_Integers (Filename);
       X, Y, Z : Integer;
