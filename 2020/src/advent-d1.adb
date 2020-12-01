@@ -7,13 +7,14 @@ package body Advent.D1 is
       return Integer
    is
       use type Ada.Containers.Count_Type;
-      Nums : constant Integer_Vectors.Vector := Read_Integers (Filename);
+      use Integer_Vectors;
+      Nums : constant Vector := Read_Integers (Filename);
       X, Y : Integer;
    begin
       for A in Nums.Iterate loop
          for B in Nums.Iterate loop
-            X := Integer_Vectors.Element (A);
-            Y := Integer_Vectors.Element (B);
+            X := Element (A);
+            Y := Element (B);
             if X + Y = 2020 then
                return X * Y;
             end if;
@@ -26,15 +27,16 @@ package body Advent.D1 is
       return Integer
    is
       use type Ada.Containers.Count_Type;
-      Nums    : constant Integer_Vectors.Vector := Read_Integers (Filename);
+      use Integer_Vectors;
+      Nums    : constant Vector := Read_Integers (Filename);
       X, Y, Z : Integer;
    begin
       for A in Nums.Iterate loop
          for B in Nums.Iterate loop
             for C in Nums.Iterate loop
-               X := Integer_Vectors.Element (A);
-               Y := Integer_Vectors.Element (B);
-               Z := Integer_Vectors.Element (C);
+               X := Element (A);
+               Y := Element (B);
+               Z := Element (C);
                if X + Y + Z = 2020 then
                   return X * Y * Z;
                end if;
