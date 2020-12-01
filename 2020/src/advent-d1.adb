@@ -16,22 +16,11 @@ package body Advent.D1 is
    end Part_2;
 
    procedure Run is
-      Result : Integer;
    begin
-      Result := Part_1 ("input/d1.1-test");
-      if Result /= 0 then
-         Put_Line ("D1.1 test failed: expected 0, got " & Result'Image);
-         return;
-      end if;
-      Result := Part_1 ("input/d1.1");
-      Put_Line ("D1.1 solution: " & Result'Image);
+      Test (Part_1'Access, "1.1", "input/d1.1-test", 0);
+      Put_Line ("1.1 solution: " & Part_1 ("input/d1")'Image);
 
-      Result := Part_2 ("input/d1.1-test");
-      if Result /= 0 then
-         Put_Line ("D1.2 test failed: expected 0, got " & Result'Image);
-         return;
-      end if;
-      Result := Part_2 ("input/d1.2");
-      Put_Line ("D1.2 solution: " & Result'Image);
+      Test (Part_2'Access, "1.2", "input/d1.2-test", 0);
+      Put_Line ("1.2 solution: " & Part_2 ("input/d1")'Image);
    end Run;
 end Advent.D1;
