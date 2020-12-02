@@ -13,13 +13,13 @@ package body Advent.D2 is
       loop
          exit when End_Of_File (Input);
          declare
-            Line          : String  := Get_Line (Input);
-            Num_Start_End : String  := Split (Line, ' ', 0);
-            Num_Start     : Natural := Natural'Value (Split (Num_Start_End, '-', 0));
-            Num_End       : Natural := Natural'Value (Split (Num_Start_End, '-', 1));
-            Substr        : String  := Strip (Split (Line, ' ', 1), ':');
-            Ch            : Character := Substr (Substr'First);
-            Password      : String  := Split (Line, ' ', 2);
+            Line          : constant String  := Get_Line (Input);
+            Num_Start_End : constant String  := Split (Line, ' ', 0);
+            Num_Start     : constant Natural := Natural'Value (Split (Num_Start_End, '-', 0));
+            Num_End       : constant Natural := Natural'Value (Split (Num_Start_End, '-', 1));
+            Substr        : constant String  := Strip (Split (Line, ' ', 1), ':');
+            Ch            : constant Character := Substr (Substr'First);
+            Password      : constant String  := Split (Line, ' ', 2);
             Count         : Natural := 0;
          begin
             for I in Password'Range loop
@@ -48,20 +48,19 @@ package body Advent.D2 is
       loop
          exit when End_Of_File (Input);
          declare
-            Line          : String    := Get_Line (Input);
-            Num_Start_End : String    := Split (Line, ' ', 0);
-            Num_Start     : Positive  := Natural'Value (Split (Num_Start_End, '-', 0));
-            Num_End       : Positive  := Natural'Value (Split (Num_Start_End, '-', 1));
-            Substr        : String    := Strip (Split (Line, ' ', 1), ':');
-            Ch            : Character := Substr (Substr'First);
-            Password      : String    := Split (Line, ' ', 2);
+            Line          : constant String    := Get_Line (Input);
+            Password      : constant String    := Split (Line, ' ', 2);
+            Num_Start_End : constant String    := Split (Line, ' ', 0);
+            Start_Index   : constant Natural   := Password'First + Natural'Value (Split (Num_Start_End, '-', 0)) - 1;
+            End_Index     : constant Natural   := Password'First + Natural'Value (Split (Num_Start_End, '-', 1)) - 1;
+            Match_String  : constant String    := Strip (Split (Line, ' ', 1), ':');
+            Ch            : constant Character := Match_String (Match_String'First);
             Matches       : Natural   := 0;
          begin
-            --Put_Line (Password & " = " & Password'Length'Image & " : " & Num_Start'Image & " - " & Num_End'Image);
-            if Password (Password'First + Num_Start - 1) = Ch then
+            if Password (Start_Index) = Ch then
                Matches := Matches + 1;
             end if;
-            if Password'Length >= (Num_End - 1) and then Password (Password'First + Num_End - 1) = Ch then
+            if Password'Last >= End_Index and then Password (End_Index) = Ch then
                Matches := Matches + 1;
             end if;
             if Matches = 1 then
