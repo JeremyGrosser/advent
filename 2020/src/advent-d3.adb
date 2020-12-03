@@ -2,9 +2,9 @@ with Ada.Assertions; use Ada.Assertions;
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Advent.D3 is
-   subtype Coordinate is Positive;
+   subtype Coordinate is Count_Type range 1 .. Count_Type'Last;
    type Map_Value is (Open, Tree);
-   type Map_Type is array (Positive range <>, Positive range <>) of Map_Value;
+   type Map_Type is array (Coordinate range <>, Coordinate range <>) of Map_Value;
 
    Invalid_Input : exception;
 
@@ -110,7 +110,6 @@ package body Advent.D3 is
    end Part_2;
 
    procedure Run is
-      Result : Count_Type;
    begin
       Assert (Part_1 ("input/d3.1-test") = 7);
       Put_Line ("3.1 solution: " & Part_1 ("input/d3")'Image);
