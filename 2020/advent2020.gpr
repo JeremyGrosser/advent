@@ -68,11 +68,18 @@ project Advent2020 is
         Runtime_Checks_Switches &
         Style_Checks_Switches &
         Contracts_Switches &
-        ("-gnatQ");  -- Don't quit. Generate ALI and tree files even if illegalities
+        ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
+         "-pg",     -- Profiling
+         "-fstack-usage");
    end Compiler;
 
    package Binder is
       for Switches ("Ada") use ("-Es"); --  Symbolic traceback
    end Binder;
+
+   package Linker is
+       for Switches ("Ada") use
+           ("-pg"); -- Profiling
+   end Linker;
 
 end Advent2020;
