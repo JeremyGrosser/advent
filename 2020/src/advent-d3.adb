@@ -58,9 +58,11 @@ package body Advent.D3 is
       end;
    end Read_Map;
 
-   function Part_1
-      (Filename : in String)
-      return Integer
+   function Check_Slope
+      (Filename : in String;
+       Right    : in Positive;
+       Down     : in Positive)
+      return Natural
    is
       M      : constant Map_Type := Read_Map (Filename);
       Width  : constant Positive := M'Last (1);
@@ -69,12 +71,12 @@ package body Advent.D3 is
       Count  : Natural := 0;
    begin
       loop
-         X := (X + 3);
+         X := (X + Right);
          if X > Width then
             X := (X mod Width);
          end if;
 
-         Y := Y + 1;
+         Y := Y + Down;
          exit when Y > Height;
 
          if M (X, Y) = Tree then
@@ -83,22 +85,42 @@ package body Advent.D3 is
       end loop;
 
       return Count;
-   end Part_1;
+   end Check_Slope;
 
-   function Part_2
+   function Part_1
       (Filename : in String)
       return Integer
    is
    begin
-      return 0;
+      return Check_Slope (Filename, 3, 1);
+   end Part_1;
+
+   function Part_2
+      (Filename : in String)
+      return Long_Integer
+   is
+      N : Long_Integer := 1;
+   begin
+      N := N * Long_Integer (Check_Slope (Filename, 1, 1));
+      N := N * Long_Integer (Check_Slope (Filename, 3, 1));
+      N := N * Long_Integer (Check_Slope (Filename, 5, 1));
+      N := N * Long_Integer (Check_Slope (Filename, 7, 1));
+      N := N * Long_Integer (Check_Slope (Filename, 1, 2));
+      return N;
    end Part_2;
 
    procedure Run is
+      Result : Long_Integer;
    begin
       Test (Part_1'Access, "3.1", "input/d3.1-test", 7);
       Put_Line ("3.1 solution: " & Part_1 ("input/d3")'Image);
 
-      Test (Part_2'Access, "3.2", "input/d3.1-test", 99);
+      --Test (Part_2'Access, "3.2", "input/d3.1-test", 336);
+      Result := Part_2 ("input/d3.1-test");
+      if Result /= 336 then
+         Put_Line ("test failed: " & Result'Image);
+         return;
+      end if;
       Put_Line ("3.2 solution: " & Part_2 ("input/d3")'Image);
    end Run;
 end Advent.D3;
