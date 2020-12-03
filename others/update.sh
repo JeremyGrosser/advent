@@ -9,7 +9,7 @@ for url in `cat repolist`; do
     echo "${username}"
     pushd ${username} >/dev/null
     git fetch -q
-    git diff origin/$(git branch --show-current)
+    git diff HEAD..origin/$(git branch --show-current)
     git pull -q -s recursive -X theirs origin $(git branch --show-current)
     popd >/dev/null
 done
