@@ -11,9 +11,17 @@ project Advent2020 is
    Runtime_Checks : Enabled_Kind := External ("ADVENT2020_RUNTIME_CHECKS", "enabled");
    Style_Checks : Enabled_Kind := External ("ADVENT2020_STYLE_CHECKS", "disabled");
    Contracts_Checks : Enabled_Kind := External ("ADVENT2020_CONTRACTS", "enabled");
+   Profiling_Checks : Enabled_Kind := External ("ADVENT2020_PROFILING", "disabled");
 
    type Build_Kind is ("debug", "optimize");
    Build_Mode : Build_Kind := External ("ADVENT2020_BUILD_MODE", "debug");
+
+   Profiling_Switches := ();
+   case Profiling_Checks is
+       when "enabled" =>
+           Profiling_Switches := ("-pg");
+       when others => null;
+   end case;
 
    Compile_Checks_Switches := ();
    case Compile_Checks is
@@ -29,7 +37,7 @@ project Advent2020 is
       when "enabled" => null;
       when others =>
          Runtime_Checks_Switches :=
-           ("-gnatp"); -- Supress checks
+           ("-gnatp"); -- Suppress checks
    end case;
 
    Style_Checks_Switches := ();
@@ -68,8 +76,8 @@ project Advent2020 is
         Runtime_Checks_Switches &
         Style_Checks_Switches &
         Contracts_Switches &
+        Profiling_Switches &
         ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
-         "-pg",     -- Profiling
          "-fstack-usage");
    end Compiler;
 
@@ -79,7 +87,7 @@ project Advent2020 is
 
    package Linker is
        for Switches ("Ada") use
-           ("-pg"); -- Profiling
+           Profiling_Switches;
    end Linker;
 
 end Advent2020;
