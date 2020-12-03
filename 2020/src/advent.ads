@@ -15,6 +15,8 @@ package Advent is
       (Index_Type   => Positive,
        Element_Type => Integer);
 
+   subtype Count_Type is Long_Integer range 0 .. Long_Integer'Last;
+
    function Read_Integers
       (Filename : String)
       return Integer_Vectors.Vector;
