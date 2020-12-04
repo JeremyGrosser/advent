@@ -2,7 +2,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Containers.Vectors;
 
 package body Advent.D1 is
-   function Part_1 (Filename : in String)
+   function Part_1
+      (Filename : String)
       return Integer
    is
       use Integer_Vectors;
@@ -21,7 +22,8 @@ package body Advent.D1 is
       raise No_Answer;
    end Part_1;
 
-   function Part_2 (Filename : in String)
+   function Part_2
+      (Filename : String)
       return Integer
    is
       use Integer_Vectors;

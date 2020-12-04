@@ -1,7 +1,7 @@
 with Ada.Containers.Vectors;
 
 package Advent is
-   type Test_Function is access function (Filename : in String) return Integer;
+   type Test_Function is access function (Filename : String) return Integer;
    Test_Failure : exception;
    No_Answer    : exception;
 

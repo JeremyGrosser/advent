@@ -33,9 +33,25 @@ package Advent.D4 is
       (S : String)
       return Boolean;
 
+   function Check_Eyes
+      (S : String)
+      return Boolean;
+
+   function Check_Passport_Id
+      (S : String)
+      return Boolean;
+
    function Validate
       (P : Passport)
       return Boolean;
+
+   function Part_1
+      (Filename : String)
+      return Integer;
+
+   function Part_2
+      (Filename : String)
+      return Integer;
 
    procedure Run;
 end Advent.D4;

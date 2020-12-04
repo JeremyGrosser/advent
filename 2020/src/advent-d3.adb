@@ -1,14 +1,7 @@
 with Ada.Assertions; use Ada.Assertions;
-with Ada.Text_IO; use Ada.Text_IO;
 
 package body Advent.D3 is
-   subtype Coordinate is Count_Type range 1 .. Count_Type'Last;
-   type Map_Value is (Open, Tree);
-   type Map_Type is array (Coordinate range <>, Coordinate range <>) of Map_Value;
-
-   Invalid_Input : exception;
-
-   function Num_Lines (File : in File_Type)
+   function Num_Lines (File : File_Type)
       return Count_Type
    is
       Count : Count_Type := 0;
@@ -21,7 +14,7 @@ package body Advent.D3 is
       return Count;
    end Num_Lines;
 
-   function Read_Map (Filename : in String)
+   function Read_Map (Filename : String)
       return Map_Type
    is
       Input : File_Type;
@@ -61,9 +54,9 @@ package body Advent.D3 is
    end Read_Map;
 
    function Check_Slope
-      (Filename : in String;
-       Right    : in Coordinate;
-       Down     : in Coordinate)
+      (Filename : String;
+       Right    : Coordinate;
+       Down     : Coordinate)
       return Count_Type
    is
       M      : constant Map_Type := Read_Map (Filename);
@@ -90,7 +83,7 @@ package body Advent.D3 is
    end Check_Slope;
 
    function Part_1
-      (Filename : in String)
+      (Filename : String)
       return Count_Type
    is
    begin
@@ -98,7 +91,7 @@ package body Advent.D3 is
    end Part_1;
 
    function Part_2
-      (Filename : in String)
+      (Filename : String)
       return Count_Type
    is
    begin

@@ -3,7 +3,7 @@ with Str; use Str;
 
 package body Advent.D2 is
    function Part_1
-      (Filename : in String)
+      (Filename : String)
       return Integer
    is
       Input       : File_Type;
@@ -38,7 +38,7 @@ package body Advent.D2 is
    end Part_1;
 
    function Part_2
-      (Filename : in String)
+      (Filename : String)
       return Integer
    is
       Input       : File_Type;

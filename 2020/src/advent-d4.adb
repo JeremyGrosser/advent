@@ -160,7 +160,7 @@ package body Advent.D4 is
    end Validate;
 
    function Part_1
-      (Filename : in String)
+      (Filename : String)
       return Integer
    is
       Input : File_Type;
@@ -179,7 +179,8 @@ package body Advent.D4 is
       return Valid;
    end Part_1;
 
-   function Part_2 (Filename : in String)
+   function Part_2
+      (Filename : String)
       return Integer
    is
       Input : File_Type;

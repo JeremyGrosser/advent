@@ -9,7 +9,7 @@ project Advent2020 is
    type Enabled_Kind is ("enabled", "disabled");
    Compile_Checks : Enabled_Kind := External ("ADVENT2020_COMPILE_CHECKS", "enabled");
    Runtime_Checks : Enabled_Kind := External ("ADVENT2020_RUNTIME_CHECKS", "enabled");
-   Style_Checks : Enabled_Kind := External ("ADVENT2020_STYLE_CHECKS", "disabled");
+   Style_Checks : Enabled_Kind := External ("ADVENT2020_STYLE_CHECKS", "enabled");
    Contracts_Checks : Enabled_Kind := External ("ADVENT2020_CONTRACTS", "enabled");
    Profiling_Checks : Enabled_Kind := External ("ADVENT2020_PROFILING", "disabled");
 
@@ -44,10 +44,10 @@ project Advent2020 is
    case Style_Checks is
       when "enabled" => null;
          Style_Checks_Switches :=
-           ("-gnatyg",   -- GNAT Style checks
-            "-gnaty-d",  -- Disable no DOS line terminators
-            "-gnatyM80", -- Maximum line length
-            "-gnatyO");  -- Overriding subprograms explicitly marked as such
+           ("-gnatyg",    -- GNAT Style checks
+            "-gnaty-d",   -- Disable no DOS line terminators
+            "-gnatyM120", -- Maximum line length
+            "-gnatyO");   -- Overriding subprograms explicitly marked as such
       when others => null;
    end case;
 
