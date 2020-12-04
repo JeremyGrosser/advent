@@ -149,12 +149,8 @@ package body Advent.D4 is
       (P : Passport)
       return Boolean
    is
-      use Ada.Execution_Time;
-      T : CPU_Time;
-      Valid : Boolean;
    begin
-      T := Ada.Execution_Time.Clock;
-      Valid := Has_Required_Fields (P) and then
+      return Has_Required_Fields (P) and then
              Check_Number_Range (P.Element ("byr"), 1920, 2002) and then
              Check_Number_Range (P.Element ("iyr"), 2010, 2020) and then
              Check_Number_Range (P.Element ("eyr"), 2020, 2030) and then
@@ -162,8 +158,9 @@ package body Advent.D4 is
              Check_Hair (P.Element ("hcl")) and then
              Check_Eyes (P.Element ("ecl")) and then
              Check_Passport_Id (P.Element ("pid"));
-      Total_Time := Total_Time + (Clock - T);
-      return Valid;
+   exception
+      when Constraint_Error =>
+         return False;
    end Validate;
 
    function Part_1
@@ -190,6 +187,9 @@ package body Advent.D4 is
       (Filename : String)
       return Integer
    is
+      use Ada.Execution_Time;
+      T : CPU_Time;
+
       Input : File_Type;
       Valid : Natural := 0;
       P     : Passport;
@@ -198,9 +198,11 @@ package body Advent.D4 is
       loop
          exit when End_Of_File (Input);
          P := Read_Passport (Input);
+         T := Ada.Execution_Time.Clock;
          if Validate (P) then
             Valid := Valid + 1;
          end if;
+         Total_Time := Total_Time + (Clock - T);
       end loop;
       Close (Input);
       return Valid;
