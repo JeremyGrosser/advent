@@ -1,5 +1,6 @@
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Characters.Handling;
+with Ada.Execution_Time;
 with Str; use Str;
 
 package body Advent.D4 is
@@ -148,8 +149,12 @@ package body Advent.D4 is
       (P : Passport)
       return Boolean
    is
+      use Ada.Execution_Time;
+      T : CPU_Time;
+      Valid : Boolean;
    begin
-      return Has_Required_Fields (P) and then
+      T := Ada.Execution_Time.Clock;
+      Valid := Has_Required_Fields (P) and then
              Check_Number_Range (P.Element ("byr"), 1920, 2002) and then
              Check_Number_Range (P.Element ("iyr"), 2010, 2020) and then
              Check_Number_Range (P.Element ("eyr"), 2020, 2030) and then
@@ -157,6 +162,8 @@ package body Advent.D4 is
              Check_Hair (P.Element ("hcl")) and then
              Check_Eyes (P.Element ("ecl")) and then
              Check_Passport_Id (P.Element ("pid"));
+      Total_Time := Total_Time + (Clock - T);
+      return Valid;
    end Validate;
 
    function Part_1
@@ -221,6 +228,9 @@ package body Advent.D4 is
       Test (Part_2'Access, "4.2 T1", "input/d4.2-test1", 1);
       Test (Part_2'Access, "4.2 T2", "input/d4.2-test2", 0);
       Test (Part_2'Access, "4.2 T3", "input/d4.2-test3", 4);
+
+      Total_Time := Time_Span_Zero;
       Put_Line ("4.2 solution: " & Part_2 ("input/d4")'Image);
+      Put_Line ("Execution time: " & To_Duration (Total_Time)'Image & 's');
    end Run;
 end Advent.D4;

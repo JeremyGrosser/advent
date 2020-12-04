@@ -1,5 +1,6 @@
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Real_Time; use Ada.Real_Time;
 
 package Advent.D4 is
    package String_Maps is new Ada.Containers.Indefinite_Ordered_Maps
@@ -7,6 +8,8 @@ package Advent.D4 is
 
    subtype Passport is String_Maps.Map;
    Empty_Passport : constant Passport := String_Maps.Empty_Map;
+
+   Total_Time : Time_Span := Time_Span_Zero;
 
    function Read_Until_Space
       (Input : File_Type)
