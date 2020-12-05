@@ -1,6 +1,5 @@
 with Ada.Assertions; use Ada.Assertions;
 with Ada.Characters.Handling;
-with Ada.Execution_Time;
 with Str; use Str;
 
 package body Advent.D4 is
@@ -187,9 +186,6 @@ package body Advent.D4 is
       (Filename : String)
       return Integer
    is
-      use Ada.Execution_Time;
-      T : CPU_Time;
-
       Input : File_Type;
       Valid : Natural := 0;
       P     : Passport;
@@ -198,11 +194,9 @@ package body Advent.D4 is
       loop
          exit when End_Of_File (Input);
          P := Read_Passport (Input);
-         T := Ada.Execution_Time.Clock;
          if Validate (P) then
             Valid := Valid + 1;
          end if;
-         Total_Time := Total_Time + (Clock - T);
       end loop;
       Close (Input);
       return Valid;
@@ -231,8 +225,6 @@ package body Advent.D4 is
       Test (Part_2'Access, "4.2 T2", "input/d4.2-test2", 0);
       Test (Part_2'Access, "4.2 T3", "input/d4.2-test3", 4);
 
-      Total_Time := Time_Span_Zero;
       Put_Line ("4.2 solution: " & Part_2 ("input/d4")'Image);
-      Put_Line ("Execution time: " & To_Duration (Total_Time)'Image & 's');
    end Run;
 end Advent.D4;

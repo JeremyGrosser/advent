@@ -1,5 +1,4 @@
 with Ada.Assertions; use Ada.Assertions;
-with Ada.Containers.Ordered_Sets;
 
 package body Advent.D5 is
    function Read_Boarding_Pass
@@ -33,7 +32,7 @@ package body Advent.D5 is
       end loop;
       Row_Mid := Row_Low + (Row_High - Row_Low) / 2;
       Col_Mid := Col_Low + (Col_High - Col_Low) / 2;
-      return Seat_Id ((Row_Mid * 8)) + Seat_Id (Col_Mid);
+      return Seat_Id (Row_Mid * 8 + Col_Mid);
    end Read_Boarding_Pass;
 
    function Part_1
