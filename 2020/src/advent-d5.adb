@@ -6,9 +6,6 @@ package body Advent.D5 is
       (S : String)
       return Seat_Id
    is
-      subtype Row_Type    is Natural range 0 .. 127;
-      subtype Column_Type is Natural range 0 .. 7;
-
       Row_High : Row_Type := Row_Type'Last;
       Row_Mid  : Row_Type;
       Row_Low  : Row_Type := Row_Type'First;
