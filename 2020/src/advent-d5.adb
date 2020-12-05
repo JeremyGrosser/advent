@@ -1,4 +1,5 @@
 with Ada.Assertions; use Ada.Assertions;
+with Ada.Containers.Ordered_Sets;
 
 package body Advent.D5 is
    function Read_Boarding_Pass
@@ -62,11 +63,40 @@ package body Advent.D5 is
       return Integer (Highest);
    end Part_1;
 
+   function Part_2
+      (Filename : String)
+      return Integer
+   is
+      Input    : File_Type;
+      Occupied : array (Seat_Id) of Boolean := (others => False);
+   begin
+      Open (Input, In_File, Filename);
+      loop
+         exit when End_Of_File (Input);
+         declare
+            Line : constant String := Get_Line (Input);
+            Seat : Seat_Id;
+         begin
+            Seat := Read_Boarding_Pass (Line);
+            Occupied (Seat) := True;
+         end;
+      end loop;
+      Close (Input);
+
+      for Seat in Occupied'First + 1 .. Occupied'Last - 1 loop
+         if not Occupied (Seat) and Occupied (Seat + 1) and Occupied (Seat - 1) then
+            return Seat;
+         end if;
+      end loop;
+      return 0;
+   end Part_2;
+
    procedure Run is
    begin
       Assert (Read_Boarding_Pass ("FBFBBFFRLR") = 357);
 
       Test (Part_1'Access, "5.1", "input/d5-test", 820);
       Put_Line ("5.1 solution: " & Part_1 ("input/d5")'Image);
+      Put_Line ("5.2 solution: " & Part_2 ("input/d5")'Image);
    end Run;
 end Advent.D5;
