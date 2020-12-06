@@ -3,5 +3,9 @@ package Advent.D6 is
       (Filename : String)
       return Integer;
 
+   function Part_2
+      (Filename : String)
+      return Integer;
+
    procedure Run;
 end Advent.D6;
