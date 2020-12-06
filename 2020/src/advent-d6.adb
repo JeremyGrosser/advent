@@ -1,9 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body Advent.D6 is
-   subtype Index_Type is Character range 'a' .. 'z';
-   type Flag_Array is array (Index_Type) of Natural;
-
    function Popcount
       (FA    : Flag_Array;
        Match : Natural := 1)
