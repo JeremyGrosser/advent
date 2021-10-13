@@ -78,6 +78,7 @@ project Advent2020 is
         Contracts_Switches &
         Profiling_Switches &
         ("-gnatQ",  -- Don't quit. Generate ALI and tree files even if illegalities
+         "-gnat2020",
          "-fstack-usage");
    end Compiler;
 
