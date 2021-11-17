@@ -98,4 +98,9 @@ private
        Target : Bag)
       return Boolean;
 
+   function Num_Children
+      (This : Parser;
+       Root : Bag)
+      return Natural;
+
 end Advent.D7;
