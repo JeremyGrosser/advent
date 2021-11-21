@@ -14,6 +14,7 @@ package Advent is
    package Integer_Vectors is new Ada.Containers.Vectors
       (Index_Type   => Positive,
        Element_Type => Integer);
+   package Integer_Sorting is new Integer_Vectors.Generic_Sorting;
 
    subtype Count_Type is Long_Long_Integer range 0 .. Long_Long_Integer'Last;
 

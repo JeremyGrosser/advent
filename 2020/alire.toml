@@ -7,5 +7,3 @@ maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
 maintainers-logins = ["JeremyGrosser"]
 
 executables = ["advent2020"]
-[[depends-on]]  # Added by alr
-gnat_native = "^11.2.2"  # Added by alr

@@ -9,6 +9,7 @@ with Advent.D6;
 with Advent.D7;
 with Advent.D8;
 with Advent.D9;
+with Advent.D10;
 
 procedure Advent2020 is
 begin
@@ -26,6 +27,7 @@ begin
       when 7 => Advent.D7.Run;
       when 8 => Advent.D8.Run;
       when 9 => Advent.D9.Run;
+      when 10 => Advent.D10.Run;
       when others => Put_Line ("Unimplemented.");
    end case;
 end Advent2020;
