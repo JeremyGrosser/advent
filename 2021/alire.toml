@@ -1,0 +1,9 @@
+name = "advent2021"
+description = "Shiny new project"
+version = "0.0.0"
+
+authors = ["Jeremy Grosser"]
+maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
+maintainers-logins = ["JeremyGrosser"]
+
+executables = ["advent2021"]
