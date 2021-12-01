@@ -16,10 +16,16 @@ assert() {
     fi
 }
 
+solve() {
+    binary=$1
+    input=$2
+    name=`echo "$binary" | sed -e 's/d//' -e 's/_/./'`
+    result=`$binary < $input`
+    echo -e "$name \e[1m\e[92m$result\e[0m"
+}
+
 assert d1_1 inputs/d1-test 7
-echo -n "1.1 solution: "
-d1_1 < inputs/d1
+solve d1_1 inputs/d1
 
 assert d1_2 inputs/d1-test 5
-echo -n "1.2 solution: "
-d1_2 < inputs/d1
+solve d1_2 inputs/d1
