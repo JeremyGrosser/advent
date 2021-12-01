@@ -11,7 +11,7 @@ package body Generic_Number_Stream_IO is
       X : constant String := Read_Until (S, Whitespace);
    begin
       if X'Length = 0 then
-         raise Not_A_Number with X;
+         raise Format_Error with "Encountered an empty string or unexpected end of input";
       else
          return Number'Value (X);
       end if;

@@ -4,7 +4,9 @@ generic
    type Number is (<>);
 package Generic_Number_Stream_IO is
 
-   Not_A_Number : exception;
+   Format_Error : exception;
+   --  Raised when multiple consecutive whitespace characters are encountered
+   --  or the input ends unexpectedly.
 
    function Get
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
