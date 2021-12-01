@@ -1,3 +1,5 @@
+with Ada.Containers.Vectors;
+
 package body Advent_IO is
    use Ada.Streams.Stream_IO;
 
@@ -15,20 +17,22 @@ package body Advent_IO is
       return Stream_Access
    is (Stream (STDERR));
 
+   function End_Of_File
+      return Boolean
+   is (Ada.Streams.Stream_IO.End_Of_File (STDIN));
+
    function Read_Until
       (Stop : Ada.Strings.Maps.Character_Set)
        return String
    is
       Ch : Character;
    begin
-      loop
+      while not End_Of_File loop
          Character'Read (Standard_Input, Ch);
          exit when Ada.Strings.Maps.Is_In (Ch, Stop);
          return Ch & Read_Until (Stop);
       end loop;
       return "";
-   exception
-      when End_Error => return "";
    end Read_Until;
 
    function Read_Until
@@ -47,6 +51,36 @@ package body Advent_IO is
          raise End_Of_Input;
       end if;
    end Get_Integer;
+
+   function Get_Integers
+      return Integers
+   is
+      package Integer_Vectors is new Ada.Containers.Vectors
+         (Index_Type => Positive,
+          Element_Type => Integer);
+      use Integer_Vectors;
+      V : Vector := Empty_Vector;
+   begin
+      while not End_Of_File loop
+         Append (V, Get_Integer);
+      end loop;
+
+      declare
+         X : Integers (1 .. Positive (Length (V)));
+      begin
+         for I in X'Range loop
+            X (I) := V (I);
+         end loop;
+         return X;
+      end;
+   end Get_Integers;
+
+   procedure Put
+      (I : Integer)
+   is
+   begin
+      String'Write (Standard_Output, I'Image);
+   end Put;
 
    procedure New_Line is
    begin

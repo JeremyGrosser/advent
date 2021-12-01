@@ -21,6 +21,9 @@ package Advent_IO is
    function Standard_Error
       return Ada.Streams.Stream_IO.Stream_Access;
 
+   function End_Of_File
+      return Boolean;
+
    function Read_Until
       (Stop : Ada.Strings.Maps.Character_Set)
       return String;
@@ -31,6 +34,13 @@ package Advent_IO is
 
    function Get_Integer
       return Integer;
+
+   type Integers is array (Positive range <>) of Integer;
+   function Get_Integers
+      return Integers;
+
+   procedure Put
+      (I : Integer);
 
    procedure New_Line;
    procedure Flush;
