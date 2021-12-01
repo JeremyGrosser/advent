@@ -7,12 +7,11 @@ procedure D1_2 is
    use Integer_IO;
 
    Items    : constant Numbers := Get (Input);
-   I        : Positive := Items'First + 2;
    Sum      : Integer;
    Previous : Integer := 0;
    Result   : Natural := 0;
 begin
-   while I <= Items'Last loop
+   for I in Items'First + 2 .. Items'Last loop
       Sum := 0;
       for J in I - 2 .. I loop
          Sum := Sum + Items (J);
@@ -21,7 +20,6 @@ begin
          Result := Result + 1;
       end if;
       Previous := Sum;
-      I := I + 1;
    end loop;
    Put (Output, Result - 1); --  subtract 1 because the first result doesn't count
    New_Line (Output);
