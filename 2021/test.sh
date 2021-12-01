@@ -12,7 +12,7 @@ assert() {
         echo -e "\e[31mFAIL\e[0m $binary < $input"
         echo "Expected: $expectation"
         echo "Result:   $result"
-        exit 1
+        return 1
     fi
 }
 
