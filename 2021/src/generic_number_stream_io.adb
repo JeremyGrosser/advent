@@ -10,10 +10,10 @@ package body Generic_Number_Stream_IO is
    is
       X : constant String := Read_Until (S, Whitespace);
    begin
-      if X'Length > 1 then
-         return Number'Value (X);
+      if X'Length = 0 then
+         raise Not_A_Number with X;
       else
-         raise End_Of_Input;
+         return Number'Value (X);
       end if;
    end Get;
 
@@ -28,7 +28,7 @@ package body Generic_Number_Stream_IO is
       V : Vector := Empty_Vector;
       N : Number;
    begin
-      while not End_Of_File (S) loop
+      while not End_Of_Input loop
          N := Get (S);
          Append (V, N);
       end loop;

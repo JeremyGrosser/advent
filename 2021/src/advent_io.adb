@@ -19,17 +19,9 @@ package body Advent_IO is
       return Stream_Access
    is (Stream (STDERR));
 
-   function End_Of_File
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+   function End_Of_Input
       return Boolean
-   is
-   begin
-      if S = Input then
-         return Ada.Streams.Stream_IO.End_Of_File (STDIN);
-      else
-         return True;
-      end if;
-   end End_Of_File;
+   is (Ada.Streams.Stream_IO.End_Of_File (STDIN));
 
    function Read_Until
       (S : not null access Ada.Streams.Root_Stream_Type'Class;
@@ -38,7 +30,7 @@ package body Advent_IO is
    is
       Ch : Character;
    begin
-      while not End_Of_File (S) loop
+      while not End_Of_Input loop
          Character'Read (S, Ch);
          exit when Ada.Strings.Maps.Is_In (Ch, Stop);
          return Ch & Read_Until (S, Stop);

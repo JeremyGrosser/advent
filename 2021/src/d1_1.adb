@@ -10,7 +10,7 @@ procedure D1_1 is
 begin
    Previous := Get (Input);
 
-   while not End_Of_File (Input) loop
+   while not End_Of_Input loop
       Current := Get (Input);
       if Current > Previous then
          Increases := Increases + 1;
