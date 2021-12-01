@@ -4,3 +4,4 @@ lib/
 alire/
 config/
 *.swp
+inputs/d[0-9]*
