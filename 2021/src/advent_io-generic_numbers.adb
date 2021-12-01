@@ -1,3 +1,4 @@
+with Ada.Containers;
 with Ada.Strings.Fixed;
 with Ada.Strings;
 
@@ -16,13 +17,15 @@ package body Advent_IO.Generic_Numbers is
    end Get;
 
    function Get_Vector
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Initial_Capacity : Natural := 0)
       return Number_Vectors.Vector
    is
       use Number_Vectors;
       V : Vector := Empty_Vector;
       N : Number;
    begin
+      Reserve_Capacity (V, Ada.Containers.Count_Type (Initial_Capacity));
       while not End_Of_Input loop
          N := Get (S);
          Append (V, N);

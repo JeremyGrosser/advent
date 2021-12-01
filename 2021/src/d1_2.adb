@@ -7,7 +7,7 @@ procedure D1_2 is
    use Integer_IO;
    use Number_Vectors;
 
-   Items    : constant Vector := Get_Vector (Input);
+   Items    : constant Vector := Get_Vector (Input, Initial_Capacity => 2000);
    Result   : Natural := 0;
 begin
    for I in First_Index (Items) + 3 .. Last_Index (Items) loop
