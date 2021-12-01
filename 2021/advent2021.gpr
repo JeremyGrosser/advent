@@ -29,7 +29,6 @@ project Advent2021 is
          "-fdata-sections",      --  ELF section per data
          "-fstack-usage"         --  Output stack usage info
       );
-      for Local_Configuration_Pragmas use "gnat.adc";
    end Compiler;
 
    package Binder is
