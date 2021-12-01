@@ -15,7 +15,6 @@ project Advent2021 is
          "-gnatwa",              --  All warnings
          "-gnatVa",              --  All validity checks
          "-gnatyg",              --  GNAT Style checks
-         "-gnaty-d",             --  Disable no DOS line terminators
          "-gnatyM120",           --  Maximum line length
          "-gnaty-s",             --  subprogram body has no previous spec
          "-gnatyO",              --  Overriding subprograms explicitly marked as such
@@ -24,7 +23,6 @@ project Advent2021 is
          "-gnatX",               --  Language extensions (Ada 2022)
          "-g",                   --  Debug info
          "-O2",                  --  Optimization
-         "-gnatw.X",             --  Disable warnings for No_Exception_Propagation
          "-gnatwB",              --  Warn on bad fixed value
          "-gnatQ",               --  Don't quit. Generate ALI and tree files even if illegalities
          "-ffunction-sections",  --  ELF section per function
