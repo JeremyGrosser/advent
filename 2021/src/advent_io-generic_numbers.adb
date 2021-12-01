@@ -15,7 +15,7 @@ package body Advent_IO.Generic_Numbers is
       end if;
    end Get;
 
-   function Get
+   function Get_Vector
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Number_Vectors.Vector
    is
@@ -28,21 +28,21 @@ package body Advent_IO.Generic_Numbers is
          Append (V, N);
       end loop;
       return V;
-   end Get;
+   end Get_Vector;
 
-   function Get
+   function Get_Numbers
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Numbers
    is
       use Number_Vectors;
-      V : constant Vector := Get (S);
+      V : constant Vector := Get_Vector (S);
       N : Numbers (1 .. Natural (Length (V)));
    begin
       for I in N'Range loop
          N (I) := V (I);
       end loop;
       return N;
-   end Get;
+   end Get_Numbers;
 
    procedure Put
       (S : not null access Ada.Streams.Root_Stream_Type'Class;

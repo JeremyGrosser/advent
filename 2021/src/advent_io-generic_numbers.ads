@@ -16,13 +16,13 @@ package Advent_IO.Generic_Numbers is
       (Index_Type   => Positive,
        Element_Type => Number);
 
-   function Get
+   function Get_Vector
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Number_Vectors.Vector;
 
    type Numbers is array (Positive range <>) of Number;
 
-   function Get
+   function Get_Numbers
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Numbers;
 

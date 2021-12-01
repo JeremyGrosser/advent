@@ -5,14 +5,15 @@ procedure D1_2 is
    package Integer_IO is new Advent_IO.Generic_Numbers
       (Number => Integer);
    use Integer_IO;
+   use Number_Vectors;
 
-   Items    : constant Numbers := Get (Input);
+   Items    : constant Vector := Get_Vector (Input);
    Result   : Natural := 0;
 begin
-   for I in Items'First + 3 .. Items'Last loop
+   for I in First_Index (Items) + 3 .. Last_Index (Items) loop
       --  The middle terms cancel out, so we don't need to compute the sum of the whole series.
       --  HT https://www.reddit.com/r/adventofcode/comments/r66vow/comment/hmscynu/
-      if Items (I - 3) < Items (I) then
+      if Element (Items, I - 3) < Element (Items, I) then
          Result := Result + 1;
       end if;
    end loop;
