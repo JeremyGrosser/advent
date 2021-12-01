@@ -1,7 +1,3 @@
-with Ada.Containers.Vectors;
-with Ada.Strings.Fixed;
-with Ada.Strings;
-
 package body Advent_IO is
    use Ada.Streams.Stream_IO;
 

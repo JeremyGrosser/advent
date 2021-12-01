@@ -1,5 +1,4 @@
 with Advent_IO; use Advent_IO;
-with Ada.Containers.Vectors;
 with Ada.Strings.Fixed;
 with Ada.Strings;
 
@@ -19,11 +18,8 @@ package body Generic_Number_Stream_IO is
 
    function Get
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
-      return Numbers
+      return Number_Vectors.Vector
    is
-      package Number_Vectors is new Ada.Containers.Vectors
-         (Index_Type => Positive,
-          Element_Type => Number);
       use Number_Vectors;
       V : Vector := Empty_Vector;
       N : Number;
@@ -32,15 +28,21 @@ package body Generic_Number_Stream_IO is
          N := Get (S);
          Append (V, N);
       end loop;
+      return V;
+   end Get;
 
-      declare
-         X : Numbers (1 .. Positive (Length (V)));
-      begin
-         for I in X'Range loop
-            X (I) := V (I);
-         end loop;
-         return X;
-      end;
+   function Get
+      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      return Numbers
+   is
+      use Number_Vectors;
+      V : constant Vector := Get (S);
+      N : Numbers (1 .. Natural (Length (V)));
+   begin
+      for I in N'Range loop
+         N (I) := V (I);
+      end loop;
+      return N;
    end Get;
 
    procedure Put
