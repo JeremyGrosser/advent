@@ -1,7 +1,11 @@
 with Advent_IO; use Advent_IO;
+with Generic_Number_Stream_IO;
 
 procedure D1_2 is
-   Items    : constant Integers := Get_Integers;
+   package Integer_Stream_IO is new Generic_Number_Stream_IO (Integer);
+   use Integer_Stream_IO;
+
+   Items    : constant Numbers := Get (Input);
    First    : Positive := Items'First + 2;
    Sum      : Integer;
    Previous : Integer := 0;
@@ -18,6 +22,6 @@ begin
       Previous := Sum;
       First := First + 1;
    end loop;
-   Put (Result - 1); --  subtract 1 because the first result doesn't count
-   New_Line;
+   Put (Output, Result - 1); --  subtract 1 because the first result doesn't count
+   New_Line (Output);
 end D1_2;

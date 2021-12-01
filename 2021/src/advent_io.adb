@@ -7,88 +7,56 @@ package body Advent_IO is
 
    STDIN, STDOUT, STDERR : File_Type;
 
-   function Standard_Input
+   function Input
       return Stream_Access
    is (Stream (STDIN));
 
-   function Standard_Output
+   function Output
       return Stream_Access
    is (Stream (STDOUT));
 
-   function Standard_Error
+   function Error
       return Stream_Access
    is (Stream (STDERR));
 
    function End_Of_File
+      (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Boolean
-   is (Ada.Streams.Stream_IO.End_Of_File (STDIN));
+   is
+   begin
+      if S = Input then
+         return Ada.Streams.Stream_IO.End_Of_File (STDIN);
+      else
+         return True;
+      end if;
+   end End_Of_File;
 
    function Read_Until
-      (Stop : Ada.Strings.Maps.Character_Set)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Stop : Ada.Strings.Maps.Character_Set)
        return String
    is
       Ch : Character;
    begin
-      while not End_Of_File loop
-         Character'Read (Standard_Input, Ch);
+      while not End_Of_File (S) loop
+         Character'Read (S, Ch);
          exit when Ada.Strings.Maps.Is_In (Ch, Stop);
-         return Ch & Read_Until (Stop);
+         return Ch & Read_Until (S, Stop);
       end loop;
       return "";
    end Read_Until;
 
    function Read_Until
-      (C : Character)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       C : Character)
        return String
-   is (Read_Until (Ada.Strings.Maps.To_Set ("" & C)));
+   is (Read_Until (S, Ada.Strings.Maps.To_Set ("" & C)));
 
-   function Get_Integer
-      return Integer
+   procedure New_Line
+      (S : not null access Ada.Streams.Root_Stream_Type'Class)
    is
-      S : constant String := Read_Until (Whitespace);
    begin
-      if S'Length > 1 then
-         return Integer'Value (S);
-      else
-         raise End_Of_Input;
-      end if;
-   end Get_Integer;
-
-   function Get_Integers
-      return Integers
-   is
-      package Integer_Vectors is new Ada.Containers.Vectors
-         (Index_Type => Positive,
-          Element_Type => Integer);
-      use Integer_Vectors;
-      V : Vector := Empty_Vector;
-   begin
-      while not End_Of_File loop
-         Append (V, Get_Integer);
-      end loop;
-
-      declare
-         X : Integers (1 .. Positive (Length (V)));
-      begin
-         for I in X'Range loop
-            X (I) := V (I);
-         end loop;
-         return X;
-      end;
-   end Get_Integers;
-
-   procedure Put
-      (I : Integer)
-   is
-      use Ada.Strings.Fixed;
-      use Ada.Strings;
-   begin
-      String'Output (Standard_Output, Trim (I'Image, Left));
-   end Put;
-
-   procedure New_Line is
-   begin
-      String'Write (Standard_Output, "" & ASCII.LF);
+      String'Write (Output, "" & ASCII.LF);
    end New_Line;
 
    procedure Flush is
