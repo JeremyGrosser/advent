@@ -51,6 +51,12 @@ package body Advent_IO is
    begin
       Ada.Streams.Stream_IO.Flush (STDOUT);
    end Flush;
+
+   procedure Reset is
+   begin
+      Close (STDIN);
+      Open (STDIN, In_File, "/dev/stdin");
+   end Reset;
 begin
    --  So, technically the stdio streams are opened automatically as FD 0,1,2
    --  when the process starts, but we can't get references to those without

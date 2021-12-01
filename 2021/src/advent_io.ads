@@ -37,4 +37,6 @@ package Advent_IO is
 
    procedure Flush;
 
+   procedure Reset;
+
 end Advent_IO;
