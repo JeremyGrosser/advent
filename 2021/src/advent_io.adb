@@ -37,9 +37,8 @@ package body Advent_IO is
    is (Read_Until (Ada.Strings.Maps.To_Set ("" & C)));
 
    procedure New_Line is
-      CRLF : constant String := ASCII.CR & ASCII.LF;
    begin
-      String'Write (Standard_Output, CRLF);
+      String'Write (Standard_Output, "" & ASCII.LF);
    end New_Line;
 
    procedure Flush is
