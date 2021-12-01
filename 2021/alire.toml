@@ -1,9 +1,9 @@
 name = "advent2021"
-description = "Shiny new project"
+description = "Advent of Code 2021"
 version = "0.0.0"
 
 authors = ["Jeremy Grosser"]
 maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
 maintainers-logins = ["JeremyGrosser"]
 
-executables = ["advent2021"]
+executables = ["d1"]
