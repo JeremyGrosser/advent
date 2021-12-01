@@ -7,8 +7,8 @@ procedure D1_2 is
    use Integer_IO;
 
    Items    : constant Numbers := Get (Input);
-   Sum      : Integer;
    Previous : Integer := 0;
+   Sum      : Natural;
    Result   : Natural := 0;
 begin
    for I in Items'First + 2 .. Items'Last loop
