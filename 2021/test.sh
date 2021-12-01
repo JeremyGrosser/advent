@@ -9,7 +9,7 @@ assert() {
     expectation=$3
     result=`$binary < $input`
     if [ $result != $expectation ]; then
-        echo -e " \e[31mFAIL\e[0m $binary < $input"
+        echo -e " \e[1m\e[31mFAIL\e[0m $binary < $input"
         echo "Expected: $expectation"
         echo "Result:   $result"
         return 1
