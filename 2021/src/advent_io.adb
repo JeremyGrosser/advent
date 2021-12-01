@@ -44,7 +44,7 @@ package body Advent_IO is
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
    is
    begin
-      String'Write (Output, "" & ASCII.LF);
+      String'Write (S, "" & ASCII.LF);
    end New_Line;
 
    procedure Flush is
