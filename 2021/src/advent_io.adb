@@ -1,4 +1,6 @@
 with Ada.Containers.Vectors;
+with Ada.Strings.Fixed;
+with Ada.Strings;
 
 package body Advent_IO is
    use Ada.Streams.Stream_IO;
@@ -78,8 +80,10 @@ package body Advent_IO is
    procedure Put
       (I : Integer)
    is
+      use Ada.Strings.Fixed;
+      use Ada.Strings;
    begin
-      String'Write (Standard_Output, I'Image);
+      String'Output (Standard_Output, Trim (I'Image, Left));
    end Put;
 
    procedure New_Line is

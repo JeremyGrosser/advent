@@ -14,7 +14,7 @@ begin
       Previous := Current;
    end loop;
 
-   String'Write (Standard_Output, Increases'Image);
+   Put (Increases);
    New_Line;
    Flush;
 end D1_1;
