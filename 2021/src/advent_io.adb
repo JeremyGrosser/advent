@@ -39,20 +39,13 @@ package body Advent_IO is
    procedure New_Line is
       CRLF : constant String := ASCII.CR & ASCII.LF;
    begin
-      String'Output (Standard_Output, CRLF);
+      String'Write (Standard_Output, CRLF);
    end New_Line;
 
    procedure Flush is
    begin
       Ada.Streams.Stream_IO.Flush (STDOUT);
    end Flush;
-
-   procedure Close is
-   begin
-      Flush;
-      Close (STDIN);
-      Close (STDOUT);
-   end Close;
 begin
    Open (STDIN, In_File, "/dev/stdin");
    Open (STDOUT, Out_File, "/dev/stdout");

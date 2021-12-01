@@ -29,6 +29,5 @@ package Advent_IO is
 
    procedure New_Line;
    procedure Flush;
-   procedure Close;
 
 end Advent_IO;

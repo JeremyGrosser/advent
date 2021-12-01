@@ -7,7 +7,7 @@ procedure D1 is
    begin
       String'Write (Standard_Output, Line);
       New_Line;
-      Close;
+      Flush;
    end Part_1;
 begin
    Part_1;
