@@ -1,19 +1,6 @@
 with Advent_IO; use Advent_IO;
-with Ada.Streams.Stream_IO; use Ada.Streams.Stream_IO;
 
 procedure D1 is
-
-   function Get_Integer
-      return Integer
-   is
-      Line : constant String := Read_Until (Whitespace);
-   begin
-      if Line'Length > 1 then
-         return Integer'Value (Line);
-      else
-         raise End_Error;
-      end if;
-   end Get_Integer;
 
    procedure Part_1 is
       Current, Previous : Integer;
@@ -28,11 +15,12 @@ procedure D1 is
          Previous := Current;
       end loop;
    exception
-      when End_Error =>
+      when End_Of_Input =>
          String'Write (Standard_Output, Increases'Image);
          New_Line;
          Flush;
    end Part_1;
+
 begin
    Part_1;
 end D1;

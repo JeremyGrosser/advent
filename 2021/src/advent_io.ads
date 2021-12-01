@@ -4,6 +4,8 @@ with Ada.Strings.Maps;
 
 package Advent_IO is
 
+   End_Of_Input : exception;
+
    Whitespace : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
       (ASCII.HT & ASCII.LF & ASCII.CR & ' ');
 
@@ -26,6 +28,9 @@ package Advent_IO is
    function Read_Until
       (C : Character)
       return String;
+
+   function Get_Integer
+      return Integer;
 
    procedure New_Line;
    procedure Flush;

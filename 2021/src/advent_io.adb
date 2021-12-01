@@ -36,6 +36,18 @@ package body Advent_IO is
        return String
    is (Read_Until (Ada.Strings.Maps.To_Set ("" & C)));
 
+   function Get_Integer
+      return Integer
+   is
+      S : constant String := Read_Until (Whitespace);
+   begin
+      if S'Length > 1 then
+         return Integer'Value (S);
+      else
+         raise End_Of_Input;
+      end if;
+   end Get_Integer;
+
    procedure New_Line is
    begin
       String'Write (Standard_Output, "" & ASCII.LF);
