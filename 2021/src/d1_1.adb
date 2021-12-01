@@ -1,9 +1,9 @@
 with Advent_IO; use Advent_IO;
-with Generic_Number_Stream_IO;
+with Advent_IO.Generic_Numbers;
 
 procedure D1_1 is
-   package Integer_Stream_IO is new Generic_Number_Stream_IO (Integer);
-   use Integer_Stream_IO;
+   package Integer_IO is new Advent_IO.Generic_Numbers (Integer);
+   use Integer_IO;
 
    Current, Previous : Integer;
    Increases : Natural := 0;

@@ -1,8 +1,7 @@
-with Advent_IO; use Advent_IO;
 with Ada.Strings.Fixed;
 with Ada.Strings;
 
-package body Generic_Number_Stream_IO is
+package body Advent_IO.Generic_Numbers is
    function Get
       (S : not null access Ada.Streams.Root_Stream_Type'Class)
       return Number
@@ -54,4 +53,4 @@ package body Generic_Number_Stream_IO is
    begin
       String'Write (S, Trim (N'Image, Left));
    end Put;
-end Generic_Number_Stream_IO;
+end Advent_IO.Generic_Numbers;

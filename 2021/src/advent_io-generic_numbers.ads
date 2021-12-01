@@ -1,9 +1,8 @@
 with Ada.Containers.Vectors;
-with Ada.Streams;
 
 generic
    type Number is (<>);
-package Generic_Number_Stream_IO is
+package Advent_IO.Generic_Numbers is
 
    Format_Error : exception;
    --  Raised when multiple consecutive whitespace characters are encountered
@@ -31,4 +30,4 @@ package Generic_Number_Stream_IO is
       (S : not null access Ada.Streams.Root_Stream_Type'Class;
        N : Number);
 
-end Generic_Number_Stream_IO;
+end Advent_IO.Generic_Numbers;
