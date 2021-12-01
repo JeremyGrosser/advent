@@ -10,11 +10,8 @@ begin
    while First <= Items'Last loop
       Sum := 0;
       for I in First - 2 .. First loop
-         --  Put (Items (I));
          Sum := Sum + Items (I);
       end loop;
-      --  Put (Sum);
-      --  New_Line;
       if Sum > Previous then
          Result := Result + 1;
       end if;

@@ -5,16 +5,16 @@ procedure D1_1 is
    Increases : Natural := 0;
 begin
    Previous := Get_Integer;
-   loop
+
+   while not End_Of_File loop
       Current := Get_Integer;
       if Current > Previous then
          Increases := Increases + 1;
       end if;
       Previous := Current;
    end loop;
-exception
-   when End_Of_Input =>
-      String'Write (Standard_Output, Increases'Image);
-      New_Line;
-      Flush;
+
+   String'Write (Standard_Output, Increases'Image);
+   New_Line;
+   Flush;
 end D1_1;
