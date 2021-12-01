@@ -52,6 +52,6 @@ package body Generic_Number_Stream_IO is
       use Ada.Strings.Fixed;
       use Ada.Strings;
    begin
-      String'Output (S, Trim (N'Image, Left));
+      String'Write (S, Trim (N'Image, Left));
    end Put;
 end Generic_Number_Stream_IO;
