@@ -7,20 +7,15 @@ procedure D1_2 is
    use Integer_IO;
 
    Items    : constant Numbers := Get (Input);
-   Sum      : Integer;
-   Previous : Integer := 0;
    Result   : Natural := 0;
 begin
-   for I in Items'First + 2 .. Items'Last loop
-      Sum := 0;
-      for J in I - 2 .. I loop
-         Sum := Sum + Items (J);
-      end loop;
-      if Sum > Previous then
+   for I in Items'First + 3 .. Items'Last loop
+      --  The middle terms cancel out, so we don't need to compute the sum of the whole series.
+      --  HT https://www.reddit.com/r/adventofcode/comments/r66vow/comment/hmscynu/
+      if Items (I - 3) < Items (I) then
          Result := Result + 1;
       end if;
-      Previous := Sum;
    end loop;
-   Put (Output, Result - 1); --  subtract 1 because the first result doesn't count
+   Put (Output, Result);
    New_Line (Output);
 end D1_2;
