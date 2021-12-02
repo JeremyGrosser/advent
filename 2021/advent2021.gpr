@@ -8,7 +8,8 @@ project Advent2021 is
    for Main use (
       "d1_1.adb",
       "d1_2.adb",
-      "d2_1.adb"
+      "d2_1.adb",
+      "d2_2.adb"
    );
 
    package Compiler is
