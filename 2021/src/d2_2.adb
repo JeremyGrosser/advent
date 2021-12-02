@@ -1,6 +1,5 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Generic_Numbers;
-with Ada.Streams;
 
 procedure D2_2 is
    package Integer_IO is new Advent_IO.Generic_Numbers
