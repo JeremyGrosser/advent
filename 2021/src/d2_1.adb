@@ -8,27 +8,26 @@ procedure D2_1 is
 
    type Position is record
       Horizontal : Integer;
-      Depth   : Integer;
+      Depth      : Integer;
    end record;
 
    type Command is (Forward, Up, Down);
 
    P : Position := (0, 0);
+   C : Command;
+   N : Integer;
 begin
    while not End_Of_Input loop
-      declare
-         C : constant Command := Command'Value (Read_Until (Input, Whitespace));
-         N : constant Integer := Get (Input);
-      begin
-         case C is
-            when Forward =>
-               P.Horizontal := P.Horizontal + N;
-            when Up =>
-               P.Depth := P.Depth - N;
-            when Down =>
-               P.Depth := P.Depth + N;
-         end case;
-      end;
+      C := Command'Value (Read_Until (Input, Whitespace));
+      N := Get (Input);
+      case C is
+         when Forward =>
+            P.Horizontal := P.Horizontal + N;
+         when Up =>
+            P.Depth := P.Depth - N;
+         when Down =>
+            P.Depth := P.Depth + N;
+      end case;
    end loop;
    Put (Output, P.Horizontal * P.Depth);
    New_Line (Output);
