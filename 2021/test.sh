@@ -38,3 +38,11 @@ solve d2_1 inputs/d2
 echo -n "2.2"
 assert d2_2 inputs/d2-test 900
 solve d2_2 inputs/d2
+
+echo -n "3.1"
+assert d3_1 inputs/d3-test 198
+solve d3_1 inputs/d3
+
+echo -n "3.2"
+assert d3_2 inputs/d3-test 0
+solve d3_2 inputs/d3
