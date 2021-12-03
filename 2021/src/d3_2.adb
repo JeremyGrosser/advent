@@ -6,7 +6,6 @@ with Interfaces; use Interfaces;
 procedure D3_2 is
    package Unsigned_IO is new Advent_IO.Generic_Numbers
       (Number => Unsigned_32);
-   use Unsigned_IO;
 
    package Unsigned_Vectors is new Ada.Containers.Vectors
       (Index_Type   => Positive,
@@ -87,18 +86,18 @@ procedure D3_2 is
       return 0;
    end Equipment_Rating;
 
-   Inputs    : Vector := Empty_Vector;
-   Word_Size : Positive;
+   Inputs : Vector := Empty_Vector;
+   Size   : Positive;
 begin
    while not End_Of_Input loop
-      Inputs.Append (Get_Word (Word_Size));
+      Inputs.Append (Get_Word (Size));
    end loop;
 
    declare
-      O2_Generator_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Word_Size, False);
-      CO2_Scrubber_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Word_Size, True);
+      O2_Generator_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Size, False);
+      CO2_Scrubber_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Size, True);
    begin
-      Put (Output, O2_Generator_Rating * CO2_Scrubber_Rating);
+      Unsigned_IO.Put (Output, O2_Generator_Rating * CO2_Scrubber_Rating);
       New_Line (Output);
    end;
 end D3_2;

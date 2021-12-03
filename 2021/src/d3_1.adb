@@ -45,17 +45,17 @@ procedure D3_1 is
       return Counts;
    end Get_Popcount;
 
-   Inputs    : Vector := Empty_Vector;
-   Word_Size : Positive;
-   Counts    : Popcount;
-   Gamma     : Unsigned_32;
-   Epsilon   : Unsigned_32;
+   Inputs  : Vector := Empty_Vector;
+   Size    : Positive;
+   Counts  : Popcount;
+   Gamma   : Unsigned_32 := 0;
+   Epsilon : Unsigned_32 := 0;
 begin
    while not End_Of_Input loop
-      Inputs.Append (Get_Word (Word_Size));
+      Inputs.Append (Get_Word (Size));
    end loop;
 
-   for Position in 0 .. Word_Size - 1 loop
+   for Position in 0 .. Size - 1 loop
       Counts := Get_Popcount (Inputs, Position);
       if Counts (0) > Counts (1) then
          Gamma := Gamma or Shift_Left (1, Position);
