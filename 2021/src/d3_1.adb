@@ -13,40 +13,54 @@ procedure D3_1 is
        Element_Type => Unsigned_32);
    use Unsigned_Vectors;
 
-   Inputs           : Vector := Empty_Vector;
-   Gamma, Epsilon   : Unsigned_32;
-   Count_0, Count_1 : Natural := 0;
+   function Get_Word
+      (Size : out Natural)
+       return Unsigned_32
+   is
+      Line : constant String := Read_Until (Input, Whitespace);
+      X    : Unsigned_32;
+   begin
+      Size := Line'Length;
+      X := 0;
+      for I in Line'Range loop
+         X := X or Shift_Left (Unsigned_32'Value (String'(1 => Line (I))), Line'Last - I);
+      end loop;
+      return X;
+   end Get_Word;
+
+   type Popcount is array (Unsigned_32 range 0 .. 1) of Natural;
+
+   function Get_Popcount
+      (V        : Vector;
+       Position : Natural)
+       return Popcount
+   is
+      Counts : Popcount := (others => 0);
+      Bit    : Unsigned_32;
+   begin
+      for X of V loop
+         Bit := Shift_Right (X, Position) and 1;
+         Counts (Bit) := Counts (Bit) + 1;
+      end loop;
+      return Counts;
+   end Get_Popcount;
+
+   Inputs    : Vector := Empty_Vector;
    Word_Size : Positive;
+   Counts    : Popcount;
+   Gamma     : Unsigned_32;
+   Epsilon   : Unsigned_32;
 begin
    while not End_Of_Input loop
-      declare
-         Line : constant String := Read_Until (Input, Whitespace);
-         X : Unsigned_32;
-      begin
-         Word_Size := Line'Length;
-         X := 0;
-         for I in Line'Range loop
-            X := X or Shift_Left (Unsigned_32'Value (String'(1 => Line (I))), Line'Last - I);
-         end loop;
-         Inputs.Append (X);
-      end;
+      Inputs.Append (Get_Word (Word_Size));
    end loop;
 
-   for I in 0 .. Word_Size - 1 loop
-      Count_0 := 0;
-      Count_1 := 0;
-      for X of Inputs loop
-         if (Shift_Right (X, I) and 1) = 0 then
-            Count_0 := Count_0 + 1;
-         else
-            Count_1 := Count_1 + 1;
-         end if;
-      end loop;
-
-      if Count_1 > Count_0 then
-         Gamma := Gamma or Shift_Left (1, I);
+   for Position in 0 .. Word_Size - 1 loop
+      Counts := Get_Popcount (Inputs, Position);
+      if Counts (0) > Counts (1) then
+         Gamma := Gamma or Shift_Left (1, Position);
       else
-         Epsilon := Epsilon or Shift_Left (1, I);
+         Epsilon := Epsilon or Shift_Left (1, Position);
       end if;
    end loop;
 

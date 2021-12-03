@@ -44,5 +44,5 @@ assert d3_1 inputs/d3-test 198
 solve d3_1 inputs/d3
 
 echo -n "3.2"
-assert d3_2 inputs/d3-test 0
+assert d3_2 inputs/d3-test 230
 solve d3_2 inputs/d3
