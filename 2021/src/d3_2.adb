@@ -45,25 +45,60 @@ procedure D3_2 is
       return Counts;
    end Get_Popcount;
 
+   No_Answer : exception;
+
+   function Equipment_Rating
+      (V      : Vector;
+       Size   : Positive;
+       Invert : Boolean)
+      return Unsigned_32
+   is
+      PC          : Popcount;
+      Most_Common : Unsigned_32;
+      A : Vector;
+      B : Vector := Copy (V);
+   begin
+      for Position in reverse 0 .. Size - 1 loop
+         A := Copy (B);
+         B := Empty_Vector;
+         PC := Get_Popcount (A, Position);
+         if PC (0) > PC (1) then
+            Most_Common := 0;
+         else
+            Most_Common := 1;
+         end if;
+
+         if Invert then
+            Most_Common := (not Most_Common) and 1;
+         end if;
+
+         for Item of A loop
+            if (Shift_Right (Item, Position) and 1) = Most_Common then
+               Append (B, Item);
+            end if;
+         end loop;
+
+         if Natural (Length (B)) = 1 then
+            return Last_Element (B);
+         end if;
+      end loop;
+
+      raise No_Answer;
+      return 0;
+   end Equipment_Rating;
+
    Inputs    : Vector := Empty_Vector;
    Word_Size : Positive;
-   Counts    : Popcount;
-   Gamma     : Unsigned_32;
-   Epsilon   : Unsigned_32;
 begin
    while not End_Of_Input loop
       Inputs.Append (Get_Word (Word_Size));
    end loop;
 
-   for Position in 0 .. Word_Size - 1 loop
-      Counts := Get_Popcount (Inputs, Position);
-      if Counts (0) > Counts (1) then
-         Gamma := Gamma or Shift_Left (1, Position);
-      else
-         Epsilon := Epsilon or Shift_Left (1, Position);
-      end if;
-   end loop;
-
-   Put (Output, Gamma * Epsilon);
-   New_Line (Output);
+   declare
+      O2_Generator_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Word_Size, False);
+      CO2_Scrubber_Rating : constant Unsigned_32 := Equipment_Rating (Inputs, Word_Size, True);
+   begin
+      Put (Output, O2_Generator_Rating * CO2_Scrubber_Rating);
+      New_Line (Output);
+   end;
 end D3_2;
