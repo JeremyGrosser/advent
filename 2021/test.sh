@@ -50,3 +50,7 @@ solve d3_2 inputs/d3
 echo -n "4.1"
 assert d4_1 inputs/d4-test 4512
 solve d4_1 inputs/d4
+
+echo -n "4.2"
+#assert d4_2 inputs/d4-test 1924
+solve d4_2 inputs/d4
