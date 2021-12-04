@@ -4,13 +4,14 @@ with Ada.Strings;
 
 package body Advent_IO.Generic_Numbers is
    function Get
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Number
    is
-      X : constant String := Read_Until (S, Whitespace);
+      X : constant String := Read_Until (S, Delimiter);
    begin
       if X'Length = 0 then
-         raise Format_Error with "Encountered an empty string or unexpected end of input";
+         return Get (S, Delimiter);
       else
          return Number'Value (X);
       end if;
@@ -18,6 +19,7 @@ package body Advent_IO.Generic_Numbers is
 
    function Get_Vector
       (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace;
        Initial_Capacity : Natural := 0)
       return Number_Vectors.Vector
    is
@@ -27,18 +29,19 @@ package body Advent_IO.Generic_Numbers is
    begin
       Reserve_Capacity (V, Ada.Containers.Count_Type (Initial_Capacity));
       while not End_Of_Input loop
-         N := Get (S);
+         N := Get (S, Delimiter);
          Append (V, N);
       end loop;
       return V;
    end Get_Vector;
 
    function Get_Numbers
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Numbers
    is
       use Number_Vectors;
-      V : constant Vector := Get_Vector (S);
+      V : constant Vector := Get_Vector (S, Delimiter);
       N : Numbers (1 .. Natural (Length (V)));
    begin
       for I in N'Range loop

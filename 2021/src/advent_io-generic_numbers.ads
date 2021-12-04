@@ -4,12 +4,9 @@ generic
    type Number is (<>);
 package Advent_IO.Generic_Numbers is
 
-   Format_Error : exception;
-   --  Raised when multiple consecutive whitespace characters are encountered
-   --  or the input ends unexpectedly.
-
    function Get
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Number;
 
    package Number_Vectors is new Ada.Containers.Vectors
@@ -18,13 +15,15 @@ package Advent_IO.Generic_Numbers is
 
    function Get_Vector
       (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace;
        Initial_Capacity : Natural := 0)
       return Number_Vectors.Vector;
 
    type Numbers is array (Positive range <>) of Number;
 
    function Get_Numbers
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+       Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Numbers;
 
    procedure Put
