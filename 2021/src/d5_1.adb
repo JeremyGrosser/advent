@@ -1,6 +1,7 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Generic_Numbers;
-with Ada.Containers.Ordered_Maps;
+with Ada.Containers.Hashed_Maps;
+with Ada.Containers;
 with Ada.Strings.Maps;
 with Ada.Streams;
 
@@ -87,16 +88,20 @@ procedure D5_1 is
       Coordinate'Write (Stream, Item.To);
    end Write_Segment;
 
-   function "<"
-      (Left, Right : Coordinate)
-      return Boolean
-   is (Left.X < Right.X or Left.Y < Right.Y);
+   Max_Width : constant := 1024;
+
+   function Hash
+      (C : Coordinate)
+      return Ada.Containers.Hash_Type
+   is (Ada.Containers.Hash_Type (C.Y * Max_Width + C.X));
 
    --------------------------------------------------------------------
 
-   package Coordinate_Maps is new Ada.Containers.Ordered_Maps
+   package Coordinate_Maps is new Ada.Containers.Hashed_Maps
       (Key_Type        => Coordinate,
-       Element_Type    => Natural);
+       Element_Type    => Natural,
+       Equivalent_Keys => "=",
+       Hash            => Hash);
 
    function Limit
       (Field : Coordinate_Maps.Map)
@@ -162,6 +167,7 @@ procedure D5_1 is
       else
          Height := 1;
       end if;
+
       Include (Field, Pos, Height);
    end Increment;
 
@@ -201,26 +207,23 @@ procedure D5_1 is
    Vent     : Segment;
    From, To : Integer;
 begin
-   New_Line (Error);
    while not End_Of_Input loop
       Segment'Read (Input, Vent);
 
       --  Only consider vertical and horizontal lines (ignore diagonal)
       if Vent.From.X = Vent.To.X or Vent.From.Y = Vent.To.Y then
-         Segment'Write (Error, Vent);
-         New_Line (Error);
          Line (Seafloor, Vent.From, Vent.To);
       end if;
    end loop;
 
-   Write_Coordinate_Map (Error, Seafloor);
+   --  Write_Coordinate_Map (Error, Seafloor);
 
    declare
       use Coordinate_Maps;
       Count : Natural := 0;
    begin
       for Cursor in Iterate (Seafloor) loop
-         if Element (Cursor) > 2 then
+         if Element (Cursor) >= 2 then
             Count := Count + 1;
          end if;
       end loop;
