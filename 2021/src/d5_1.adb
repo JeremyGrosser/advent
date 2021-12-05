@@ -205,7 +205,6 @@ procedure D5_1 is
 
    Seafloor : Coordinate_Maps.Map := Coordinate_Maps.Empty_Map;
    Vent     : Segment;
-   From, To : Integer;
 begin
    while not End_Of_Input loop
       Segment'Read (Input, Vent);

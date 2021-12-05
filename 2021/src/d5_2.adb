@@ -88,8 +88,7 @@ procedure D5_2 is
       Coordinate'Write (Stream, Item.To);
    end Write_Segment;
 
-   Max_Width : constant := 1024;
-
+   --  https://en.wikipedia.org/wiki/Pairing_function
    function Cantor_Hash
       (C : Coordinate)
       return Ada.Containers.Hash_Type
@@ -229,7 +228,6 @@ procedure D5_2 is
 
    Seafloor : Coordinate_Maps.Map := Coordinate_Maps.Empty_Map;
    Vent     : Segment;
-   From, To : Integer;
 begin
    while not End_Of_Input loop
       Segment'Read (Input, Vent);
