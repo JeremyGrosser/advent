@@ -54,3 +54,7 @@ solve d4_1 inputs/d4
 echo -n "4.2"
 #assert d4_2 inputs/d4-test 1924
 solve d4_2 inputs/d4
+
+echo -n "5.1"
+assert d5_1 inputs/d5-test 5
+solve d5_1 inputs/d5
