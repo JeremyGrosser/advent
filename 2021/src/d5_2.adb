@@ -101,7 +101,7 @@ procedure D5_2 is
       H := (X + Y) * (X + Y + 1);
       H := (H / 2) + Y;
       H := H mod (Long_Long_Integer (Hash_Type'Last));
-      return Hash_Type (H);
+      return Hash_Type (H mod 2 ** 16); --  compress to 16 bits to reduce memory usage
    end Cantor_Hash;
 
    --------------------------------------------------------------------
