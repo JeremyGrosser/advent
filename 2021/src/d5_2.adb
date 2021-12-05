@@ -90,10 +90,20 @@ procedure D5_2 is
 
    Max_Width : constant := 1024;
 
-   function Hash
+   function Cantor_Hash
       (C : Coordinate)
       return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (C.Y * Max_Width + C.X));
+   is
+      use Ada.Containers;
+      X : constant Long_Long_Integer := Long_Long_Integer (C.X);
+      Y : constant Long_Long_Integer := Long_Long_Integer (C.Y);
+      H : Long_Long_Integer;
+   begin
+      H := (X + Y) * (X + Y + 1);
+      H := (H / 2) + Y;
+      H := H mod (Long_Long_Integer (Hash_Type'Last));
+      return Hash_Type (H);
+   end Cantor_Hash;
 
    --------------------------------------------------------------------
 
@@ -101,7 +111,7 @@ procedure D5_2 is
       (Key_Type        => Coordinate,
        Element_Type    => Natural,
        Equivalent_Keys => "=",
-       Hash            => Hash);
+       Hash            => Cantor_Hash);
 
    function Limit
       (Field : Coordinate_Maps.Map)
