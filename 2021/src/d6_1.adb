@@ -1,37 +1,36 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Generic_Numbers;
-with Ada.Containers.Vectors;
 
 procedure D6_1 is
-   package Integer_IO is new Advent_IO.Generic_Numbers
-      (Number => Integer);
-   use Integer_IO;
+   type Count is new Long_Long_Integer;
+   subtype Age is Natural range 0 .. 8;
+   type Ages is array (Age) of Count;
 
-   type Fish is record
-      Timer : Natural;
-   end record;
+   package Age_IO is new Advent_IO.Generic_Numbers
+      (Number => Age);
+   package Count_IO is new Advent_IO.Generic_Numbers
+      (Number => Count);
 
-   package Fish_Vectors is new Ada.Containers.Vectors
-      (Index_Type   => Positive,
-       Element_Type => Fish);
-
-   Fishes : Fish_Vectors.Vector := Fish_Vectors.Empty_Vector;
+   Fishes : Ages := (others => 0);
+   Total  : Count := 0;
+   Tmp    : Count;
 begin
-   for F of Get_Vector (Input, Delimiter => Comma) loop
-      Fish_Vectors.Append (Fishes, Fish'(Timer => F));
+   for A of Age_IO.Get_Numbers (Input, Delimiter => Comma) loop
+      Fishes (A) := Fishes (A) + 1;
    end loop;
 
    for Day in 1 .. 80 loop
-      for I in 1 .. Positive (Fish_Vectors.Length (Fishes)) loop
-         if Fishes (I).Timer = 0 then
-            Fishes (I).Timer := 6;
-            Fish_Vectors.Append (Fishes, Fish'(Timer => 8));
-         else
-            Fishes (I).Timer := Fishes (I).Timer - 1;
-         end if;
+      Tmp := Fishes (0);
+      for I in 0 .. 7 loop
+         Fishes (I) := Fishes (I + 1);
       end loop;
+      Fishes (6) := Fishes (6) + Tmp;
+      Fishes (8) := Tmp;
    end loop;
 
-   Put (Output, Integer (Fish_Vectors.Length (Fishes)));
+   for F of Fishes loop
+      Total := Total + F;
+   end loop;
+   Count_IO.Put (Output, Total);
    New_Line (Output);
 end D6_1;
