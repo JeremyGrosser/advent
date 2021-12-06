@@ -8,7 +8,10 @@ package body Advent_IO.Generic_Numbers is
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Number
    is
-      X : constant String := Read_Until (S, Delimiter);
+      X : constant String := Ada.Strings.Fixed.Trim
+         (Source => Read_Until (S, Delimiter),
+          Left   => Whitespace,
+          Right  => Whitespace);
    begin
       if X'Length = 0 then
          return Get (S, Delimiter);

@@ -19,6 +19,8 @@ package Advent_IO is
 
    Whitespace : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
       (ASCII.HT & ASCII.LF & ASCII.CR & ' ');
+   Comma      : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
+      (',');
    CRLF       : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
       (ASCII.CR & ASCII.LF);
 
