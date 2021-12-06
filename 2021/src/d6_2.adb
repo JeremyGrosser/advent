@@ -28,9 +28,7 @@ begin
       Fishes (8) := Tmp;
    end loop;
 
-   for F of Fishes loop
-      Total := Total + F;
-   end loop;
+   Total := Fishes'Reduce ("+", 0);
    Count_IO.Put (Output, Total);
    New_Line (Output);
 end D6_2;
