@@ -66,3 +66,7 @@ solve d5_2 inputs/d5
 echo -n "6.1"
 assert d6_1 inputs/d6-test 5934
 solve d6_1 inputs/d6
+
+echo -n "6.2"
+assert d6_2 inputs/d6-test 26984457539
+solve d6_2 inputs/d6
