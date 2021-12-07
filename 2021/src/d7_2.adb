@@ -7,20 +7,6 @@ procedure D7_2 is
       (Number => Integer);
    use Integer_IO;
 
-   function Maximum
-      (N : Numbers)
-      return Integer
-   is
-      A : Integer := -1;
-   begin
-      for B of N loop
-         if B > A then
-            A := B;
-         end if;
-      end loop;
-      return A;
-   end Maximum;
-
    function Cost
       (Positions : Numbers;
        Alignment : Integer)
@@ -38,17 +24,17 @@ procedure D7_2 is
       return Total;
    end Cost;
 
-   Positions      : constant Numbers := Get_Numbers (Input, Delimiter => Comma);
-   Lowest_Cost    : Integer := Integer'Last;
-   C              : Integer;
+   Positions : constant Numbers := Get_Numbers (Input, Delimiter => Comma);
+   Alignment : Integer := 1;
+   Previous  : Integer := Integer'Last;
+   C         : Integer;
 begin
-   for Alignment in 1 .. Maximum (Positions) loop
+   loop
       C := Cost (Positions, Alignment);
-      if C < Lowest_Cost then
-         Lowest_Cost := C;
-      end if;
+      exit when C > Previous;
+      Previous := C;
+      Alignment := Alignment + 1;
    end loop;
-
-   Integer_IO.Put (Output, Lowest_Cost);
+   Integer_IO.Put (Output, Previous);
    New_Line (Output);
 end D7_2;
