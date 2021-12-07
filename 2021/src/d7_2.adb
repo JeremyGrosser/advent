@@ -27,6 +27,7 @@ procedure D7_2 is
    Previous  : Integer := Integer'Last;
    C         : Integer;
 begin
+   --  Binary search would be faster, but linear search is fast enough.
    loop
       C := Cost (Positions, Alignment);
       exit when C > Previous;
