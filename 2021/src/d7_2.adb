@@ -17,9 +17,7 @@ procedure D7_2 is
    begin
       for P of Positions loop
          Distance := abs (P - Alignment);
-         for I in 1 .. Distance loop
-            Total := Total + I;
-         end loop;
+         Total := Total + (Distance * (Distance + 1)) / 2;
       end loop;
       return Total;
    end Cost;
