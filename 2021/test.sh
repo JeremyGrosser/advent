@@ -78,3 +78,7 @@ solve d7_1 inputs/d7
 echo -n "7.2"
 assert d7_2 inputs/d7-test 168
 solve d7_2 inputs/d7
+
+echo -n "8.1"
+assert d8_1 inputs/d8-test 26
+solve d8_1 inputs/d8

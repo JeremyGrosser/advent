@@ -19,7 +19,8 @@ project Advent2021 is
       "d6_1.adb",
       "d6_2.adb",
       "d7_1.adb",
-      "d7_2.adb"
+      "d7_2.adb",
+      "d8_1.adb"
    );
 
    package Compiler is
@@ -34,7 +35,7 @@ project Advent2021 is
          "-gnatn",               --  Enable inlining
          "-gnatX",               --  Language extensions (Ada 2022)
          "-g",                   --  Debug info
-         "-O2",                  --  Optimization
+         "-Og",                  --  Optimization
          "-gnatwB",              --  Warn on bad fixed value
          "-gnatQ",               --  Don't quit. Generate ALI and tree files even if illegalities
          "-ffunction-sections",  --  ELF section per function
