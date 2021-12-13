@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 PATH=$PATH:$PWD/bin
 set -e
 alr --no-tty build

@@ -1,18 +1,32 @@
-with Ada.Streams.Stream_IO;
-with Ada.Streams;
+with Ada.Streams; use Ada.Streams;
+with Interfaces.C_Streams;
 with Ada.Strings.Maps;
 
 package Advent_IO is
 
+   type FD_Stream is new Root_Stream_Type with private;
+   type Stream_Access is access all Root_Stream_Type'Class;
+
+   overriding
+   procedure Read
+      (Stream : in out FD_Stream;
+       Item   : out Stream_Element_Array;
+       Last   : out Stream_Element_Offset);
+
+   overriding
+   procedure Write
+      (Stream : in out FD_Stream;
+       Item   : Stream_Element_Array);
+
    --  These streams wrap stdio
    function Input
-      return Ada.Streams.Stream_IO.Stream_Access;
+      return Stream_Access;
 
    function Output
-      return Ada.Streams.Stream_IO.Stream_Access;
+      return Stream_Access;
 
    function Error
-      return Ada.Streams.Stream_IO.Stream_Access;
+      return Stream_Access;
 
    function End_Of_Input
       return Boolean;
@@ -38,5 +52,11 @@ package Advent_IO is
       (S : not null access Ada.Streams.Root_Stream_Type'Class);
 
    procedure Flush;
+
+private
+
+   type FD_Stream is new Root_Stream_Type with record
+      FD : Interfaces.C_Streams.FILEs;
+   end record;
 
 end Advent_IO;
