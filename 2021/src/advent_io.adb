@@ -1,13 +1,11 @@
-with Ada.Text_IO;
-
 package body Advent_IO is
    Input_Buffer : aliased String (1 .. 64);
 
-   STDIN  : aliased FD_Stream :=
+   STD_IN  : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdin);
-   STDOUT : aliased FD_Stream :=
+   STD_OUT : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdout);
-   STDERR : aliased FD_Stream :=
+   STD_ERR : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stderr);
 
    overriding
@@ -19,14 +17,12 @@ package body Advent_IO is
       use Interfaces.C_Streams;
       Status : Integer;
    begin
-      Ada.Text_IO.Put_Line ("Read " & Item'Length'Image);
       Status := Integer
          (fread
             (buffer => voids (Item'Address),
              size   => size_t (Item'Length),
              count  => 1,
              stream => Stream.FD));
-      Ada.Text_IO.Put_Line ("Read Status=" & Status'Image);
       Last := Stream_Element_Offset (Status);
    end Read;
 
@@ -46,35 +42,36 @@ package body Advent_IO is
       if Length > 0 and Length < Item'Length then
          Write (Stream, Item (Item'First + Length .. Item'Last));
       end if;
-      Ada.Text_IO.Put_Line ("Write Length=" & Length'Image);
    end Write;
 
    function Input
       return Stream_Access
-   is (STDIN'Access);
+   is (STD_IN'Access);
 
    function Output
       return Stream_Access
-   is (STDOUT'Access);
+   is (STD_OUT'Access);
 
    function Error
       return Stream_Access
-   is (STDERR'Access);
+   is (STD_ERR'Access);
 
    function End_Of_Input
       return Boolean
    is
-      Status : Integer;
+      use Interfaces.C_Streams;
+      Current : constant long := ftell (stdin);
+      Last    : long;
+      Status  : int;
    begin
-      Status := Integer (Interfaces.C_Streams.feof (Interfaces.C_Streams.stdin));
-      Ada.Text_IO.Put_Line ("feof=" & Status'Image);
-      if Status /= 0 then
+      if feof (stdin) /= 0 then
          return True;
+      else
+         Status := fseek (stdin, 0, SEEK_END);
+         Last := ftell (stdin);
+         Status := fseek (stdin, Current, SEEK_SET);
+         return Long_Integer (Current) = Long_Integer (Last);
       end if;
-
-      Status := Integer (Interfaces.C_Streams.ferror (Interfaces.C_Streams.stdin));
-      Ada.Text_IO.Put_Line ("ferror =" & Status'Image);
-      return Status /= 0;
    end End_Of_Input;
 
    function Read_Until
