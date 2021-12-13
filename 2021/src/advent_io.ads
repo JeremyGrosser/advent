@@ -6,7 +6,6 @@ package Advent_IO is
 
    type FD_Stream is new Root_Stream_Type with private;
    type Stream_Access is access all Root_Stream_Type'Class;
-   IO_Error : exception;
 
    overriding
    procedure Read
