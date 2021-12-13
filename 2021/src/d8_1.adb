@@ -83,7 +83,6 @@ procedure D8_1 is
    Signal_Pattern : array (1 .. 10) of Segments;
    Output_Value   : array (1 .. 4) of Segments;
    Result         : Natural := 0;
-   Skip           : Character;
 begin
    while not End_Of_Input loop
       for I in Signal_Pattern'Range loop
