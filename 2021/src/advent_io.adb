@@ -1,6 +1,4 @@
 package body Advent_IO is
-   Input_Buffer : aliased String (1 .. 64);
-
    STD_IN  : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdin);
    STD_OUT : aliased FD_Stream :=
@@ -20,8 +18,8 @@ package body Advent_IO is
       Status := Integer
          (fread
             (buffer => voids (Item'Address),
-             size   => size_t (Item'Length),
-             count  => 1,
+             size   => 1,
+             count  => size_t (Item'Length),
              stream => Stream.FD));
       Last := Stream_Element_Offset (Status);
    end Read;
@@ -36,8 +34,8 @@ package body Advent_IO is
    begin
       Length := Stream_Element_Offset (fwrite
          (buffer => voids (Item'Address),
-          size   => size_t (Item'Length),
-          count  => 1,
+          size   => 1,
+          count  => size_t (Item'Length),
           stream => Stream.FD));
       if Length > 0 and Length < Item'Length then
          Write (Stream, Item (Item'First + Length .. Item'Last));
@@ -60,17 +58,18 @@ package body Advent_IO is
       return Boolean
    is
       use Interfaces.C_Streams;
-      Current : constant long := ftell (stdin);
-      Last    : long;
-      Status  : int;
+      Ch : int;
    begin
       if feof (stdin) /= 0 then
          return True;
+      end if;
+
+      Ch := fgetc (stdin);
+      if Ch = EOF then
+         return True;
       else
-         Status := fseek (stdin, 0, SEEK_END);
-         Last := ftell (stdin);
-         Status := fseek (stdin, Current, SEEK_SET);
-         return Long_Integer (Current) = Long_Integer (Last);
+         Ch := ungetc (Ch, stdin);
+         return False;
       end if;
    end End_Of_Input;
 
@@ -110,15 +109,4 @@ package body Advent_IO is
       Status := Integer (fflush (NULL_Stream));
    end Flush;
 
-begin
-   declare
-      use Interfaces.C_Streams;
-      Status : Integer with Unreferenced;
-   begin
-      Status := Integer (setvbuf
-         (Interfaces.C_Streams.stdin,
-          Input_Buffer'Address,
-          IOFBF,
-          size_t (Input_Buffer'Length)));
-   end;
 end Advent_IO;
