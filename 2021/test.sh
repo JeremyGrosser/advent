@@ -91,3 +91,7 @@ solve d10_1 inputs/d10
 echo -n "11.1"
 assert d11_1 inputs/d11-test 1656
 solve d11_1 inputs/d11
+
+echo -n "11.2"
+assert d11_2 inputs/d11-test 195
+solve d11_2 inputs/d11
