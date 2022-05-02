@@ -86,3 +86,8 @@ solve d8_1 inputs/d8
 echo -n "10.1"
 assert d10_1 inputs/d10-test 26397
 solve d10_1 inputs/d10
+# 10.2
+
+echo -n "11.1"
+assert d11_1 inputs/d11-test 1656
+solve d11_1 inputs/d11

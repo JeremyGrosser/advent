@@ -21,7 +21,8 @@ project Advent2021 is
       "d7_1.adb",
       "d7_2.adb",
       "d8_1.adb",
-      "d10_1.adb"
+      "d10_1.adb",
+      "d11_1.adb"
    );
 
    package Compiler is
