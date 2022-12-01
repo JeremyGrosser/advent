@@ -32,11 +32,6 @@ begin
    Sort (V);
    Reverse_Elements (V);
 
-   for Element of V loop
-      String'Write (Error, Element'Image);
-      New_Line (Error);
-   end loop;
-
    Total := V (1) + V (2) + V (3);
 
    Put (Output, Total);
