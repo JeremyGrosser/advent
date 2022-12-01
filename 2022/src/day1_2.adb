@@ -1,26 +1,28 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
-with Ada.Containers.Vectors;
+with Ada.Text_IO;
 
 procedure Day1_2 is
-   package Natural_Vectors is new Ada.Containers.Vectors
-      (Index_Type   => Positive,
-       Element_Type => Natural);
-   use Natural_Vectors;
-
-   package Natural_Sorting is new Natural_Vectors.Generic_Sorting
-      ("<" => ">"); --  inverted sort, largest values first
-   use Natural_Sorting;
-
-   V : Vector := Empty_Vector;
+   Top : array (1 .. 3) of Natural := (others => 0);
    Total : Natural := 0;
+
+   procedure Add_Elf
+      (N : Natural)
+   is
+   begin
+      if N > Top (1) then
+         Top (1) := Top (2);
+         Top (2) := Top (3);
+         Top (3) := N;
+      end if;
+   end Add_Elf;
 begin
    while not End_Of_Input loop
       declare
          Line : constant String := Read_Until (Input, CRLF);
       begin
          if Line'Length = 0 then
-            Append (V, Total);
+            Add_Elf (Total);
             Total := 0;
          else
             Total := Total + Natural'Value (Line);
@@ -28,9 +30,9 @@ begin
       end;
    end loop;
 
-   Append (V, Total);
-   Sort (V);
-   Total := V (1) + V (2) + V (3);
+   Add_Elf (Total);
+
+   Total := Top (1) + Top (2) + Top (3);
 
    Put (Output, Total);
    New_Line (Output);
