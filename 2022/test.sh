@@ -3,6 +3,8 @@
 ALR="alr --no-tty --no-color"
 binary="${PWD}/bin/advent2022"
 
+set -e
+
 assert() {
     puzzle=$1
     input=$2
