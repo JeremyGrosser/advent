@@ -1,6 +1,5 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
-with Ada.Text_IO;
 
 procedure Day1_2 is
    Top : array (1 .. 3) of Natural := (others => 0);
