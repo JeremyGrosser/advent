@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
 
 ALR="alr --no-tty --no-color -q"
-
-set -e
+binary="${PWD}/bin/advent2022"
 
 assert() {
-    crate=$1
-    binary=$crate/bin/$crate
+    puzzle=$1
     input=$2
     expectation=$3
 
-    pushd $crate
-    ${ALR} --no-tty build
-    popd
-
-    result=`$binary < $input`
+    result=`$binary $puzzle < $input`
 
     if [ "$result" != "$expectation" ]; then
         echo -e " \e[1m\e[31mFAIL\e[0m $binary < $input"
@@ -25,15 +19,18 @@ assert() {
 }
 
 solve() {
-    crate=$1
-    binary=$crate/bin/$crate
+    puzzle=$1
     input=$2
-    result=`$binary < $input`
+    result=`$binary $puzzle < $input`
     echo -e " \e[1m\e[92m$result\e[0m"
 }
 
+${ALR} build
+
 echo -n "1.1 "
-assert day1_1 input/day1_test 24000
-solve day1_1 input/day1
-assert day1_2 input/day1_test 45000
-solve day1_2 input/day1
+assert 1.1 input/day1_test 24000
+solve 1.1 input/day1
+
+echo -n "1.2 "
+assert 1.2 input/day1_test 45000
+solve 1.2 input/day1
