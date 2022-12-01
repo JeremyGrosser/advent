@@ -8,7 +8,8 @@ procedure Day1_2 is
        Element_Type => Natural);
    use Natural_Vectors;
 
-   package Natural_Sorting is new Natural_Vectors.Generic_Sorting;
+   package Natural_Sorting is new Natural_Vectors.Generic_Sorting
+      ("<" => ">"); --  inverted sort, largest values first
    use Natural_Sorting;
 
    V : Vector := Empty_Vector;
@@ -28,10 +29,7 @@ begin
    end loop;
 
    Append (V, Total);
-
    Sort (V);
-   Reverse_Elements (V);
-
    Total := V (1) + V (2) + V (3);
 
    Put (Output, Total);

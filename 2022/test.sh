@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ALR="alr --no-tty --no-color -q"
+ALR="alr --no-tty --no-color"
 binary="${PWD}/bin/advent2022"
 
 assert() {
