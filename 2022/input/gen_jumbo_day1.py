@@ -1,4 +1,5 @@
 import random
+random.seed(42)
 
 with open('day1_jumbo', 'w') as fd:
     for i in range(10_000_000):
