@@ -4,7 +4,6 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 procedure Day1_1 is
    Total    : Natural := 0;
    Highest  : Natural := 0;
-   N        : Natural;
 begin
    while not End_Of_Input loop
       declare

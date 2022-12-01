@@ -12,7 +12,7 @@ procedure Day1_2 is
    use Natural_Sorting;
 
    V : Vector := Empty_Vector;
-   Total : Natural;
+   Total : Natural := 0;
 begin
    while not End_Of_Input loop
       declare
