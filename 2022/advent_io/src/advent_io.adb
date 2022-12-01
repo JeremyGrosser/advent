@@ -1,3 +1,5 @@
+with Ada.Strings.Unbounded;
+
 package body Advent_IO is
    STD_IN  : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdin);
@@ -78,14 +80,16 @@ package body Advent_IO is
        Stop : Ada.Strings.Maps.Character_Set)
        return String
    is
+      use Ada.Strings.Unbounded;
+      Buffer : Unbounded_String;
       Ch : Character;
    begin
       while not End_Of_Input loop
          Character'Read (S, Ch);
          exit when Ada.Strings.Maps.Is_In (Ch, Stop);
-         return Ch & Read_Until (S, Stop);
+         Append (Buffer, Ch);
       end loop;
-      return "";
+      return To_String (Buffer);
    end Read_Until;
 
    function Read_Until
