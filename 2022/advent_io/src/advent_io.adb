@@ -1,4 +1,4 @@
-with Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Advent_IO is
    STD_IN  : aliased FD_Stream :=
@@ -7,6 +7,8 @@ package body Advent_IO is
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdout);
    STD_ERR : aliased FD_Stream :=
       FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stderr);
+
+   Input_Buffer : Unbounded_String;
 
    overriding
    procedure Read
@@ -80,16 +82,17 @@ package body Advent_IO is
        Stop : Ada.Strings.Maps.Character_Set)
        return String
    is
-      use Ada.Strings.Unbounded;
-      Buffer : Unbounded_String;
       Ch : Character;
    begin
+      Delete (Input_Buffer, 1, Length (Input_Buffer));
+
       while not End_Of_Input loop
          Character'Read (S, Ch);
          exit when Ada.Strings.Maps.Is_In (Ch, Stop);
-         Append (Buffer, Ch);
+         Append (Input_Buffer, Ch);
       end loop;
-      return To_String (Buffer);
+
+      return To_String (Input_Buffer);
    end Read_Until;
 
    function Read_Until
