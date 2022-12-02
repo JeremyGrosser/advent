@@ -1,5 +1,6 @@
 with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
+with Ada.Streams;
 
 procedure Day2_2 is
    type Shape is (Rock, Paper, Scissors);
@@ -11,7 +12,13 @@ procedure Day2_2 is
    end record;
 
    procedure Round_Read
-      (Stream : not null Stream_Access;
+      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+       Item   : out Round);
+
+   for Round'Read use Round_Read;
+
+   procedure Round_Read
+      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
        Item   : out Round)
    is
       Theirs : constant String := Read_Until (Stream, ' ');
@@ -39,15 +46,15 @@ procedure Day2_2 is
       return Round_Result
    is
    begin
-      if (R.Opponent = Rock and R.Self = Paper) or
-         (R.Opponent = Paper and R.Self = Scissors) or
-         (R.Opponent = Scissors and R.Self = Rock)
+      if (R.Opponent = Rock and then R.Self = Paper) or else
+         (R.Opponent = Paper and then R.Self = Scissors) or else
+         (R.Opponent = Scissors and then R.Self = Rock)
       then
          return Win;
       elsif
-         (R.Opponent = Rock and R.Self = Rock) or
-         (R.Opponent = Paper and R.Self = Paper) or
-         (R.Opponent = Scissors and R.Self = Scissors)
+         (R.Opponent = Rock and then R.Self = Rock) or else
+         (R.Opponent = Paper and then R.Self = Paper) or else
+         (R.Opponent = Scissors and then R.Self = Scissors)
       then
          return Draw;
       else
@@ -81,18 +88,6 @@ procedure Day2_2 is
       return S;
    end Score;
 
-   function Next_Shape
-      (S : Shape)
-      return Shape
-   is
-   begin
-      if S = Shape'Last then
-         return Shape'First;
-      else
-         return Shape'Succ (S);
-      end if;
-   end Next_Shape;
-
    procedure Choose_Move
       (R : in out Round)
    is
@@ -119,7 +114,7 @@ procedure Day2_2 is
    Sum : Natural := 0;
 begin
    while not End_Of_Input loop
-      Round_Read (Input, R);
+      Round'Read (Input, R);
       Choose_Move (R);
       Sum := Sum + Score (R);
    end loop;
