@@ -39,15 +39,15 @@ procedure Day2_1 is
       return Round_Result
    is
    begin
-      if (R.Opponent = Rock and R.Self = Paper) or
-         (R.Opponent = Paper and R.Self = Scissors) or
-         (R.Opponent = Scissors and R.Self = Rock)
+      if (R.Opponent = Rock and then R.Self = Paper) or else
+         (R.Opponent = Paper and then R.Self = Scissors) or else
+         (R.Opponent = Scissors and then R.Self = Rock)
       then
          return Win;
       elsif
-         (R.Opponent = Rock and R.Self = Rock) or
-         (R.Opponent = Paper and R.Self = Paper) or
-         (R.Opponent = Scissors and R.Self = Scissors)
+         (R.Opponent = Rock and then R.Self = Rock) or else
+         (R.Opponent = Paper and then R.Self = Paper) or else
+         (R.Opponent = Scissors and then R.Self = Scissors)
       then
          return Draw;
       else
