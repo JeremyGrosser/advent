@@ -11,7 +11,9 @@ project Advent2022 is
       for Default_Switches ("Ada") use Advent2022_Config.Ada_Compiler_Switches & (
          "-gnatyM120",
          "-gnat2022",
-         "-gnatwJ"
+         "-gnatwJ",
+         "-g",
+         "-pg"
       );
    end Compiler;
 
@@ -22,5 +24,11 @@ project Advent2022 is
    package Install is
       for Artifacts (".") use ("share");
    end Install;
+
+   package Linker is
+      for Switches ("Ada") use (
+         "-pg"
+      );
+   end Linker;
 
 end Advent2022;
