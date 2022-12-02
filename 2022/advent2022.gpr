@@ -7,13 +7,23 @@ project Advent2022 is
    for Exec_Dir use "bin";
    for Main use ("advent2022.adb");
 
+   --  The -pg switch needs to be passed to both Compiler and Linker. We can't
+   --  add linker switches from alire.toml, so we do it the old fashioned way
+   --  here.
+   Profiling_Switches := ();
+   case Advent2022_Config.Build_Profile is
+      when "development" =>
+         Profiling_Switches := ("-pg");
+      when others =>
+         null;
+   end case;
+
    package Compiler is
-      for Default_Switches ("Ada") use Advent2022_Config.Ada_Compiler_Switches & (
+      for Default_Switches ("Ada") use Advent2022_Config.Ada_Compiler_Switches &
+         Profiling_Switches & (
          "-gnatyM120",
          "-gnat2022",
-         "-gnatwJ",
-         "-g",
-         "-pg"
+         "-gnatwJ"
       );
    end Compiler;
 
@@ -26,9 +36,7 @@ project Advent2022 is
    end Install;
 
    package Linker is
-      for Switches ("Ada") use (
-         "-pg"
-      );
+      for Switches ("Ada") use Profiling_Switches;
    end Linker;
 
 end Advent2022;
