@@ -1,10 +1,10 @@
 pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
 pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
+private with System.Mmap;
 with Ada.Text_IO.Text_Streams;
 with Ada.Text_IO;
 with Ada.Strings.Maps;
 with Ada.Streams;
-with System.Mmap;
 
 package Advent_IO is
 
@@ -42,10 +42,6 @@ package Advent_IO is
       (Filename : String)
       return Stream_Access;
 
-   function Stream
-      (File : System.Mmap.Mapped_File)
-      return Stream_Access;
-
    Whitespace : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
          (ASCII.HT & ASCII.LF & ASCII.CR & ' ');
    CRLF       : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
@@ -71,5 +67,9 @@ private
       Offset : System.Mmap.File_Size;
       Last   : System.Mmap.File_Size;
    end record;
+
+   function Stream
+      (File : System.Mmap.Mapped_File)
+      return Stream_Access;
 
 end Advent_IO;
