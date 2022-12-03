@@ -10,8 +10,10 @@ with Day3_1;
 with Day3_2;
 
 procedure Advent2022 is
-   Puzzle : constant String := Ada.Command_Line.Argument (1);
+   Puzzle   : constant String := Ada.Command_Line.Argument (1);
+   Filename : constant String := Ada.Command_Line.Argument (2);
 begin
+   Input := Stream (Filename);
    if Puzzle = "1.1" then Day1_1; return; end if;
    if Puzzle = "1.2" then Day1_2; return; end if;
    if Puzzle = "2.1" then Day2_1; return; end if;

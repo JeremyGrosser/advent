@@ -1,62 +1,75 @@
-with Ada.Streams; use Ada.Streams;
-with Interfaces.C_Streams;
+pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
+pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
+with Ada.Text_IO.Text_Streams;
+with Ada.Text_IO;
 with Ada.Strings.Maps;
+with Ada.Streams;
+with System.Mmap;
 
 package Advent_IO is
 
-   type FD_Stream is new Root_Stream_Type with private;
-   type Stream_Access is access all Root_Stream_Type'Class;
+   type Mapped_Stream is new Ada.Streams.Root_Stream_Type with private;
+   type Stream_Access is access Mapped_Stream;
 
    overriding
    procedure Read
-      (Stream : in out FD_Stream;
-       Item   : out Stream_Element_Array;
-       Last   : out Stream_Element_Offset);
+      (Stream : in out Mapped_Stream;
+       Item   : out Ada.Streams.Stream_Element_Array;
+       Last   : out Ada.Streams.Stream_Element_Offset);
 
    overriding
    procedure Write
-      (Stream : in out FD_Stream;
-       Item   : Stream_Element_Array);
+      (Stream : in out Mapped_Stream;
+       Item   : Ada.Streams.Stream_Element_Array)
+   is null;
+   --  not supported
 
-   --  These streams wrap stdio
-   function Input
+   function Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Character)
+       return String;
+
+   function Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Ada.Strings.Maps.Character_Set)
+       return String;
+
+   function End_Of_File
+      (Stream : not null Stream_Access)
+      return Boolean;
+
+   function Stream
+      (Filename : String)
       return Stream_Access;
 
-   function Output
+   function Stream
+      (File : System.Mmap.Mapped_File)
       return Stream_Access;
 
-   function Error
-      return Stream_Access;
+   Whitespace : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
+         (ASCII.HT & ASCII.LF & ASCII.CR & ' ');
+   CRLF       : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
+         (ASCII.CR & ASCII.LF);
+
+   Input  : Stream_Access := null;
+   Output : constant Ada.Text_IO.Text_Streams.Stream_Access :=
+      Ada.Text_IO.Text_Streams.Stream (Ada.Text_IO.Standard_Output);
+   Error  : constant Ada.Text_IO.Text_Streams.Stream_Access :=
+      Ada.Text_IO.Text_Streams.Stream (Ada.Text_IO.Standard_Error);
 
    function End_Of_Input
       return Boolean;
 
-   Whitespace : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
-      (ASCII.HT & ASCII.LF & ASCII.CR & ' ');
-   Comma      : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
-      (',');
-   CRLF       : constant Ada.Strings.Maps.Character_Set := Ada.Strings.Maps.To_Set
-      (ASCII.CR & ASCII.LF);
-
-   function Read_Until
-      (S    : not null access Ada.Streams.Root_Stream_Type'Class;
-       Stop : Ada.Strings.Maps.Character_Set)
-      return String;
-
-   function Read_Until
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
-       C : Character)
-      return String;
-
    procedure New_Line
-      (S : not null access Ada.Streams.Root_Stream_Type'Class);
-
-   procedure Flush;
+      (Stream : not null Ada.Text_IO.Text_Streams.Stream_Access);
 
 private
 
-   type FD_Stream is new Root_Stream_Type with record
-      FD : Interfaces.C_Streams.FILEs;
+   type Mapped_Stream is new Ada.Streams.Root_Stream_Type with record
+      File   : System.Mmap.Mapped_File;
+      Region : System.Mmap.Mapped_Region;
+      Offset : System.Mmap.File_Size;
+      Last   : System.Mmap.File_Size;
    end record;
 
 end Advent_IO;

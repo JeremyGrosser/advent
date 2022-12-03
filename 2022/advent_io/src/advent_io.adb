@@ -1,119 +1,91 @@
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;
 
 package body Advent_IO is
-   STD_IN  : aliased FD_Stream :=
-      FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdin);
-   STD_OUT : aliased FD_Stream :=
-      FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stdout);
-   STD_ERR : aliased FD_Stream :=
-      FD_Stream'(Root_Stream_Type with FD => Interfaces.C_Streams.stderr);
+   use type System.Mmap.File_Size;
 
-   Input_Buffer : Unbounded_String;
+   function Stream
+      (File : System.Mmap.Mapped_File)
+      return Stream_Access
+   is
+      MS : constant not null Stream_Access := new Mapped_Stream;
+   begin
+      MS.File := File;
+      MS.Offset := 0;
+      MS.Last := System.Mmap.Length (Stream.File);
+      MS.Region := System.Mmap.Read
+         (File    => MS.File,
+          Offset  => MS.Offset,
+          Length  => MS.Last,
+          Mutable => False);
+      return MS;
+   end Stream;
+
+   function Stream
+      (Filename : String)
+      return Stream_Access
+   is (Stream (System.Mmap.Open_Read (Filename)));
 
    overriding
    procedure Read
-      (Stream : in out FD_Stream;
-       Item   : out Stream_Element_Array;
-       Last   : out Stream_Element_Offset)
+      (Stream : in out Mapped_Stream;
+       Item   : out Ada.Streams.Stream_Element_Array;
+       Last   : out Ada.Streams.Stream_Element_Offset)
    is
-      use Interfaces.C_Streams;
-      Status : Integer;
+      use Ada.Streams;
    begin
-      Status := Integer
-         (fread
-            (buffer => voids (Item'Address),
-             size   => 1,
-             count  => size_t (Item'Length),
-             stream => Stream.FD));
-      Last := Stream_Element_Offset (Status);
+      Last := Item'First;
+      for D of System.Mmap.Data (Stream.Region).all loop
+         Item (Last) := Stream_Element (Character'Pos (D));
+         Last := Last + 1;
+         Stream.Offset := Stream.Offset + 1;
+      end loop;
    end Read;
 
-   overriding
-   procedure Write
-      (Stream : in out FD_Stream;
-       Item   : Stream_Element_Array)
+   function Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Character)
+       return String
+   is (Read_Until (Stream, Ada.Strings.Maps.To_Set (Stop)));
+
+   function Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Ada.Strings.Maps.Character_Set)
+       return String
    is
-      use Interfaces.C_Streams;
-      Length : Stream_Element_Offset;
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      First : constant Natural := Natural (Stream.Offset) + 1;
+      Last  : Natural := Natural (Stream.Last);
    begin
-      Length := Stream_Element_Offset (fwrite
-         (buffer => voids (Item'Address),
-          size   => 1,
-          count  => size_t (Item'Length),
-          stream => Stream.FD));
-      if Length > 0 and then Length < Item'Length then
-         Write (Stream, Item (Item'First + Length .. Item'Last));
+      Last := Ada.Strings.Fixed.Index (String (Data (First .. Last)), Stop);
+      if Last = 0 then
+         Last := Natural (Stream.Last);
+         Stream.Offset := Stream.Last + 1;
+      else
+         Stream.Offset := System.Mmap.File_Size (Last);
+         Last := Last - 1;
       end if;
-   end Write;
 
-   function Input
-      return Stream_Access
-   is (STD_IN'Access);
+      return String (Data (First .. Last));
+   end Read_Until;
 
-   function Output
-      return Stream_Access
-   is (STD_OUT'Access);
-
-   function Error
-      return Stream_Access
-   is (STD_ERR'Access);
+   function End_Of_File
+      (Stream : not null Stream_Access)
+      return Boolean
+   is
+      use System.Mmap;
+   begin
+      return Stream.Offset >= Stream.Last;
+   end End_Of_File;
 
    function End_Of_Input
       return Boolean
-   is
-      use Interfaces.C_Streams;
-      Ch : int;
-   begin
-      if feof (stdin) /= 0 then
-         return True;
-      end if;
-
-      Ch := fgetc (stdin);
-      if Ch = EOF then
-         return True;
-      else
-         Ch := ungetc (Ch, stdin);
-         return False;
-      end if;
-   end End_Of_Input;
-
-   function Read_Until
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
-       Stop : Ada.Strings.Maps.Character_Set)
-       return String
-   is
-      Ch : Character;
-   begin
-      Delete (Input_Buffer, 1, Length (Input_Buffer));
-
-      while not End_Of_Input loop
-         Character'Read (S, Ch);
-         exit when Ada.Strings.Maps.Is_In (Ch, Stop);
-         Append (Input_Buffer, Ch);
-      end loop;
-
-      return To_String (Input_Buffer);
-   end Read_Until;
-
-   function Read_Until
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
-       C : Character)
-       return String
-   is (Read_Until (S, Ada.Strings.Maps.To_Set ("" & C)));
+   is (End_Of_File (Input));
 
    procedure New_Line
-      (S : not null access Ada.Streams.Root_Stream_Type'Class)
+      (Stream : not null Ada.Text_IO.Text_Streams.Stream_Access)
    is
    begin
-      String'Write (S, "" & ASCII.LF);
+      Character'Write (Stream, ASCII.LF);
    end New_Line;
-
-   procedure Flush is
-      use Interfaces.C_Streams;
-      Status : Integer
-         with Unreferenced;
-   begin
-      Status := Integer (fflush (NULL_Stream));
-   end Flush;
 
 end Advent_IO;

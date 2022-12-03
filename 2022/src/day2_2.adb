@@ -1,6 +1,5 @@
 with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
-with Ada.Streams;
 
 procedure Day2_2 is
    type Shape is (Rock, Paper, Scissors);
@@ -12,19 +11,13 @@ procedure Day2_2 is
    end record;
 
    procedure Round_Read
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : out Round);
-
-   for Round'Read use Round_Read;
-
-   procedure Round_Read
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+      (Stream : not null Stream_Access;
        Item   : out Round)
    is
       Theirs : constant String := Read_Until (Stream, ' ');
       Ours   : constant String := Read_Until (Stream, ASCII.LF);
    begin
-      case Theirs (1) is
+      case Theirs (Theirs'First) is
          when 'A' => Item.Opponent := Rock;
          when 'B' => Item.Opponent := Paper;
          when 'C' => Item.Opponent := Scissors;
@@ -32,7 +25,7 @@ procedure Day2_2 is
             raise Program_Error with "Invalid data";
       end case;
 
-      case Ours (1) is
+      case Ours (Ours'First) is
          when 'X' => Item.Expect := Loss;
          when 'Y' => Item.Expect := Draw;
          when 'Z' => Item.Expect := Win;
@@ -114,7 +107,7 @@ procedure Day2_2 is
    Sum : Natural := 0;
 begin
    while not End_Of_Input loop
-      Round'Read (Input, R);
+      Round_Read (Input, R);
       Choose_Move (R);
       Sum := Sum + Score (R);
    end loop;

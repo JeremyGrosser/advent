@@ -15,7 +15,7 @@ procedure Day2_1 is
       Theirs : constant String := Read_Until (Stream, ' ');
       Ours   : constant String := Read_Until (Stream, ASCII.LF);
    begin
-      case Theirs (1) is
+      case Theirs (Theirs'First) is
          when 'A' => Item.Opponent := Rock;
          when 'B' => Item.Opponent := Paper;
          when 'C' => Item.Opponent := Scissors;
@@ -23,7 +23,7 @@ procedure Day2_1 is
             raise Program_Error with "Invalid data";
       end case;
 
-      case Ours (1) is
+      case Ours (Ours'First) is
          when 'X' => Item.Self := Rock;
          when 'Y' => Item.Self := Paper;
          when 'Z' => Item.Self := Scissors;

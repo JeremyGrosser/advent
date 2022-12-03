@@ -4,7 +4,7 @@ with Ada.Strings;
 
 package body Advent_IO.Generic_Numbers is
    function Get
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Number
    is
@@ -21,7 +21,7 @@ package body Advent_IO.Generic_Numbers is
    end Get;
 
    function Get_Vector
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace;
        Initial_Capacity : Natural := 0)
       return Number_Vectors.Vector
@@ -39,7 +39,7 @@ package body Advent_IO.Generic_Numbers is
    end Get_Vector;
 
    function Get_Numbers
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Numbers
    is

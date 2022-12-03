@@ -10,7 +10,7 @@ assert() {
     input=$2
     expectation=$3
 
-    result=`$binary $puzzle < $input`
+    result=`$binary $puzzle $input`
 
     if [ "$result" != "$expectation" ]; then
         echo -e " \e[1m\e[31mFAIL\e[0m $binary < $input"
@@ -23,7 +23,7 @@ assert() {
 solve() {
     puzzle=$1
     input=$2
-    result=`$binary $puzzle < $input`
+    result=`$binary $puzzle $input`
     echo -e " \e[1m\e[92m$result\e[0m"
 }
 

@@ -5,7 +5,7 @@ generic
 package Advent_IO.Generic_Numbers is
 
    function Get
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Number;
 
@@ -14,7 +14,7 @@ package Advent_IO.Generic_Numbers is
        Element_Type => Number);
 
    function Get_Vector
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace;
        Initial_Capacity : Natural := 0)
       return Number_Vectors.Vector;
@@ -22,7 +22,7 @@ package Advent_IO.Generic_Numbers is
    type Numbers is array (Positive range <>) of Number;
 
    function Get_Numbers
-      (S : not null access Ada.Streams.Root_Stream_Type'Class;
+      (S : not null Stream_Access;
        Delimiter : Ada.Strings.Maps.Character_Set := Whitespace)
       return Numbers;
 
