@@ -44,3 +44,7 @@ solve 2.1 input/day2
 echo -n "2.2 "
 assert 2.2 input/day2_test 12
 solve 2.2 input/day2
+
+echo -n "3.1 "
+assert 3.1 input/day3_test 157
+solve 3.1 input/day3
