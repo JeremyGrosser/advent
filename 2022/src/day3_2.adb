@@ -1,21 +1,29 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
-with Ada.Strings.Fixed;
-with Ada.Strings.Maps;
 
 procedure Day3_2 is
+
+   function Contains
+      (S : String;
+       C : Character)
+      return Boolean
+   is
+   begin
+      for Ch of S loop
+         if Ch = C then
+            return True;
+         end if;
+      end loop;
+      return False;
+   end Contains;
 
    function Find_Badge
       (A, B, C : String)
       return Character
    is
-      use Ada.Strings.Fixed;
-      use Ada.Strings.Maps;
-      Set : Character_Set;
    begin
       for Candidate of A loop
-         Set := To_Set (Candidate);
-         if Index (B, Set, B'First) /= 0 and then Index (C, Set, C'First) /= 0 then
+         if Contains (B, Candidate) and then Contains (C, Candidate) then
             return Candidate;
          end if;
       end loop;
