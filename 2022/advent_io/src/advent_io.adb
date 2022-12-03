@@ -41,11 +41,40 @@ package body Advent_IO is
       end loop;
    end Read;
 
+   function Index
+      (S : String;
+       C : Character)
+       return Natural
+   is
+   begin
+      for I in S'Range loop
+         if S (I) = C then
+            return I;
+         end if;
+      end loop;
+      return 0;
+   end Index;
+
    function Read_Until
       (Stream : not null Stream_Access;
        Stop   : Character)
        return String
-   is (Read_Until (Stream, Ada.Strings.Maps.To_Set (Stop)));
+   is
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      First : constant Natural := Natural (Stream.Offset) + 1;
+      Last  : Natural := Natural (Stream.Last);
+   begin
+      Last := Index (String (Data (First .. Last)), Stop);
+      if Last = 0 then
+         Last := Natural (Stream.Last);
+         Stream.Offset := Stream.Last + 1;
+      else
+         Stream.Offset := System.Mmap.File_Size (Last);
+         Last := Last - 1;
+      end if;
+
+      return String (Data (First .. Last));
+   end Read_Until;
 
    function Read_Until
       (Stream : not null Stream_Access;
