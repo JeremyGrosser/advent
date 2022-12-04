@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ALR="alr --no-tty --no-color"
+TIMEOUT="timeout --preserve-status --verbose 2.0s"
 binary="${PWD}/bin/advent2022"
 
 set -e
@@ -10,10 +11,10 @@ assert() {
     input=$2
     expectation=$3
 
-    result=`$binary $puzzle $input`
+    result=`$TIMEOUT $binary $puzzle $input`
 
     if [ "$result" != "$expectation" ]; then
-        echo -e " \e[1m\e[31mFAIL\e[0m $binary < $input"
+        echo -e " \e[1m\e[31mFAIL\e[0m $binary $input"
         echo "Expected: $expectation"
         echo "Result:   $result"
         return 1
@@ -23,7 +24,7 @@ assert() {
 solve() {
     puzzle=$1
     input=$2
-    result=`$binary $puzzle $input`
+    result=`$timeout $binary $puzzle $input`
     echo -e " \e[1m\e[92m$result\e[0m"
 }
 
