@@ -74,6 +74,7 @@ package body Advent_IO is
       else
          --  Advance the offset to Last
          Stream.Offset := System.Mmap.File_Size (Data_Last);
+         Data_Last := Data_Last - 1;
       end if;
 
       Last := Item'First + (Data_Last - Data_First);

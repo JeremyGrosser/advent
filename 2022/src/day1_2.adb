@@ -15,18 +15,18 @@ procedure Day1_2 is
          Top (3) := N;
       end if;
    end Add_Elf;
+
+   Line : String (1 .. 6);
+   Last : Natural;
 begin
    while not End_Of_Input loop
-      declare
-         Line : constant String := Read_Until (Input, CRLF);
-      begin
-         if Line'Length = 0 then
-            Add_Elf (Total);
-            Total := 0;
-         else
-            Total := Total + Natural'Value (Line);
-         end if;
-      end;
+      Read_Until (Input, ASCII.LF, Line, Last);
+      if Last = 0 then
+         Add_Elf (Total);
+         Total := 0;
+      else
+         Total := Total + Natural'Value (Line (1 .. Last));
+      end if;
    end loop;
 
    Add_Elf (Total);
