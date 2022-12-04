@@ -13,7 +13,11 @@ project Advent2022 is
    Profiling_Switches := ();
    case Advent2022_Config.Build_Profile is
       when "development" =>
-         Profiling_Switches := ("-pg");
+         Profiling_Switches := (
+            "-pg",
+            "-fstack-usage",
+            "-fcallgraph-info=su"
+         );
       when others =>
          null;
    end case;
