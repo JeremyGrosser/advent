@@ -10,3 +10,7 @@ executables = ["advent2022"]
 
 [build-switches]
 release.optimization = ["-O3", "-gnatn", "-gnatp", "-march=native"]
+[[depends-on]]
+synack_misc = "~0.1.0"
+[[pins]]
+synack_misc = { url='https://github.com/JeremyGrosser/synack_misc' }

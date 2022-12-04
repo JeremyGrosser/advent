@@ -1,5 +1,6 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
+with Str;
 
 procedure Day4_2 is
    type Section is record
@@ -12,19 +13,19 @@ procedure Day4_2 is
       (Stream : not null Stream_Access;
        Item   : out Group)
    is
-      Str  : String (1 .. 2);
+      X    : String (1 .. 2);
       Last : Natural;
    begin
       for I in Group'Range loop
-         Read_Until (Stream, '-', Str, Last);
-         Item (I).First := Natural'Value (Str (1 .. Last));
+         Read_Until (Stream, '-', X, Last);
+         Item (I).First := Str.To_Natural (X (1 .. Last));
 
          if I = Group'Last then
-            Read_Until (Stream, ASCII.LF, Str, Last);
+            Read_Until (Stream, ASCII.LF, X, Last);
          else
-            Read_Until (Stream, ',', Str, Last);
+            Read_Until (Stream, ',', X, Last);
          end if;
-         Item (I).Last := Natural'Value (Str (1 .. Last));
+         Item (I).Last := Str.To_Natural (X (1 .. Last));
       end loop;
    end Read_Group;
 
