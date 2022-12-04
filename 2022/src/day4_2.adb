@@ -12,7 +12,7 @@ procedure Day4_2 is
       (Stream : not null Stream_Access;
        Item   : out Group)
    is
-      Str  : String (1 .. 16);
+      Str  : String (1 .. 2);
       Last : Natural;
    begin
       for I in Group'Range loop
@@ -28,11 +28,6 @@ procedure Day4_2 is
       end loop;
    end Read_Group;
 
-   function Fully_Contained
-      (A, B : Section)
-      return Boolean
-   is (A.First >= B.First and then A.Last <= B.Last);
-
    function Overlaps
       (A, B : Section)
       return Boolean
@@ -43,7 +38,7 @@ procedure Day4_2 is
 begin
    while not End_Of_Input loop
       Read_Group (Input, G);
-      if Overlaps (G (1), G (2)) or Overlaps (G (2), G (1)) then
+      if Overlaps (G (1), G (2)) or else Overlaps (G (2), G (1)) then
          Sum := Sum + 1;
       end if;
    end loop;

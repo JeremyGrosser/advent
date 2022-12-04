@@ -12,7 +12,7 @@ procedure Day4_1 is
       (Stream : not null Stream_Access;
        Item   : out Group)
    is
-      Str  : String (1 .. 16);
+      Str  : String (1 .. 2);
       Last : Natural;
    begin
       for I in Group'Range loop
@@ -38,7 +38,7 @@ procedure Day4_1 is
 begin
    while not End_Of_Input loop
       Read_Group (Input, G);
-      if Fully_Contained (G (1), G (2)) or Fully_Contained (G (2), G (1)) then
+      if Fully_Contained (G (1), G (2)) or else Fully_Contained (G (2), G (1)) then
          Sum := Sum + 1;
       end if;
    end loop;
