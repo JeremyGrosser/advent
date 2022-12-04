@@ -8,14 +8,5 @@ maintainers-logins = ["JeremyGrosser"]
 
 executables = ["advent2022"]
 
-[[depends-on]]
-advent_io = "~0.1.0-dev"
-
-[[pins]]
-advent_io = { path='advent_io' }
-
 [build-switches]
-release.optimization = ["-O2", "-gnatn"]
-
-[build-profiles]
-advent_io = "release"
+release.optimization = ["-O3", "-gnatn", "-gnatp", "-march=native"]
