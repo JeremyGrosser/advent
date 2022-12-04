@@ -12,9 +12,11 @@ procedure Day2_1 is
       (Stream : not null Stream_Access;
        Item   : out Round)
    is
-      Theirs : constant String := Read_Until (Stream, ' ');
-      Ours   : constant String := Read_Until (Stream, ASCII.LF);
+      Theirs, Ours : String (1 .. 3);
+      Last : Natural;
    begin
+      Read_Until (Stream, ' ', Theirs, Last);
+      Read_Until (Stream, ASCII.LF, Ours, Last);
       case Theirs (Theirs'First) is
          when 'A' => Item.Opponent := Rock;
          when 'B' => Item.Opponent := Paper;

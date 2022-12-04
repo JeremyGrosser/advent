@@ -34,6 +34,12 @@ package Advent_IO is
        Stop   : Ada.Strings.Maps.Character_Set)
        return String;
 
+   procedure Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Character;
+       Item   : out String;
+       Last   : out Natural);
+
    function End_Of_File
       (Stream : not null Stream_Access)
       return Boolean;

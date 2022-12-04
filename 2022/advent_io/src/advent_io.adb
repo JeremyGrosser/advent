@@ -55,6 +55,31 @@ package body Advent_IO is
       return 0;
    end Index;
 
+   procedure Read_Until
+      (Stream : not null Stream_Access;
+       Stop   : Character;
+       Item   : out String;
+       Last   : out Natural)
+   is
+      Data       : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      Data_First : constant Natural := Natural (Stream.Offset) + 1;
+      Data_Last  : Natural := Natural (Stream.Last);
+   begin
+      Data_Last := Index (String (Data (Data_First .. Data_Last)), Stop);
+      if Data_Last = 0 then
+         --  Stop does not occur in remaining Data, return everything and
+         --  advance offset past the end of file
+         Data_Last := Natural (Stream.Last);
+         Stream.Offset := Stream.Last + 1;
+      else
+         --  Advance the offset to Last
+         Stream.Offset := System.Mmap.File_Size (Data_Last);
+      end if;
+
+      Last := Item'First + (Data_Last - Data_First);
+      Item (Item'First .. Last) := String (Data (Data_First .. Data_Last));
+   end Read_Until;
+
    function Read_Until
       (Stream : not null Stream_Access;
        Stop   : Character)
