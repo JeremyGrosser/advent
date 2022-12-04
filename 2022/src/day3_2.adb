@@ -44,18 +44,17 @@ procedure Day3_2 is
       end if;
    end Priority;
 
+   A, B, C : String (1 .. 51);
+   A_Last, B_Last, C_Last : Natural;
    Sum : Natural := 0;
+   Badge : Character;
 begin
    while not End_Of_Input loop
-      declare
-         A : constant String := Read_Until (Input, CRLF);
-         B : constant String := Read_Until (Input, CRLF);
-         C : constant String := Read_Until (Input, CRLF);
-         Badge : Character;
-      begin
-         Badge := Find_Badge (A, B, C);
-         Sum := Sum + Priority (Badge);
-      end;
+      Read_Until (Input, ASCII.LF, A, A_Last);
+      Read_Until (Input, ASCII.LF, B, B_Last);
+      Read_Until (Input, ASCII.LF, C, C_Last);
+      Badge := Find_Badge (A (1 .. A_Last), B (1 .. B_Last), C (1 .. C_Last));
+      Sum := Sum + Priority (Badge);
    end loop;
 
    Put (Output, Sum);
