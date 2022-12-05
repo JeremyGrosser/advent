@@ -24,6 +24,12 @@ package Advent_IO is
    is null;
    --  not supported
 
+   type Seek_From is (Seek_Start, Seek_Current, Seek_End);
+   procedure Seek
+      (Stream : not null Stream_Access;
+       Offset : Integer;
+       From   : Seek_From := Seek_Current);
+
    function Read_Until
       (Stream : not null Stream_Access;
        Stop   : Character)

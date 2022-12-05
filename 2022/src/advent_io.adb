@@ -46,6 +46,23 @@ package body Advent_IO is
       end loop;
    end Read;
 
+   procedure Seek
+      (Stream : not null Stream_Access;
+       Offset : Integer;
+       From   : Seek_From := Seek_Current)
+   is
+      Off : constant System.Mmap.File_Size := System.Mmap.File_Size (Offset);
+   begin
+      case From is
+         when Seek_Start =>
+            Stream.Offset := Off;
+         when Seek_Current =>
+            Stream.Offset := Stream.Offset + Off;
+         when Seek_End =>
+            Stream.Offset := Stream.Last - Off;
+      end case;
+   end Seek;
+
    function Index
       (S : String;
        C : Character)
