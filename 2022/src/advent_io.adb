@@ -32,11 +32,16 @@ package body Advent_IO is
        Last   : out Ada.Streams.Stream_Element_Offset)
    is
       use Ada.Streams;
+      Data       : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      Data_Last  : constant Natural := Natural (Stream.Last);
+      Data_Index : Natural;
    begin
-      Last := Item'First;
-      for D of System.Mmap.Data (Stream.Region).all loop
-         Item (Last) := Stream_Element (Character'Pos (D));
+      Last := Item'First - 1;
+      for I in Item'Range loop
+         Data_Index := Natural (Stream.Offset) + 1;
+         exit when Data_Index = Data_Last;
          Last := Last + 1;
+         Item (I) := Stream_Element (Character'Pos (Data (Data_Index)));
          Stream.Offset := Stream.Offset + 1;
       end loop;
    end Read;

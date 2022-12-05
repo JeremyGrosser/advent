@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 ALR="alr --no-tty --no-color"
-TIMEOUT="timeout --preserve-status --verbose 2.0s"
+#TIMEOUT="timeout --preserve-status --verbose 10.0s"
+TIMEOUT=""
 binary="${PWD}/bin/advent2022"
 
 set -e
@@ -61,3 +62,11 @@ solve 4.1 input/day4
 echo -n "4.2 "
 assert 4.2 input/day4_test 4
 solve 4.2 input/day4
+
+echo -n "5.1 "
+assert 5.1 input/day5_test CMZ
+solve 5.1 input/day5
+
+#echo -n "5.2 "
+#assert 5.2 input/day5_test 1
+#solve 5.2 input/day5
