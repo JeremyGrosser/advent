@@ -67,6 +67,6 @@ echo -n "5.1 "
 assert 5.1 input/day5_test CMZ
 solve 5.1 input/day5
 
-#echo -n "5.2 "
-#assert 5.2 input/day5_test 1
-#solve 5.2 input/day5
+echo -n "5.2 "
+assert 5.2 input/day5_test MCD
+solve 5.2 input/day5

@@ -24,12 +24,6 @@ procedure Day5_1 is
       (C : Crate)
    is
    begin
-      String'Write (Error, "Add_Crate ");
-      Put (Error, Column);
-      Character'Write (Error, ' ');
-      Crate'Write (Error, C);
-      New_Line (Error);
-
       while Natural (Length (Yard)) < Column loop
          Append (Yard, Crate_Vectors.Empty_Vector);
       end loop;
@@ -37,31 +31,11 @@ procedure Day5_1 is
       Append (Reference (Yard, Column), C);
    end Add_Crate;
 
-   procedure Print_Yard is
-   begin
-      for I in First_Index (Yard) .. Last_Index (Yard) loop
-         Put (Error, I);
-         for J in reverse First_Index (Yard (I)) .. Last_Index (Yard (I)) loop
-            Character'Write (Error, ' ');
-            Character'Write (Error, Yard (I) (J));
-         end loop;
-         New_Line (Error);
-      end loop;
-   end Print_Yard;
-
    procedure Move_Crate
       (From, To : Positive)
    is
       C : constant Crate := First_Element (Reference (Yard, From));
    begin
-      String'Write (Error, "Move ");
-      Crate'Write (Error, C);
-      Character'Write (Error, ' ');
-      Put (Error, From);
-      Character'Write (Error, ' ');
-      Put (Error, To);
-      New_Line (Error);
-
       Delete_First (Reference (Yard, From));
       Prepend (Reference (Yard, To), C);
    end Move_Crate;
@@ -103,10 +77,7 @@ begin
       Move_Count, From_Column, To_Column : Positive := 1;
    begin
       while not End_Of_Input loop
-         Print_Yard;
-         New_Line (Error);
-         String'Write (Error, "---------------------");
-         New_Line (Error);
+         --  Print_Yard;
 
          Read_Until (Input, ' ', Move, Last);
          Move_Count := Get (Input, Whitespace);
