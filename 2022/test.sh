@@ -70,3 +70,7 @@ solve 5.1 input/day5
 echo -n "5.2 "
 assert 5.2 input/day5_test MCD
 solve 5.2 input/day5
+
+echo -n "6.1 "
+assert 6.1 input/day6_test 5
+solve 6.1 input/day6
