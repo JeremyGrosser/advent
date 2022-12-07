@@ -94,18 +94,6 @@ procedure Day7_1 is
       end if;
    end Execute_Command;
 
-   procedure Add_Directory
-      (Name : String)
-   is
-      use Ada.Strings.Fixed;
-      use String_Vectors;
-      P : Path := Working_Dir;
-      N : constant String := Strip (Name);
-   begin
-      Append (P, N);
-      Include (Files, P, (Is_Dir => True, Size => 0));
-   end Add_Directory;
-
    procedure Add_File
       (Arg : String)
    is
@@ -162,7 +150,6 @@ begin
                Execute_Command (Line (Index (Line, " ", Line'First) + 1 .. Line'Last));
             when 'd' =>
                null;
-               --  Add_Directory (Line (Index (Line, " ", Line'First) + 1 .. Line'Last));
             when '0' .. '9' =>
                Add_File (Line);
             when others =>
