@@ -3,34 +3,13 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 with Ada.Containers.Indefinite_Vectors;
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers;
-with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 
 procedure Day7_1 is
-   function Strip
-      (S : String)
-      return String
-   is
-      Last : Natural := S'Last;
-   begin
-      while Last >= S'First and then S (Last) = '/' loop
-         Last := Last - 1;
-      end loop;
-      return S (S'First .. Last);
-   end Strip;
-
    package String_Vectors is new Ada.Containers.Indefinite_Vectors
       (Index_Type => Positive,
        Element_Type => String);
    subtype Path is String_Vectors.Vector;
-
-   function To_String
-      (P : Path)
-      return String
-   is
-   begin
-      return P'Image;
-   end To_String;
 
    function "<"
       (Left, Right : Path)
@@ -101,7 +80,7 @@ procedure Day7_1 is
       use String_Vectors;
       Size : constant Natural := Natural'Value (Arg (Arg'First .. Index (Arg, " ") - 1));
       Name : constant String := Arg (Index (Arg, " ") + 1 .. Arg'Last);
-      P : Path := Working_Dir & Name;
+      P    : constant Path := Working_Dir & Name;
    begin
       Insert (Files, P, (Is_Dir => False, Size => Size));
    end Add_File;
