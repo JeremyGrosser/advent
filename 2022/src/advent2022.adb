@@ -14,6 +14,7 @@ with Day5_1;
 with Day5_2;
 with Day6_1;
 with Day6_2;
+with Day7_1;
 
 procedure Advent2022 is
    Puzzle   : constant String := Ada.Command_Line.Argument (1);
@@ -32,6 +33,7 @@ begin
    if Puzzle = "5.2" then Day5_2; return; end if;
    if Puzzle = "6.1" then Day6_1; return; end if;
    if Puzzle = "6.2" then Day6_2; return; end if;
+   if Puzzle = "7.1" then Day7_1; return; end if;
 
    String'Write (Error, "Unknown Puzzle: ");
    String'Write (Error, Puzzle);

@@ -78,3 +78,7 @@ solve 6.1 input/day6
 echo -n "6.2 "
 assert 6.2 input/day6_test 23
 solve 6.2 input/day6
+
+echo -n "7.1 "
+assert 7.1 input/day7_test 95437
+solve 7.1 input/day7
