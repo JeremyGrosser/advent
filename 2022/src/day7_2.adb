@@ -6,7 +6,7 @@ with Ada.Containers;
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 
-procedure Day7_1 is
+procedure Day7_2 is
    function Strip
       (S : String)
       return String
@@ -172,18 +172,22 @@ begin
    end loop;
 
    declare
-      Dir_Sum, Sum : Natural := 0;
+      Total    : constant Natural := 70_000_000;
+      Used     : constant Natural := Size (["/"]);
+      Needed   : constant Natural := 30_000_000;
+      Best_Sum : Natural := Total;
+      Dir_Sum  : Natural := 0;
    begin
       for I in Iterate (Files) loop
          if Element (I).Is_Dir then
             Dir_Sum := Size (Key (I));
-            if Dir_Sum <= 100_000 then
-               Sum := Sum + Dir_Sum;
+            if (Total - (Used - Dir_Sum)) >= Needed and then Dir_Sum < Best_Sum then
+               Best_Sum := Dir_Sum;
             end if;
          end if;
       end loop;
-      Put (Output, Sum);
+      Put (Output, Best_Sum);
       New_Line (Output);
    end;
 
-end Day7_1;
+end Day7_2;
