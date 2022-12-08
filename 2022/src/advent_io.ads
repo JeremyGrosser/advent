@@ -78,6 +78,11 @@ package Advent_IO is
    procedure New_Line
       (Stream : not null Ada.Text_IO.Text_Streams.Stream_Access);
 
+   function Character_Count
+      (Stream : not null Stream_Access;
+       Ch     : Character)
+      return Natural;
+
 private
 
    type Mapped_Stream is new Ada.Streams.Root_Stream_Type with record

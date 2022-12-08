@@ -170,4 +170,22 @@ package body Advent_IO is
       Character'Write (Stream, ASCII.LF);
    end New_Line;
 
+   function Character_Count
+      (Stream : not null Stream_Access;
+       Ch     : Character)
+      return Natural
+   is
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      First : constant Natural := Natural (Stream.Offset) + 1;
+      Last  : constant Natural := Natural (Stream.Last);
+      Count : Natural := 0;
+   begin
+      for D of Data (First .. Last) loop
+         if D = Ch then
+            Count := Count + 1;
+         end if;
+      end loop;
+      return Count;
+   end Character_Count;
+
 end Advent_IO;

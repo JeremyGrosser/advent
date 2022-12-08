@@ -5,21 +5,7 @@ with Ada.IO_Exceptions;
 procedure Day8_2 is
    function Line_Count
       return Natural
-   is
-      Count : Natural := 0;
-   begin
-      while not End_Of_Input loop
-         declare
-            Line : constant String := Read_Until (Input, ASCII.LF);
-            pragma Unreferenced (Line);
-         begin
-            Count := Count + 1;
-         end;
-      end loop;
-
-      Seek (Input, 0, Seek_Start);
-      return Count;
-   end Line_Count;
+   is (Character_Count (Input, ASCII.LF));
 
    function Line_Length
       return Natural
