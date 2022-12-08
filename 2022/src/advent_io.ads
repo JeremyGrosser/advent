@@ -25,10 +25,17 @@ package Advent_IO is
    --  not supported
 
    type Seek_From is (Seek_Start, Seek_Current, Seek_End);
+   subtype Seek_Offset is Integer;
    procedure Seek
       (Stream : not null Stream_Access;
-       Offset : Integer;
-       From   : Seek_From := Seek_Current);
+       Offset : Seek_Offset;
+       From   : Seek_From := Seek_Current)
+   with Pre => Stream = Input; --  TODO: support other streams
+
+   function Tell
+      (Stream : not null Stream_Access)
+      return Seek_Offset
+   with Pre => Stream = Input; --  TODO: support other streams
 
    function Read_Until
       (Stream : not null Stream_Access;

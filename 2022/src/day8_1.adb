@@ -6,6 +6,7 @@ procedure Day8_1 is
    function Line_Count
       return Natural
    is
+      Save : constant Seek_Offset := Tell (Input);
       Count : Natural := 0;
    begin
       while not End_Of_Input loop
@@ -17,16 +18,17 @@ procedure Day8_1 is
          end;
       end loop;
 
-      Seek (Input, 0, Seek_Start);
+      Seek (Input, Save, Seek_Start);
       return Count;
    end Line_Count;
 
    function Line_Length
       return Natural
    is
+      Save : constant Seek_Offset := Tell (Input);
       Line : constant String := Read_Until (Input, ASCII.LF);
    begin
-      Seek (Input, 0, Seek_Start);
+      Seek (Input, Save, Seek_Start);
       return Line'Length;
    end Line_Length;
 

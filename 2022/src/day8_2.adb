@@ -138,7 +138,7 @@ begin
 
    for Y in Trees'Range (1) loop
       for X in Trees'Range (2) loop
-         Score := Sherwood.Scenic_Score (Trees, Y, x);
+         Score := Sherwood.Scenic_Score (Trees, Y, X);
          if Score > Best then
             Best := Score;
          end if;
