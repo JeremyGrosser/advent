@@ -83,6 +83,10 @@ package Advent_IO is
        Ch     : Character)
       return Natural;
 
+   function Length
+      (Stream : not null Stream_Access)
+      return Natural;
+
 private
 
    type Mapped_Stream is new Ada.Streams.Root_Stream_Type with record

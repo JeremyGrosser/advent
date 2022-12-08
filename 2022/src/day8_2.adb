@@ -3,10 +3,6 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 with Ada.IO_Exceptions;
 
 procedure Day8_2 is
-   function Line_Count
-      return Natural
-   is (Character_Count (Input, ASCII.LF));
-
    function Line_Length
       return Natural
    is
@@ -15,6 +11,10 @@ procedure Day8_2 is
       Seek (Input, 0, Seek_Start);
       return Line'Length;
    end Line_Length;
+
+   function Line_Count
+      return Natural
+   is ((Length (Input) - 1) / Line_Length);
 
    generic
       Width  : Natural;

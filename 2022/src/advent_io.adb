@@ -188,4 +188,9 @@ package body Advent_IO is
       return Count;
    end Character_Count;
 
+   function Length
+      (Stream : not null Stream_Access)
+      return Natural
+   is (Natural (Stream.Last));
+
 end Advent_IO;
