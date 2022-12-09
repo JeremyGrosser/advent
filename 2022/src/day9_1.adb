@@ -27,7 +27,6 @@ procedure Day9_1 is
 
    Visited : Set := Empty_Set;
    Head, Tail : Position := (0, 0);
-   Min, Max : Position := (0, 0);
 
    procedure Update_Tail is
       function Adjacent
@@ -71,24 +70,6 @@ begin
 
             Update_Tail;
             Include (Visited, Tail);
-
-            if Tail.X < Min.X then
-               Min.X := Tail.X;
-            end if;
-
-            if Tail.X > Max.X then
-               Max.X := Tail.X;
-            end if;
-
-            if Tail.Y < Min.Y then
-               Min.Y := Tail.Y;
-            end if;
-
-            if Tail.Y > Max.Y then
-               Max.Y := Tail.Y;
-            end if;
-
-            --  Print_State;
          end loop;
       end;
    end loop;
