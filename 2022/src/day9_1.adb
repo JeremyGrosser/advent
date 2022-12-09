@@ -71,9 +71,7 @@ begin
             end case;
 
             Update_Tail;
-            if not Contains (Visited, Tail) then
-               Insert (Visited, Tail);
-            end if;
+            Include (Visited, Tail);
 
             if Tail.X < Min.X then
                Min.X := Tail.X;
