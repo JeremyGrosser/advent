@@ -8,23 +8,6 @@ procedure Day9_2 is
       Y, X : Integer;
    end record;
 
-   procedure Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Position);
-   for Position'Write use Write;
-
-   procedure Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Position)
-   is
-   begin
-      String'Write (Stream, "(");
-      String'Write (Stream, Item.X'Image);
-      String'Write (Stream, ",");
-      String'Write (Stream, Item.Y'Image);
-      String'Write (Stream, ")");
-   end Write;
-
    function Hash (Element : Position)
       return Ada.Containers.Hash_Type
    is
@@ -69,34 +52,6 @@ procedure Day9_2 is
          end if;
       end if;
    end Update_Knot;
-
-   procedure Print_State is
-      Ch : Character;
-   begin
-      for Y in reverse 0 .. 21 loop
-         for X in 0 .. 26 loop
-            Ch := '.';
-
-            if Contains (Visited, (Y, X)) then
-               Ch := '#';
-            end if;
-
-            for I in reverse Knots'Range loop
-               if Knots (I).Y = Y and then Knots (I).X = X then
-                  Ch := Character'Val (Character'Pos ('0') + I);
-               end if;
-            end loop;
-
-            if Head.X = X and then Head.Y = Y then
-               Ch := 'H';
-            end if;
-
-            Character'Write (Error, Ch);
-         end loop;
-         New_Line (Error);
-      end loop;
-      New_Line (Error);
-   end Print_State;
 begin
    Include (Visited, Knots (Knots'Last));
    while not End_Of_Input loop

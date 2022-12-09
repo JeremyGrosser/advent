@@ -8,23 +8,6 @@ procedure Day9_1 is
       Y, X : Integer;
    end record;
 
-   procedure Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Position);
-   for Position'Write use Write;
-
-   procedure Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Position)
-   is
-   begin
-      String'Write (Stream, "(");
-      String'Write (Stream, Item.X'Image);
-      String'Write (Stream, ",");
-      String'Write (Stream, Item.Y'Image);
-      String'Write (Stream, ")");
-   end Write;
-
    function Hash (Element : Position)
       return Ada.Containers.Hash_Type
    is
@@ -66,24 +49,6 @@ procedure Day9_1 is
          end if;
       end if;
    end Update_Tail;
-
-   procedure Print_State is
-   begin
-      for Y in reverse 0 .. 4 loop
-         for X in 0 .. 5 loop
-            if Head.X = X and then Head.Y = Y then
-               Character'Write (Error, 'H');
-            elsif Tail.X = X and then Tail.Y = Y then
-               Character'Write (Error, 'T');
-            elsif Contains (Visited, (Y, X)) then
-               Character'Write (Error, '#');
-            else
-               Character'Write (Error, '.');
-            end if;
-         end loop;
-         New_Line (Error);
-      end loop;
-   end Print_State;
 begin
    Include (Visited, Tail);
    while not End_Of_Input loop
