@@ -99,3 +99,8 @@ echo -n "9.1 "
 assert 9.1 input/day9_test 13
 solve 9.1 input/day9
 
+echo -n "9.2 "
+assert 9.2 input/day9_test 1
+assert 9.2 input/day9_test2 36
+solve 9.2 input/day9
+

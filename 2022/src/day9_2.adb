@@ -3,7 +3,7 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;
 
-procedure Day9_1 is
+procedure Day9_2 is
    type Position is record
       Y, X : Integer;
    end record;
@@ -43,11 +43,14 @@ procedure Day9_1 is
        Equivalent_Elements => "=");
    use Position_Sets;
 
-   Visited : Set := Empty_Set;
-   Head, Tail : Position := (0, 0);
-   Min, Max : Position := (0, 0);
+   Visited  : Set := Empty_Set;
+   Head     : Position := (0, 0);
+   Knots    : array (1 .. 9) of Position := (others => Head);
 
-   procedure Update_Tail is
+   procedure Update_Knot
+      (Head : Position;
+       Tail : in out Position)
+   is
       function Adjacent
          return Boolean
       is (Tail.X in Head.X - 1 .. Head.X + 1 and then Tail.Y in Head.Y - 1 .. Head.Y + 1);
@@ -65,27 +68,37 @@ procedure Day9_1 is
             Tail.Y := Tail.Y - 1;
          end if;
       end if;
-   end Update_Tail;
+   end Update_Knot;
 
    procedure Print_State is
+      Ch : Character;
    begin
-      for Y in reverse 0 .. 4 loop
-         for X in 0 .. 5 loop
-            if Head.X = X and then Head.Y = Y then
-               Character'Write (Error, 'H');
-            elsif Tail.X = X and then Tail.Y = Y then
-               Character'Write (Error, 'T');
-            elsif Contains (Visited, (Y, X)) then
-               Character'Write (Error, '#');
-            else
-               Character'Write (Error, '.');
+      for Y in reverse 0 .. 21 loop
+         for X in 0 .. 26 loop
+            Ch := '.';
+
+            if Contains (Visited, (Y, X)) then
+               Ch := '#';
             end if;
+
+            for I in reverse Knots'Range loop
+               if Knots (I).Y = Y and then Knots (I).X = X then
+                  Ch := Character'Val (Character'Pos ('0') + I);
+               end if;
+            end loop;
+
+            if Head.X = X and then Head.Y = Y then
+               Ch := 'H';
+            end if;
+
+            Character'Write (Error, Ch);
          end loop;
          New_Line (Error);
       end loop;
+      New_Line (Error);
    end Print_State;
 begin
-   Include (Visited, Tail);
+   Include (Visited, Knots (Knots'Last));
    while not End_Of_Input loop
       declare
          Direction : Character;
@@ -105,27 +118,14 @@ begin
                   raise Program_Error with "Invalid direction";
             end case;
 
-            Update_Tail;
-            if not Contains (Visited, Tail) then
-               Insert (Visited, Tail);
-            end if;
-
-            if Tail.X < Min.X then
-               Min.X := Tail.X;
-            end if;
-
-            if Tail.X > Max.X then
-               Max.X := Tail.X;
-            end if;
-
-            if Tail.Y < Min.Y then
-               Min.Y := Tail.Y;
-            end if;
-
-            if Tail.Y > Max.Y then
-               Max.Y := Tail.Y;
-            end if;
-
+            for I in Knots'Range loop
+               if I = Knots'First then
+                  Update_Knot (Head, Knots (I));
+               else
+                  Update_Knot (Knots (I - 1), Knots (I));
+               end if;
+            end loop;
+            Include (Visited, Knots (Knots'Last));
             --  Print_State;
          end loop;
       end;
@@ -133,4 +133,4 @@ begin
 
    Put (Output, Natural (Length (Visited)));
    New_Line (Output);
-end Day9_1;
+end Day9_2;
