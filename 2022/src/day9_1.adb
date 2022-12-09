@@ -3,6 +3,7 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 with Ada.Unchecked_Conversion;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;
+with Str;
 
 procedure Day9_1 is
    type Position is record
@@ -48,6 +49,11 @@ procedure Day9_1 is
          end if;
       end if;
    end Update_Tail;
+
+   Direction : Character;
+   Count : Natural;
+   Num  : String (1 .. 2);
+   Last : Natural;
 begin
    --  Allocate much more space than we need. One big malloc is faster than
    --  lots of small ones.
@@ -55,28 +61,24 @@ begin
 
    Include (Visited, Tail);
    while not End_Of_Input loop
-      declare
-         Direction : Character;
-         Count : Natural;
-      begin
-         Character'Read (Input, Direction);
-         Seek (Input, 1, Seek_Current); --  skip space
-         Count := Get (Input);
+      Character'Read (Input, Direction);
+      Seek (Input, 1, Seek_Current); --  skip space
+      Read_Until (Input, ASCII.LF, Num, Last);
+      Count := Str.To_Natural (Num (1 .. Last));
 
-         for I in 1 .. Count loop
-            case Direction is
-               when 'U' => Head.Y := Head.Y + 1;
-               when 'D' => Head.Y := Head.Y - 1;
-               when 'L' => Head.X := Head.X - 1;
-               when 'R' => Head.X := Head.X + 1;
-               when others =>
-                  raise Program_Error with "Invalid direction";
-            end case;
+      for I in 1 .. Count loop
+         case Direction is
+            when 'U' => Head.Y := Head.Y + 1;
+            when 'D' => Head.Y := Head.Y - 1;
+            when 'L' => Head.X := Head.X - 1;
+            when 'R' => Head.X := Head.X + 1;
+            when others =>
+               raise Program_Error with "Invalid direction";
+         end case;
 
-            Update_Tail;
-            Include (Visited, Tail);
-         end loop;
-      end;
+         Update_Tail;
+         Include (Visited, Tail);
+      end loop;
    end loop;
 
    Put (Output, Natural (Length (Visited)));

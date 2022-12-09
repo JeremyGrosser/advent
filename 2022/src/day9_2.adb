@@ -3,6 +3,7 @@ with Advent_IO.Integers; use Advent_IO.Integers;
 with Ada.Unchecked_Conversion;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;
+with Str;
 
 procedure Day9_2 is
    type Position is record
@@ -51,36 +52,37 @@ procedure Day9_2 is
          end if;
       end if;
    end Update_Knot;
+
+   Direction : Character;
+   Count : Natural;
+   Num  : String (1 .. 2);
+   Last : Natural;
 begin
    --  Allocate much more space than we need. One big malloc is faster than
    --  lots of small ones.
    Reserve_Capacity (Visited, Ada.Containers.Count_Type (Length (Input)));
 
    while not End_Of_Input loop
-      declare
-         Direction : Character;
-         Count : Natural;
-      begin
-         Character'Read (Input, Direction);
-         Seek (Input, 1, Seek_Current); --  skip space
-         Count := Get (Input);
+      Character'Read (Input, Direction);
+      Seek (Input, 1, Seek_Current); --  skip space
+      Read_Until (Input, ASCII.LF, Num, Last);
+      Count := Str.To_Natural (Num (1 .. Last));
 
-         for I in 1 .. Count loop
-            case Direction is
-               when 'U' => Knots (0).Y := Knots (0).Y + 1;
-               when 'D' => Knots (0).Y := Knots (0).Y - 1;
-               when 'L' => Knots (0).X := Knots (0).X - 1;
-               when 'R' => Knots (0).X := Knots (0).X + 1;
-               when others =>
-                  raise Program_Error with "Invalid direction";
-            end case;
+      for I in 1 .. Count loop
+         case Direction is
+            when 'U' => Knots (0).Y := Knots (0).Y + 1;
+            when 'D' => Knots (0).Y := Knots (0).Y - 1;
+            when 'L' => Knots (0).X := Knots (0).X - 1;
+            when 'R' => Knots (0).X := Knots (0).X + 1;
+            when others =>
+               raise Program_Error with "Invalid direction";
+         end case;
 
-            for I in 1 .. 9 loop
-               Update_Knot (Knots (I - 1), Knots (I));
-            end loop;
-            Include (Visited, Knots (Knots'Last));
+         for I in 1 .. 9 loop
+            Update_Knot (Knots (I - 1), Knots (I));
          end loop;
-      end;
+         Include (Visited, Knots (Knots'Last));
+      end loop;
    end loop;
 
    Put (Output, Natural (Length (Visited)));
