@@ -1,5 +1,6 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
+with Ada.Unchecked_Conversion;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;
 
@@ -12,12 +13,10 @@ procedure Day9_1 is
       return Ada.Containers.Hash_Type
    is
       use Ada.Containers;
-      H : Hash_Type;
+      function To_Hash_Type is new Ada.Unchecked_Conversion
+         (Integer, Hash_Type);
    begin
-      H := Hash_Type (abs Element.X);
-      H := H * (2 ** 32);
-      H := H or Hash_Type (abs Element.Y);
-      return H;
+      return (To_Hash_Type (Element.X) * 2 ** 16) xor To_Hash_Type (Element.Y);
    end Hash;
 
    package Position_Sets is new Ada.Containers.Hashed_Sets
