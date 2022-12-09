@@ -26,8 +26,7 @@ procedure Day9_2 is
    use Position_Sets;
 
    Visited  : Set := Empty_Set;
-   Head     : Position := (0, 0);
-   Knots    : array (1 .. 9) of Position := (others => Head);
+   Knots    : array (0 .. 9) of Position := (others => (0, 0));
 
    procedure Update_Knot
       (Head : Position;
@@ -57,7 +56,6 @@ begin
    --  lots of small ones.
    Reserve_Capacity (Visited, Ada.Containers.Count_Type (Length (Input)));
 
-   Include (Visited, Knots (Knots'Last));
    while not End_Of_Input loop
       declare
          Direction : Character;
@@ -69,20 +67,16 @@ begin
 
          for I in 1 .. Count loop
             case Direction is
-               when 'U' => Head.Y := Head.Y + 1;
-               when 'D' => Head.Y := Head.Y - 1;
-               when 'L' => Head.X := Head.X - 1;
-               when 'R' => Head.X := Head.X + 1;
+               when 'U' => Knots (0).Y := Knots (0).Y + 1;
+               when 'D' => Knots (0).Y := Knots (0).Y - 1;
+               when 'L' => Knots (0).X := Knots (0).X - 1;
+               when 'R' => Knots (0).X := Knots (0).X + 1;
                when others =>
                   raise Program_Error with "Invalid direction";
             end case;
 
-            for I in Knots'Range loop
-               if I = Knots'First then
-                  Update_Knot (Head, Knots (I));
-               else
-                  Update_Knot (Knots (I - 1), Knots (I));
-               end if;
+            for I in 1 .. 9 loop
+               Update_Knot (Knots (I - 1), Knots (I));
             end loop;
             Include (Visited, Knots (Knots'Last));
          end loop;
