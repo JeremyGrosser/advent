@@ -31,7 +31,8 @@ procedure Day9_1 is
    procedure Update_Tail is
       function Adjacent
          return Boolean
-      is (Tail.X in Head.X - 1 .. Head.X + 1 and then Tail.Y in Head.Y - 1 .. Head.Y + 1);
+      is (Tail.X in Head.X - 1 .. Head.X + 1 and then
+          Tail.Y in Head.Y - 1 .. Head.Y + 1);
    begin
       if not Adjacent then
          if Tail.X < Head.X then
@@ -48,6 +49,10 @@ procedure Day9_1 is
       end if;
    end Update_Tail;
 begin
+   --  Allocate much more space than we need. One big malloc is faster than
+   --  lots of small ones.
+   Reserve_Capacity (Visited, Ada.Containers.Count_Type (Length (Input)));
+
    Include (Visited, Tail);
    while not End_Of_Input loop
       declare
