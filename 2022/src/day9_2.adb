@@ -10,14 +10,20 @@ procedure Day9_2 is
       Y, X : Integer;
    end record;
 
-   function Hash (Element : Position)
+   function Hash
+      (Element : Position)
       return Ada.Containers.Hash_Type
    is
       use Ada.Containers;
       function To_Hash_Type is new Ada.Unchecked_Conversion
          (Integer, Hash_Type);
+      function Shift_Left
+         (N      : Hash_Type;
+          Amount : Natural)
+         return Hash_Type
+      with Import, Convention => Intrinsic;
    begin
-      return (To_Hash_Type (Element.X) * 2 ** 16) xor To_Hash_Type (Element.Y);
+      return Shift_Left (To_Hash_Type (Element.X), 16) + To_Hash_Type (Element.Y);
    end Hash;
 
    package Position_Sets is new Ada.Containers.Hashed_Sets
