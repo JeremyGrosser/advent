@@ -78,4 +78,11 @@ package body Handheld is
       This.Output.Update (This.Cycle, This.X);
    end Execute;
 
+   procedure Finalize
+      (This : in out CPU)
+   is
+   begin
+      This.Output.Finalize;
+   end Finalize;
+
 end Handheld;

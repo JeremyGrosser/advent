@@ -27,7 +27,8 @@ project Advent2022 is
          Profiling_Switches & (
          "-gnatyM120",
          "-gnat2022",
-         "-gnatwJ"
+         "-gnatwJ",
+         "-gnatwB" --  no warning on non-multiple 'Small
       );
    end Compiler;
 

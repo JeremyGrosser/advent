@@ -15,6 +15,9 @@ package Handheld is
    procedure Tick
       (This : in out CPU);
 
+   procedure Finalize
+      (This : in out CPU);
+
 private
 
    package Integer_Stacks is new Chests.Stacks

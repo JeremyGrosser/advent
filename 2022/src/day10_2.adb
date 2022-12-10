@@ -8,8 +8,6 @@ begin
    while not End_Of_Input loop
       VM.Tick;
    end loop;
-
-   for I in 1 .. 10 loop
-      New_Line (Output);
-   end loop;
+   delay 30.0;
+   VM.Finalize;
 end Day10_2;
