@@ -1,6 +1,5 @@
 with Advent_IO; use Advent_IO;
 with Advent_IO.Integers; use Advent_IO.Integers;
-with Ada.Streams;
 
 procedure Day10_1 is
    Sum : Natural := 0;
@@ -18,22 +17,8 @@ procedure Day10_1 is
       Arg : Integer;
    end record;
 
-   procedure Machine_Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Machine);
-   for Machine'Write use Machine_Write;
-
-   procedure Machine_Write
-      (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-       Item   : Machine)
-   is
-   begin
-      String'Write (Stream, Item.Cycle'Image & " : X=" & Item.X'Image & " Signal_Strength=" & Item.Signal_Strength'Image);
-   end Machine_Write;
-
    procedure Fetch
-      (This : in out Machine;
-       Insn : out Instruction)
+      (Insn : out Instruction)
    is
       Op_String : constant String := Read_Until (Input, Whitespace);
    begin
@@ -73,7 +58,6 @@ procedure Day10_1 is
             end case;
          end if;
 
-
          if This.Cycle = 20 or else (This.Cycle - 20) mod 40 = 0 then
             Sum := Sum + This.Signal_Strength;
          end if;
@@ -83,13 +67,11 @@ procedure Day10_1 is
 
    end Execute;
 
-   Interest_List : constant array (1 .. 6) of Natural :=
-      (20, 60, 100, 140, 180, 220);
    VM   : Machine;
    Insn : Instruction;
 begin
    while not End_Of_Input loop
-      Fetch (VM, Insn);
+      Fetch (Insn);
       Execute (VM, Insn);
    end loop;
 
