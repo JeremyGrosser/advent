@@ -107,3 +107,7 @@ solve 9.2 input/day9
 echo -n "10.1"
 assert 10.1 input/day10_test 13140
 solve 10.1 input/day10
+
+echo -n "10.2"
+assert 10.2 input/day10_test 13140
+solve 10.2 input/day10
