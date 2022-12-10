@@ -57,9 +57,9 @@ package body Handheld is
          Push (This.Args, Integer'Value
             (Advent_IO.Read_Until (This.Input, Advent_IO.Whitespace)));
 
-         This.Output.Tick (This.Cycle, This.X);
+         This.Output.Update (This.Cycle, This.X);
          This.Cycle := This.Cycle + 1;
-         This.Output.Tick (This.Cycle, This.X);
+         This.Output.Update (This.Cycle, This.X);
       end loop;
    end Fetch_2;
 
@@ -75,7 +75,7 @@ package body Handheld is
       end case;
 
       This.Cycle := This.Cycle + 1;
-      This.Output.Tick (This.Cycle, This.X);
+      This.Output.Update (This.Cycle, This.X);
    end Execute;
 
 end Handheld;

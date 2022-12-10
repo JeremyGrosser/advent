@@ -10,7 +10,7 @@ package body Screen is
       String'Write (Output, AnsiAda.Clear_Screen);
    end Initialize;
 
-   procedure Tick
+   procedure Update
       (This  : in out CRT;
        Cycle : Positive;
        X     : Integer)
@@ -34,6 +34,6 @@ package body Screen is
       end if;
 
       delay 0.01;
-   end Tick;
+   end Update;
 
 end Screen;

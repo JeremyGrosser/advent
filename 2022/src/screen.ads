@@ -8,7 +8,7 @@ package Screen is
    procedure Initialize
       (This : in out CRT);
 
-   procedure Tick
+   procedure Update
       (This  : in out CRT;
        Cycle : Positive;
        X     : Integer);
