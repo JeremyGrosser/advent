@@ -116,3 +116,6 @@ echo -n "11.1"
 assert 11.1 input/day11_test 10605
 solve 11.1 input/day11
 
+echo -n "11.2"
+assert 11.2 input/day11_test 2713310158
+solve 11.2 input/day11
