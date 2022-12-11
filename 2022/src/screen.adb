@@ -1,4 +1,3 @@
-with Notcurses.Channel; use Notcurses.Channel;
 with Notcurses.Plane; use Notcurses.Plane;
 with Notcurses.Context;
 
@@ -33,20 +32,6 @@ package body Screen is
       use Ada.Real_Time;
       Beam_X : constant Natural := (Cycle - 1) mod Width;
       Beam_Y : constant Natural := ((Cycle - 1) / Width) mod Height;
-      Lit : constant Notcurses_Channel :=
-         (Use_Palette   => False,
-          Not_Default   => True,
-          Alpha         => Opaque,
-          R             => 0,
-          G             => 192,
-          B             => 0);
-      Dark : constant Notcurses_Channel :=
-         (Use_Palette   => False,
-          Not_Default   => True,
-          Alpha         => Opaque,
-          R             => 0,
-          G             => 48,
-          B             => 0);
    begin
       Erase (This.Debug);
       Put (This.Debug, "Cycle");
@@ -56,9 +41,9 @@ package body Screen is
       Put (This.Debug, X'Wide_Wide_Image, Y => 0, X => 14);
 
       if Beam_X in X - 1 .. X + 1 then
-         Set_Foreground (This.Output, Lit);
+         Set_Foreground_RGB (This.Output, 0, 192, 0);
       else
-         Set_Foreground (This.Output, Dark);
+         Set_Foreground_RGB (This.Output, 0, 48, 0);
       end if;
       Put (This.Output, "" & Wide_Wide_Character'Val (16#2588#), Y => Beam_Y, X => Beam_X);
 
