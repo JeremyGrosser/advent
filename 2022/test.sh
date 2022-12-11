@@ -111,3 +111,8 @@ solve 10.1 input/day10
 #echo -n "10.2"
 #assert 10.2 input/day10_test 13140
 #solve 10.2 input/day10
+
+echo -n "11.1"
+assert 11.1 input/day11_test 10605
+solve 11.1 input/day11
+
