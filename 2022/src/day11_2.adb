@@ -5,7 +5,7 @@ with Ada.Strings.Fixed;
 with Str;
 
 procedure Day11_2 is
-   subtype Number is Long_Long_Integer;
+   subtype Number is Long_Integer;
    package Number_IO is new Advent_IO.Generic_Numbers (Number);
    use Number_IO;
    type Monkey_Id is new Number;
