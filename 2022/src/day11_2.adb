@@ -2,7 +2,6 @@ with Advent_IO; use Advent_IO;
 with Advent_IO.Generic_Numbers;
 with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Fixed;
-with Str;
 
 procedure Day11_2 is
    subtype Number is Long_Integer;
@@ -60,7 +59,7 @@ procedure Day11_2 is
 
       --  Monkey 0:
       Read_Until (Stream, ' ', Ignore, Last);
-      M.Id := Monkey_Id (Str.To_Natural (Read_Until (Stream, ':')));
+      M.Id := Monkey_Id'Value (Read_Until (Stream, ':'));
       Read_Until (Stream, ASCII.LF, Ignore, Last);
 
       --  Starting items: 75, 63
