@@ -114,24 +114,6 @@ procedure Day11_2 is
       M.False_Target := Monkey_Id'Value (Read_Until (Stream, ASCII.LF));
    end Read_Monkey;
 
-   procedure Print_Monkey
-      (M : Monkey)
-   is
-      S : constant String := Monkey'Image (M);
-   begin
-      String'Write (Error, S);
-      New_Line (Error);
-   end Print_Monkey;
-
-   procedure Print_Items
-      (I : Number_Vectors.Vector)
-   is
-      S : constant String := Number_Vectors.Vector'Image (I);
-   begin
-      String'Write (Error, S);
-      New_Line (Error);
-   end Print_Items;
-
    procedure Inspect
       (M          : in out Monkey;
        Item       : Number;
