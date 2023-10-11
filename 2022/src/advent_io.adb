@@ -156,7 +156,7 @@ package body Advent_IO is
    is
       use System.Mmap;
    begin
-      return Stream.Offset >= Stream.Last;
+      return Stream.Offset >= Stream.Last - 1;
    end End_Of_File;
 
    function End_Of_Input
