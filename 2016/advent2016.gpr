@@ -14,7 +14,7 @@ project Advent2016 is
    case Advent2016_Config.Build_Profile is
       when "development" =>
          Profiling_Switches := (
-            "-pg",
+            --  "-pg",
             "-fstack-usage",
             "-fcallgraph-info=su"
          );
