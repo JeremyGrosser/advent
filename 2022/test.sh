@@ -119,3 +119,7 @@ solve 11.1 input/day11
 echo -n "11.2"
 assert 11.2 input/day11_test 2713310158
 solve 11.2 input/day11
+
+echo -n "12.1"
+assert 12.1 input/day12_test 31
+solve 12.1 input/day12
