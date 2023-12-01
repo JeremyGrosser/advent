@@ -3,3 +3,4 @@
 /alire/
 /config/
 perf.data*
+input/*.jumbo
