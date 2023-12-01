@@ -2,6 +2,7 @@ with Advent_IO; use Advent_IO;
 with Ada.Command_Line;
 
 with Day1_1;
+with Day1_2;
 
 procedure Main is
    package CLI renames Ada.Command_Line;
@@ -15,6 +16,11 @@ begin
          Input := Stream (Filename);
          if Puzzle = "1.1" then
             Day1_1;
+            return;
+         end if;
+
+         if Puzzle = "1.2" then
+            Day1_2;
             return;
          end if;
 

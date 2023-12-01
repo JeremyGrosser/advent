@@ -10,7 +10,7 @@ package body Advent_IO is
       MS : constant not null Stream_Access := new Mapped_Stream;
    begin
       MS.File := File;
-      MS.Offset := 1;
+      MS.Offset := 0;
       MS.Last := System.Mmap.Length (Stream.File);
       MS.Region := System.Mmap.Read
          (File    => MS.File,
@@ -38,7 +38,7 @@ package body Advent_IO is
    begin
       Last := Item'First - 1;
       for I in Item'Range loop
-         Data_Index := Natural (Stream.Offset);
+         Data_Index := Natural (Stream.Offset) + 1;
          exit when Data_Index = Data_Last;
          Last := Last + 1;
          Item (I) := Stream_Element (Character'Pos (Data (Data_Index)));
@@ -89,7 +89,7 @@ package body Advent_IO is
        Last   : out Natural)
    is
       Data       : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-      Data_First : constant Natural := Natural (Stream.Offset);
+      Data_First : constant Natural := Natural (Stream.Offset) + 1;
       Data_Last  : Natural := Natural (Stream.Last);
    begin
       Data_Last := Index (String (Data (Data_First .. Data_Last)), Stop);
@@ -114,7 +114,7 @@ package body Advent_IO is
        return String
    is
       Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-      First : constant Natural := Natural (Stream.Offset);
+      First : constant Natural := Natural (Stream.Offset) + 1;
       Last  : Natural := Natural (Stream.Last);
    begin
       Last := Index (String (Data (First .. Last)), Stop);
@@ -135,7 +135,7 @@ package body Advent_IO is
        return String
    is
       Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-      First : constant Natural := Natural (Stream.Offset);
+      First : constant Natural := Natural (Stream.Offset) + 1;
       Last  : Natural := Natural (Stream.Last);
    begin
       Last := Ada.Strings.Fixed.Index (String (Data (First .. Last)), Stop);
@@ -150,23 +150,13 @@ package body Advent_IO is
       return String (Data (First .. Last));
    end Read_Until;
 
-   function Peek
-      (Stream    : not null Stream_Access;
-       Lookahead : Integer := 1)
-       return Character
-   is
-      Data : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-   begin
-      return Data (Natural (Stream.Offset) + Lookahead);
-   end Peek;
-
    function End_Of_File
       (Stream : not null Stream_Access)
       return Boolean
    is
       use System.Mmap;
    begin
-      return Stream.Offset >= Stream.Last;
+      return Stream.Offset >= Stream.Last - 1;
    end End_Of_File;
 
    function End_Of_Input
@@ -186,7 +176,7 @@ package body Advent_IO is
       return Natural
    is
       Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-      First : constant Natural := Natural (Stream.Offset);
+      First : constant Natural := Natural (Stream.Offset) + 1;
       Last  : constant Natural := Natural (Stream.Last);
       Count : Natural := 0;
    begin
@@ -202,5 +192,30 @@ package body Advent_IO is
       (Stream : not null Stream_Access)
       return Natural
    is (Natural (Stream.Last));
+
+   function Peek
+      (Stream : not null Stream_Access)
+      return Character
+   is
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      First : constant Natural := Natural (Stream.Offset) + 1;
+   begin
+      return Data.all (First);
+   end Peek;
+
+   function Lookahead
+      (Stream : not null Stream_Access;
+       N      : Positive)
+      return String
+   is
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
+      First : constant Natural := Natural (Stream.Offset) + 1;
+      Last  : Natural := First + N - 1;
+   begin
+      if Last > Natural (Stream.Last) then
+         Last := Natural (Stream.Last);
+      end if;
+      return String (Data.all (First .. Last));
+   end Lookahead;
 
 end Advent_IO;

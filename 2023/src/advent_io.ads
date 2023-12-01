@@ -53,11 +53,6 @@ package Advent_IO is
        Item   : out String;
        Last   : out Natural);
 
-   function Peek
-      (Stream    : not null Stream_Access;
-       Lookahead : Integer := 1)
-       return Character;
-
    function End_Of_File
       (Stream : not null Stream_Access)
       return Boolean;
@@ -91,6 +86,15 @@ package Advent_IO is
    function Length
       (Stream : not null Stream_Access)
       return Natural;
+
+   function Peek
+      (Stream : not null Stream_Access)
+      return Character;
+
+   function Lookahead
+      (Stream : not null Stream_Access;
+       N      : Positive)
+       return String;
 
 private
 

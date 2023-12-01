@@ -10,3 +10,10 @@ website = ""
 tags = []
 
 executables = ["advent23"]
+
+[build-switches]
+development.optimization = ["-Og", "-g", "-gnata"]
+release.optimization = ["-O3", "-march=native", "-gnata", "-gnatn"]
+
+[[depends-on]]
+chests = "~0.1.1"
