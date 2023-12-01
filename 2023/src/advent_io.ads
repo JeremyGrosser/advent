@@ -88,7 +88,8 @@ package Advent_IO is
       return Natural;
 
    function Peek
-      (Stream : not null Stream_Access)
+      (Stream : not null Stream_Access;
+       Offset : Positive := 1)
       return Character;
 
    function Lookahead

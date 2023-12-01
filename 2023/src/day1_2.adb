@@ -14,13 +14,13 @@ procedure Day1_2 is
       return Boolean
    is
    begin
-      if Lookahead (Input, Sub'Length) = Sub then
-         --  Seek (Input, Sub'Length);
-         Seek (Input, 1);
-         return True;
-      else
-         return False;
-      end if;
+      for I in 1 .. Sub'Length loop
+         if Peek (Input, I) /= Sub (Sub'First + I - 1) then
+            return False;
+         end if;
+      end loop;
+      Seek (Input, Sub'Length);
+      return True;
    end Match;
 
    procedure Number

@@ -194,13 +194,14 @@ package body Advent_IO is
    is (Natural (Stream.Last));
 
    function Peek
-      (Stream : not null Stream_Access)
+      (Stream : not null Stream_Access;
+       Offset : Positive := 1)
       return Character
    is
       Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Stream.Region);
-      First : constant Natural := Natural (Stream.Offset) + 1;
+      First : constant Natural := Natural (Stream.Offset);
    begin
-      return Data.all (First);
+      return Data.all (First + Offset);
    end Peek;
 
    function Lookahead
