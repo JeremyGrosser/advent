@@ -37,8 +37,6 @@ procedure Day1_2 is
    begin
       N := First_Element (Nums) * 10;
       N := N + Last_Element (Nums);
-      Put (Error, N);
-      New_Line (Error);
 
       Sum := Sum + N;
       Clear (Nums);

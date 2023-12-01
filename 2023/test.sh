@@ -34,5 +34,7 @@ ${ALR} build
 echo -n "1.1 "
 assert 1.1 input/test1 142
 solve 1.1 input/day1
+
+echo -n "1.2 "
 assert 1.2 input/test1_2 281
 solve 1.2 input/day1
