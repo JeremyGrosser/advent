@@ -72,7 +72,7 @@ begin
       elsif Match ("nine") then
          Number (9);
       else
-         -- skip
+         --  skip
          Seek (Input, 1);
       end if;
    end loop;

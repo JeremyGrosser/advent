@@ -8,7 +8,9 @@ project Advent23 is
    for Main use ("main.adb");
 
    package Compiler is
-      for Default_Switches ("Ada") use Advent23_Config.Ada_Compiler_Switches;
+      for Default_Switches ("Ada") use Advent23_Config.Ada_Compiler_Switches & (
+         "-fstack-usage"
+      );
       for Local_Configuration_Pragmas use "gnat.adc";
    end Compiler;
 
