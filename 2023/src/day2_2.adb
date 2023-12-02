@@ -1,20 +1,13 @@
 with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
-with Ada.Containers.Ordered_Sets;
 
 procedure Day2_2 is
    type Color_Type is (Red, Green, Blue);
-   type Group_Type is array (Color_Type) of Natural with Default_Component_Value => 0;
+   type Group_Type is array (Color_Type) of Natural;
    Current_Color  : Color_Type;
    Current_Number : Positive;
    Current_Group  : Group_Type;
    Max_Observed   : Group_Type;
-
-   package Group_Sets is new Ada.Containers.Ordered_Sets
-      (Element_Type => Group_Type);
-   use Group_Sets;
-
-   Groups : Set := Empty_Set;
 
    procedure Push_Color is
    begin
@@ -28,7 +21,6 @@ procedure Day2_2 is
             Max_Observed (Color) := Current_Group (Color);
          end if;
       end loop;
-      Include (Groups, Current_Group);
       Current_Group := (others => 0);
    end Push_Group;
 
@@ -40,14 +32,13 @@ procedure Day2_2 is
    Sum : Natural := 0;
 begin
    while not End_Of_Input loop
-      Clear (Groups);
       Current_Group := (others => 0);
       Max_Observed := (others => 0);
 
       declare
          Game_Id : Positive with Unreferenced;
          Ch : Character;
-         Num : String (1 .. 32) := (others => ASCII.NUL);
+         Num : String (1 .. 4);
          Num_Last : Natural := 0;
       begin
          Seek (Input, 5); --  "Game "
