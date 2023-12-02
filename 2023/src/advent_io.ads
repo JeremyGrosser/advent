@@ -97,6 +97,8 @@ package Advent_IO is
        N      : Positive)
        return String;
 
+   procedure Log
+      (Str : String);
 private
 
    type Mapped_Stream is new Ada.Streams.Root_Stream_Type with record

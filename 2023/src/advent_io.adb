@@ -219,4 +219,11 @@ package body Advent_IO is
       return String (Data.all (First .. Last));
    end Lookahead;
 
+   procedure Log
+      (Str : String)
+   is
+   begin
+      String'Write (Error, Str);
+   end Log;
+
 end Advent_IO;

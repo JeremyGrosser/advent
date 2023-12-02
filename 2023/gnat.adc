@@ -1,1 +1,2 @@
 pragma Style_Checks ("M120");
+pragma Ada_2022;
