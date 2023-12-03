@@ -7,6 +7,7 @@ with Day1_2;
 with Day2_1;
 with Day2_2;
 with Day3_1;
+with Day3_2;
 
 with Ada.Real_Time; use Ada.Real_Time;
 
@@ -33,6 +34,8 @@ begin
             Day2_2;
          elsif Puzzle = "3.1" then
             Day3_1;
+         elsif Puzzle = "3.2" then
+            Day3_2;
          else
             String'Write (Error, "Unknown Puzzle: ");
             String'Write (Error, Puzzle);
