@@ -19,9 +19,6 @@ begin
    Height := Length (Input) / Width - 1;
    Seek (Input, Offset => 0, From => Seek_Start);
 
-   Log (Width'Image);
-   Log (Height'Image);
-
    declare
       subtype Row is Natural range 1 .. Height;
       subtype Column is Natural range 1 .. Width;
@@ -42,16 +39,6 @@ begin
             Character'Read (Input, Schematic (Y, X));
          end loop;
          Seek (Input, 1); --  skip LF
-      end loop;
-
-      while not End_Of_Input loop
-         Log ("Incomplete Input: ");
-         declare
-            Ch : Character;
-         begin
-            Character'Read (Input, Ch);
-         end;
-         New_Line (Error);
       end loop;
 
       for Y in Row'Range loop
@@ -81,14 +68,14 @@ begin
                   end loop;
                end loop;
 
-               String'Write (Error, "Y=");
-               Put (Error, Span.Y);
-               String'Write (Error, " First=");
-               Put (Error, Span.First);
-               String'Write (Error, " Last=");
-               Put (Error, Span.Last);
-               String'Write (Error, " Is_Part_Number=" & Span.Is_Part_Number'Image);
-               New_Line (Error);
+               --  String'Write (Error, "Y=");
+               --  Put (Error, Span.Y);
+               --  String'Write (Error, " First=");
+               --  Put (Error, Span.First);
+               --  String'Write (Error, " Last=");
+               --  Put (Error, Span.Last);
+               --  String'Write (Error, " Is_Part_Number=" & Span.Is_Part_Number'Image);
+               --  New_Line (Error);
 
                if Span.Is_Part_Number then
                   Sum := Sum + Span.Num;
