@@ -9,6 +9,8 @@ with Day2_1;
 with Day2_2;
 with Day3_1;
 with Day3_2;
+with Day4_1;
+with Day4_2;
 
 with Ada.Real_Time; use Ada.Real_Time;
 
@@ -38,6 +40,10 @@ begin
             Day3_1;
          elsif Puzzle = "3.2" then
             Day3_2;
+         elsif Puzzle = "4.1" then
+            Day4_1;
+         elsif Puzzle = "4.2" then
+            Day4_2;
          else
             TIO.Put ("Unknown Puzzle: ");
             TIO.Put (Puzzle);

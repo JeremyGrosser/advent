@@ -29,7 +29,7 @@ solve() {
     echo -e " \e[1m\e[92m$result\e[0m"
 }
 
-${ALR} build --validation
+${ALR} build
 
 echo -n "1.1 "
 assert 1.1 input/test1 142
@@ -54,3 +54,7 @@ solve 3.1 input/day3
 echo -n "3.2 "
 assert 3.2 input/test3 467835
 solve 3.2 input/day3
+
+echo -n "4.1 "
+assert 4.1 input/test4 13
+solve 4.1 input/day4
