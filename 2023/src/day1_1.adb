@@ -1,4 +1,4 @@
-pragma SPARK_Mode (On);
+with Ada.Integer_Text_IO;
 with Advent_IO; use Advent_IO;
 
 procedure Day1_1 is
@@ -38,5 +38,5 @@ begin
       end;
    end loop;
 
-   Put (Sum);
+   Ada.Integer_Text_IO.Put (Sum, Width => 0);
 end Day1_1;

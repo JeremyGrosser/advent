@@ -1,6 +1,3 @@
-pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
-pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
-
 package Advent_IO
    with Elaborate_Body,
         SPARK_Mode => On
@@ -54,9 +51,5 @@ is
    function Lookahead
       (N : Positive)
        return String;
-
-   --  Output
-   procedure Put
-      (N : Integer);
 
 end Advent_IO;

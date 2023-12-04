@@ -1,7 +1,10 @@
-with Ada.Integer_Text_IO;
+pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
+pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
 with System.Mmap;
 
-package body Advent_IO is
+package body Advent_IO
+--  with SPARK_Mode => On
+is
    use type System.Mmap.File_Size;
 
    File     : System.Mmap.Mapped_File := System.Mmap.Invalid_Mapped_File;
@@ -157,12 +160,5 @@ package body Advent_IO is
       end if;
       return String (Data.all (First .. Last));
    end Lookahead;
-
-   procedure Put
-      (N : Integer)
-   is
-   begin
-      Ada.Integer_Text_IO.Put (N, Width => 0);
-   end Put;
 
 end Advent_IO;

@@ -1,3 +1,4 @@
+with Ada.Integer_Text_IO;
 with Advent_IO; use Advent_IO;
 
 procedure Day2_2 is
@@ -85,5 +86,5 @@ begin
          Sum := Sum + Power (Max_Observed);
       end;
    end loop;
-   Put (Sum);
+   Ada.Integer_Text_IO.Put (Sum, Width => 0);
 end Day2_2;

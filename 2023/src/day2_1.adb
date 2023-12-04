@@ -1,4 +1,5 @@
 with Advent_IO; use Advent_IO;
+with Ada.Integer_Text_IO;
 with Ada.Containers.Ordered_Sets;
 
 procedure Day2_1 is
@@ -102,5 +103,6 @@ begin
          end if;
       end;
    end loop;
-   Put (Sum);
+
+   Ada.Integer_Text_IO.Put (Sum, Width => 0);
 end Day2_1;

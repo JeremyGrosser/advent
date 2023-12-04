@@ -1,5 +1,6 @@
 pragma Ada_2022;
 with Advent_IO; use Advent_IO;
+with Ada.Integer_Text_IO;
 with Ada.Containers.Ordered_Maps;
 
 procedure Day3_2 is
@@ -119,5 +120,5 @@ begin
       end loop;
    end;
 
-   Put (Sum);
+   Ada.Integer_Text_IO.Put (Sum, Width => 0);
 end Day3_2;
