@@ -1,4 +1,4 @@
-with Advent_IO.Integers; use Advent_IO.Integers;
+pragma SPARK_Mode (On);
 with Advent_IO; use Advent_IO;
 
 procedure Day1_1 is
@@ -32,12 +32,11 @@ procedure Day1_1 is
 begin
    while not End_Of_Input loop
       declare
-         Line : constant String := Read_Until (Input, CRLF);
+         Line : constant String := Read_Until (CRLF);
       begin
          Sum := Sum + (First_Number (Line) * 10) + Last_Number (Line);
       end;
    end loop;
 
-   Put (Output, Sum);
-   New_Line (Output);
+   Put (Sum);
 end Day1_1;

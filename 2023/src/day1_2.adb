@@ -1,4 +1,3 @@
-with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
 
 with Chests.Ring_Buffers;
@@ -15,11 +14,11 @@ procedure Day1_2 is
    is
    begin
       for I in 1 .. Sub'Length loop
-         if Peek (Input, I) /= Sub (Sub'First + I - 1) then
+         if Peek (I) /= Sub (Sub'First + I - 1) then
             return False;
          end if;
       end loop;
-      Seek (Input, Sub'Length);
+      Seek (Sub'Length);
       return True;
    end Match;
 
@@ -46,13 +45,13 @@ procedure Day1_2 is
 begin
    Clear (Nums);
    while not End_Of_Input loop
-      Ch := Peek (Input);
+      Ch := Peek;
       if Ch = ASCII.CR or else Ch = ASCII.LF then
-         Seek (Input, 1);
+         Seek (1);
          Accumulate;
       elsif Ch in '1' .. '9' then
          Append (Nums, Character'Pos (Ch) - Character'Pos ('0'));
-         Seek (Input, 1);
+         Seek (1);
       elsif Match ("one") then
          Number (1);
       elsif Match ("two") then
@@ -73,12 +72,11 @@ begin
          Number (9);
       else
          --  skip
-         Seek (Input, 1);
+         Seek (1);
       end if;
    end loop;
 
    Accumulate;
 
-   Put (Output, Sum);
-   New_Line (Output);
+   Put (Sum);
 end Day1_2;

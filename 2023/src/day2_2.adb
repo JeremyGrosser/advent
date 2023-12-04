@@ -1,4 +1,3 @@
-with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
 
 procedure Day2_2 is
@@ -41,52 +40,50 @@ begin
          Num : String (1 .. 4);
          Num_Last : Natural := 0;
       begin
-         Seek (Input, 5); --  "Game "
-         Game_Id := Positive'Value (Read_Until (Input, ':'));
-         Seek (Input, 1); --  ' '
+         Seek (5); --  "Game "
+         Game_Id := Positive'Value (Read_Until (':'));
+         Seek (1); --  ' '
          loop
-            Ch := Peek (Input);
+            Ch := Peek;
             case Ch is
                when ASCII.CR | ASCII.LF =>
                   Push_Color;
                   Push_Group;
-                  Seek (Input, 1);
+                  Seek (1);
                   exit;
                when '0' .. '9' =>
                   Num_Last := Num_Last + 1;
                   Num (Num_Last) := Ch;
-                  Seek (Input, 1);
+                  Seek (1);
                when 'r' =>
                   Current_Color := Red;
-                  Seek (Input, 3);
+                  Seek (3);
                when 'g' =>
                   Current_Color := Green;
-                  Seek (Input, 5);
+                  Seek (5);
                when 'b' =>
                   Current_Color := Blue;
-                  Seek (Input, 4);
+                  Seek (4);
                when ',' =>
                   Push_Color;
-                  Seek (Input, 1);
+                  Seek (1);
                when ';' =>
                   Push_Color;
                   Push_Group;
-                  Seek (Input, 1);
+                  Seek (1);
                when ' ' =>
                   if Num_Last > 0 then
                      Current_Number := Positive'Value (Num (1 .. Num_Last));
                      Num_Last := 0;
                   end if;
-                  Seek (Input, 1);
+                  Seek (1);
                when others =>
-                  String'Write (Error, "Unexpected character: '" & Ch & "'");
-                  New_Line (Error);
+                  raise Program_Error with "Unexpected character: '" & Ch & "'";
             end case;
          end loop;
 
          Sum := Sum + Power (Max_Observed);
       end;
    end loop;
-   Put (Output, Sum);
-   New_Line (Output);
+   Put (Sum);
 end Day2_2;

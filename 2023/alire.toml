@@ -17,3 +17,8 @@ release.optimization = ["-O3", "-march=native", "-gnata", "-gnatn"]
 
 [[depends-on]]
 chests = "~0.1.1"
+gnatprove = "^13.2.1"
+
+[[actions]]
+type = "post-build"
+command = ["gnatprove", "-P", "advent23.gpr", "--mode=bronze"]

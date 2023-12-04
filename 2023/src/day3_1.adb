@@ -1,5 +1,4 @@
 pragma Ada_2022;
-with Advent_IO.Integers; use Advent_IO.Integers;
 with Advent_IO; use Advent_IO;
 
 procedure Day3_1 is
@@ -15,9 +14,9 @@ procedure Day3_1 is
    Height : Positive;
    Sum    : Natural := 0;
 begin
-   Width := Read_Until (Input, CRLF)'Length;
-   Height := Length (Input) / Width - 1;
-   Seek (Input, Offset => 0, From => Seek_Start);
+   Width := Read_Until (CRLF)'Length;
+   Height := Input_Length / Width - 1;
+   Seek (Offset => 0, From => Seek_Start);
 
    declare
       subtype Row is Natural range 1 .. Height;
@@ -36,9 +35,9 @@ begin
    begin
       for Y in Row'Range loop
          for X in Column'Range loop
-            Character'Read (Input, Schematic (Y, X));
+            Get (Schematic (Y, X));
          end loop;
-         Seek (Input, 1); --  skip LF
+         Seek (1); --  skip LF
       end loop;
 
       for Y in Row'Range loop
@@ -86,6 +85,5 @@ begin
       end loop;
    end;
 
-   Put (Output, Sum);
-   New_Line (Output);
+   Put (Sum);
 end Day3_1;
