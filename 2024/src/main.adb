@@ -4,7 +4,7 @@ with Ada.Exceptions;
 with Ada.Text_IO;
 
 with Advent.Input;
-with Debug;
+with Advent.Output;
 with Puzzle;
 
 procedure Main is
@@ -41,7 +41,7 @@ begin
       begin
          if Arg'Length > 2 and then Arg (1 .. 2) = "--" then
             if Arg (3 .. Arg'Last) = "verbose" then
-               Debug.Enable;
+               Advent.Output.Enable_Log;
             end if;
          else
             case Required is

@@ -10,3 +10,6 @@ website = ""
 tags = []
 
 executables = ["advent24"]
+
+[[depends-on]]
+ansiada = "^1.0.0"
