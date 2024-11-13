@@ -142,7 +142,7 @@ is
 
    function Input_Length
       return Natural
-   is (Natural (G_Last));
+   is (Natural (G_Last) - 1);
 
    function Peek
       (Offset : Positive := 1)
