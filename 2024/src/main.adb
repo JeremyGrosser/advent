@@ -27,7 +27,13 @@ procedure Main is
          Part : constant Puzzle.Part_Type := Puzzle.Part_Type'Value (Name (Split + 1 .. Name'Last));
       begin
          Solution := Puzzle.Get_Solution (Day, Part);
+         if Solution = null then
+            raise Advent_Error with "No solution available for Day" & Day'Image & " Part" & Part'Image;
+         end if;
       end;
+   exception
+      when Constraint_Error =>
+         raise Advent_Error with "Invalid puzzle name: " & Name;
    end Set_Puzzle;
 
    package CLI renames Ada.Command_Line;
