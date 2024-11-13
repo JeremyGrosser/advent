@@ -20,8 +20,6 @@ is
    function Tell
       return Seek_Offset;
 
-   CRLF : constant String := ASCII.CR & ASCII.LF;
-
    procedure Read_Until
       (Stop : String; --  matches "any" character in Stop
        Item : out String;
