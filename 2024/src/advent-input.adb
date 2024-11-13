@@ -39,16 +39,16 @@ is
 
    procedure Seek
       (Offset : Seek_Offset;
-       From   : Seek_From := Seek_Current)
+       From   : Seek_From := Current)
    is
       Off : constant System.Mmap.File_Size := System.Mmap.File_Size (Offset);
    begin
       case From is
-         when Seek_Start =>
+         when First =>
             G_Offset := Off;
-         when Seek_Current =>
+         when Current =>
             G_Offset := G_Offset + Off;
-         when Seek_End =>
+         when Last =>
             G_Offset := G_Last - Off;
       end case;
    end Seek;
