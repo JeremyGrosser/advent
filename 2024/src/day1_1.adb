@@ -1,8 +1,9 @@
-with Advent.Input; use Advent.Input;
-with Advent.Output; use Advent.Output;
+with Advent; use Advent;
+with Advent.Input;
+with Advent.Output;
 
 procedure Day1_1 is
 begin
-   Log ("PRELIMINARY");
-   Put (Input_Length);
+   Output.Log ("PRELIMINARY");
+   Output.Put (Input.Length);
 end Day1_1;

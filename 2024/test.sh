@@ -1,7 +1,10 @@
 #!/bin/bash
 
 check() {
-    result="$(bin/advent24 $1 $2)"
+    cmd="bin/advent24 $1 $2"
+    echo "$cmd"
+
+    result="$($cmd)"
     ret=$?
 
     if [ ! $ret -eq 0 ]; then

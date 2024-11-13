@@ -140,7 +140,7 @@ is
       return G_Offset >= G_Last - 1;
    end End_Of_Input;
 
-   function Input_Length
+   function Length
       return Natural
    is (Natural (G_Last) - 1);
 

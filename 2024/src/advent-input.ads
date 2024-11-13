@@ -43,7 +43,7 @@ is
    function End_Of_Input
       return Boolean;
 
-   function Input_Length
+   function Length
       return Natural;
 
    function Peek
