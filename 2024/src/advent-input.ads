@@ -11,11 +11,11 @@ is
    procedure Get
       (Item : out Character);
 
-   type Seek_From is (First, Current, Last);
+   type Seek_From is (Seek_Start, Seek_Current, Seek_End);
    subtype Seek_Offset is Integer;
    procedure Seek
       (Offset : Seek_Offset;
-       From   : Seek_From := Current);
+       From   : Seek_From := Seek_Current);
 
    function Tell
       return Seek_Offset;
