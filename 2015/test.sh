@@ -70,4 +70,7 @@ solve 3.2 input/day3
 
 check 4.1 input/test4.1 609043
 solve 4.1 input/day4
-solve 4.2 input/day4
+#solve 4.2 input/day4
+
+check 5.1 input/test5.1 2
+solve 5.1 input/day5
