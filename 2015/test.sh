@@ -15,11 +15,11 @@ check() {
         exit 1
     fi
 
-    if [ $result -eq $3 ]; then
-        echo -e "$1 PASS \e[1m\e[92m$result\e[0m";
-    else
+    if [ ! $result -eq $3 ]; then
         echo -e "$1 FAIL \e[1m\e[31m$result\e[0m /= $3"
         exit 1
+    #else
+    #    echo -e "$1 PASS \e[1m\e[92m$result\e[0m";
     fi
 }
 
