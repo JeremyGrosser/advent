@@ -8,7 +8,6 @@ procedure Day2_1 is
    S1, S2, S3 : Positive;
    Smallest : Positive;
    Sum : Natural := 0;
-   Ch : Character;
 begin
    while not Input.End_Of_Input loop
       Length := Positive'Value (Input.Read_Until ('x'));

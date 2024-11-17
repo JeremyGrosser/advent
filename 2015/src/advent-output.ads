@@ -3,12 +3,20 @@ package Advent.Output is
       (Item     : Integer;
        New_Line : Boolean := True);
 
+   procedure Put
+      (Item     : Long_Long_Integer;
+       New_Line : Boolean := True);
+
    procedure Log
       (Item     : String;
        New_Line : Boolean := True);
 
    procedure Log
       (Item : Integer;
+       New_Line : Boolean := True);
+
+   procedure Log
+      (Item     : Long_Long_Integer;
        New_Line : Boolean := True);
 
    procedure Enable_Log;

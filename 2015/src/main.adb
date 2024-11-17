@@ -49,6 +49,13 @@ begin
             if Arg (3 .. Arg'Last) = "verbose" then
                Advent.Output.Enable_Log;
             end if;
+         elsif Arg'Length > 1 and then Arg (1) = '-' then
+            case Arg (2) is
+               when 'v' =>
+                  Advent.Output.Enable_Log;
+               when others =>
+                  raise Advent_Error with "Unknown flag: " & Arg (1 .. 2);
+            end case;
          else
             case Required is
                when Puzzle =>
