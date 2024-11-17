@@ -39,7 +39,10 @@ solve() {
 
 alr build
 
-check 1.1 input/test1 -3
+check 1.1 input/test1.1 -3
 solve 1.1 input/day1
-check 1.2 input/test2 5
+check 1.2 input/test1.2 5
 solve 1.2 input/day1
+
+check 2.1 input/test2.1 101
+solve 2.1 input/day2
