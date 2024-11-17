@@ -15,6 +15,11 @@ check() {
         exit 1
     fi
 
+    if [ -z "$result" ]; then
+        echo -e "$1 FAIL \e[1m\e[31m(null)\e[0m /= $3"
+        exit 1
+    fi
+
     if [ ! $result -eq $3 ]; then
         echo -e "$1 FAIL \e[1m\e[31m$result\e[0m /= $3"
         exit 1
@@ -62,3 +67,6 @@ solve 3.1 input/day3
 
 check 3.2 input/test3.1-2 11
 solve 3.2 input/day3
+
+check 4.1 input/test4.1 609043
+solve 4.1 input/day4
