@@ -54,3 +54,8 @@ check 2.1 input/test2.1 101
 solve 2.1 input/day2
 check 2.2 input/test2.2 48
 solve 2.2 input/day2
+
+check 3.1 input/test3.1 4
+check 3.1 input/test3.1-2 2
+check 3.1 input/test3.1-3 2
+solve 3.1 input/day3
