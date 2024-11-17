@@ -59,3 +59,6 @@ check 3.1 input/test3.1 4
 check 3.1 input/test3.1-2 2
 check 3.1 input/test3.1-3 2
 solve 3.1 input/day3
+
+check 3.2 input/test3.1-2 11
+solve 3.2 input/day3
