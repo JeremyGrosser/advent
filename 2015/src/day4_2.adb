@@ -16,14 +16,13 @@ procedure Day4_2 is
          MD5.Init (C);
          MD5.Update (C, Key);
          declare
+            use type MD5.Byte_Array;
             Num : constant String := Natural'Image (I);
             Digest : MD5.Fingerprint;
-            Hex : MD5.Digest_String;
          begin
             MD5.Update (C, Num (2 .. Num'Last));
             MD5.Final (C, Digest);
-            Hex := MD5.Digest_To_Text (Digest);
-            if Hex (1 .. 6) = "000000" then
+            if Digest (1 .. 3) = (0, 0, 0) then
                return I;
             end if;
          end;

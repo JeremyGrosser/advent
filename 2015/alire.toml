@@ -13,3 +13,6 @@ executables = ["advent15"]
 
 [[depends-on]]
 ansiada = "^1.0.0"
+
+[build-switches]
+release.optimization = ["-O3", "-gnatn2", "-gnatp", "-march=native"]
