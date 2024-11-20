@@ -57,7 +57,6 @@ procedure Day6_1 is
          declare
             Word : constant String := Input.Read_Until (" " & CRLF);
          begin
-            Output.Log (Word);
             if Word = "turn" then
                declare
                   Onoff : constant String := Input.Read_Until (' ');

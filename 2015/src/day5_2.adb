@@ -16,7 +16,6 @@ procedure Day5_2 is
          if Ada.Strings.Fixed.Index (S (S'First .. I - 1), Candidate) /= 0 or else
             Ada.Strings.Fixed.Index (S (I + 2 .. S'Last), Candidate) /= 0
          then
-            Output.Log ("Found non-overlapping pair of " & Candidate);
             return True;
          end if;
       end loop;
@@ -30,7 +29,6 @@ procedure Day5_2 is
    begin
       for I in S'First .. S'Last - 2 loop
          if S (I) = S (I + 2) then
-            Output.Log ("Found repeat: " & S (I .. I + 2));
             return True;
          end if;
       end loop;
@@ -42,7 +40,6 @@ procedure Day5_2 is
       return Boolean
    is
    begin
-      Output.Log ("Testing " & S);
       return Find_Pair (S) and then Find_Repeats (S);
    end Is_Nice;
 
