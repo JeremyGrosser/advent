@@ -79,3 +79,5 @@ solve 5.2 input/day5
 
 check 6.1 input/test6.1 998996
 solve 6.1 input/day6
+check 6.2 input/test6.2 2000001
+solve 6.2 input/day6
