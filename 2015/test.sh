@@ -74,5 +74,5 @@ solve 4.1 input/day4
 
 check 5.1 input/test5.1 2
 solve 5.1 input/day5
-check 5.2 input/test5.2 5
+check 5.2 input/test5.2 6
 solve 5.2 input/day5
