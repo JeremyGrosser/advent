@@ -49,6 +49,13 @@ begin
             if Arg (3 .. Arg'Last) = "verbose" then
                Advent.Output.Enable_Log;
             end if;
+         elsif Arg'Length > 1 and then Arg (1) = '-' then
+            case Arg (2) is
+               when 'v' =>
+                  Advent.Output.Enable_Log;
+               when others =>
+                  raise Advent_Error with "Unknown flag: " & Arg (1 .. 2);
+            end case;
          else
             case Required is
                when Puzzle =>
@@ -82,6 +89,6 @@ exception
    when E : Advent_Error =>
       Ada.Text_IO.Put (Ada.Text_IO.Standard_Error, "ERROR: ");
       Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Ada.Exceptions.Exception_Message (E));
-      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, "Usage: advent24 [--verbose] <puzzle> <filename>");
+      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, "Usage: advent15 [--verbose] <puzzle> <filename>");
       CLI.Set_Exit_Status (1);
 end Main;
