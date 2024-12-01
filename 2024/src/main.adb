@@ -89,6 +89,6 @@ exception
    when E : Advent_Error =>
       Ada.Text_IO.Put (Ada.Text_IO.Standard_Error, "ERROR: ");
       Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Ada.Exceptions.Exception_Message (E));
-      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, "Usage: advent15 [--verbose] <puzzle> <filename>");
+      Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, "Usage: advent24 [--verbose] <puzzle> <filename>");
       CLI.Set_Exit_Status (1);
 end Main;

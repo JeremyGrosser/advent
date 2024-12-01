@@ -167,4 +167,45 @@ is
       end if;
       return String (Data.all (First .. Last));
    end Lookahead;
+
+   function Get_Integer
+      return Integer
+   is
+      Digit : constant array (Character range '0' .. '9') of Natural := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+      I      : Integer := 0;
+      Negate : Boolean := False;
+      Ch     : Character;
+   begin
+      Skip_Whitespace;
+
+      if Peek = '-' then
+         Negate := True;
+         Seek (1);
+      end if;
+
+      while not End_Of_Input and then Peek in '0' .. '9' loop
+         Get (Ch);
+         I := I * 10 + Digit (Ch);
+      end loop;
+
+      if Negate then
+         I := I * (-1);
+      end if;
+
+      return I;
+   end Get_Integer;
+
+   procedure Skip_Whitespace is
+      Ch : Character;
+   begin
+      while not End_Of_Input loop
+         Ch := Peek;
+         case Ch is
+            when ' ' | ASCII.HT | ASCII.CR | ASCII.LF =>
+               Seek (1);
+            when others =>
+               exit;
+         end case;
+      end loop;
+   end Skip_Whitespace;
 end Advent.Input;

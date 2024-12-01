@@ -51,4 +51,9 @@ is
    function Lookahead
       (N : Positive)
        return String;
+
+   function Get_Integer
+      return Integer;
+
+   procedure Skip_Whitespace;
 end Advent.Input;
