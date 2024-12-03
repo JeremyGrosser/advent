@@ -1,5 +1,3 @@
-pragma Ada_2022;
-with Ada.Exceptions;
 with Ada.Containers.Vectors;
 with Advent; use Advent;
 with Advent.Input;
@@ -127,8 +125,12 @@ begin
                end;
             end if;
          when T_Do =>
+            Expect (T_Left_Paren);
+            Expect (T_Right_Paren);
             Enabled := True;
          when T_Dont =>
+            Expect (T_Left_Paren);
+            Expect (T_Right_Paren);
             Enabled := False;
          when others =>
             null;
