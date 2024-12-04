@@ -67,3 +67,5 @@ solve 3.2 input/day3
 
 check 4.1 input/test4.1 18
 solve 4.1 input/day4
+check 4.2 input/test4.1 9
+solve 4.2 input/day4
