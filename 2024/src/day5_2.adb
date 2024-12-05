@@ -5,7 +5,7 @@ with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day5_1 is
+procedure Day5_2 is
    Sum : Natural := 0;
 
    type Page_Number is new Natural;
@@ -38,11 +38,11 @@ procedure Day5_1 is
       Item : Page_Number;
    begin
       for I in First_Index (Update) .. Last_Index (Update) loop
-         Item := Element (Update, I);
+         Item := Update (I);
          if Contains (Rules, Item) then
-            for R of Element (Rules, Item) loop
+            for R of Rules (Item) loop
                for J in First_Index (Update) .. I - 1 loop
-                  if Element (Update, J) = R.Before then
+                  if Update (J) = R.Before then
                      return False;
                   end if;
                end loop;
@@ -51,6 +51,27 @@ procedure Day5_1 is
       end loop;
       return True;
    end In_Order;
+
+   procedure Reorder
+      (Update : in out Page_Vectors.Vector)
+   is
+      Item : Page_Number;
+   begin
+      for I in First_Index (Update) .. Last_Index (Update) loop
+         Item := Update (I);
+         if Contains (Rules, Item) then
+            for R of Rules (Item) loop
+               for J in First_Index (Update) .. I - 1 loop
+                  if Update (J) = R.Before then
+                     Delete (Update, I);
+                     Insert (Update, J, Item);
+                     return;
+                  end if;
+               end loop;
+            end loop;
+         end if;
+      end loop;
+   end Reorder;
 
    function Middle_Page
       (Update : Page_Vectors.Vector)
@@ -82,9 +103,12 @@ begin
             Page := 0;
          when ASCII.LF =>
             Append (Update, Page);
-            Page := 0;
             Output.Log (Update'Image);
-            if In_Order (Update) then
+            Page := 0;
+            if not In_Order (Update) then
+               while not In_Order (Update) loop
+                  Reorder (Update);
+               end loop;
                Sum := Sum + Natural (Middle_Page (Update));
             end if;
             Clear (Update);
@@ -95,4 +119,4 @@ begin
    end loop;
 
    Output.Put (Sum);
-end Day5_1;
+end Day5_2;
