@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;

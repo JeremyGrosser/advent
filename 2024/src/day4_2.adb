@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
@@ -85,22 +84,16 @@ procedure Day4_2 is
    Columns : constant Natural := Input.Read_Until (ASCII.LF)'Length;
    Rows    : constant Natural := Input.Length / Columns;
    M       : constant Map := Read_Map (Columns, Rows);
-   A, B, C, D : String (1 .. 3);
+   A, B    : String (1 .. 3);
    Sum     : Natural := 0;
 begin
    for Y in 1 .. Rows - 2 loop
       for X in 1 .. Columns - 2 loop
          A := To_String (M, Coordinate'(Y, X), South_East);
          B := To_String (M, Coordinate'(Y + 2, X), North_East);
-         --  C := To_String (M, Coordinate'(Y, X + 1), South);
-         --  D := To_String (M, Coordinate'(Y + 1, X), East);
          if ((A = "MAS" or else A = "SAM") and then (B = "MAS" or else B = "SAM")) then
             Sum := Sum + 1;
          end if;
-
-         --  if ((C = "MAS" or else C = "SAM") and then (D = "MAS" or else D = "SAM")) then
-         --     Sum := Sum + 1;
-         --  end if;
       end loop;
    end loop;
 
