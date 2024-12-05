@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Ada.Containers.Vectors;
 with Ada.Containers.Ordered_Maps;
 with Advent; use Advent;
@@ -78,6 +77,18 @@ procedure Day5_2 is
       return Page_Number
    is (Element (Update, Last_Index (Update) / 2 + 1));
 
+   procedure Do_Update
+      (Update : in out Page_Vectors.Vector)
+   is
+   begin
+      if not In_Order (Update) then
+         while not In_Order (Update) loop
+            Reorder (Update);
+         end loop;
+         Sum := Sum + Natural (Middle_Page (Update));
+      end if;
+   end Do_Update;
+
    Update : Page_Vectors.Vector;
    Page : Page_Number;
    R : Rule;
@@ -103,20 +114,16 @@ begin
             Page := 0;
          when ASCII.LF =>
             Append (Update, Page);
-            Output.Log (Update'Image);
             Page := 0;
-            if not In_Order (Update) then
-               while not In_Order (Update) loop
-                  Reorder (Update);
-               end loop;
-               Sum := Sum + Natural (Middle_Page (Update));
-            end if;
+            Do_Update (Update);
             Clear (Update);
          when others =>
             raise Program_Error with "Unexpected character " & Input.Peek & " in update";
       end case;
       Input.Seek (1);
    end loop;
+   Append (Update, Page);
+   Do_Update (Update);
 
    Output.Put (Sum);
 end Day5_2;

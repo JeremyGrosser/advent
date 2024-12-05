@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Ada.Containers.Vectors;
 with Ada.Containers.Ordered_Maps;
 with Advent; use Advent;
@@ -83,7 +82,6 @@ begin
          when ASCII.LF =>
             Append (Update, Page);
             Page := 0;
-            Output.Log (Update'Image);
             if In_Order (Update) then
                Sum := Sum + Natural (Middle_Page (Update));
             end if;
