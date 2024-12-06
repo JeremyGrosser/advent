@@ -15,17 +15,13 @@ procedure Day6_2 is
       return Coordinate
    is (Coordinate'(Y => Left.Y + Right.Y, X => Left.X + Right.X));
 
-   type Direction is (North, North_East, East, South_East, South, South_West, West, North_West);
+   type Direction is (North, East, South, West);
 
    Move : constant array (Direction) of Coordinate :=
       (North      => (-1,  0),
-       North_East => (-1,  1),
        East       => ( 0,  1),
-       South_East => ( 1,  1),
        South      => ( 1,  0),
-       South_West => ( 1, -1),
-       West       => ( 0, -1),
-       North_West => (-1, -1));
+       West       => ( 0, -1));
 
    type Pawn is record
       Position : Coordinate;
@@ -97,6 +93,8 @@ procedure Day6_2 is
    begin
       loop
          if Steps > (M'Last (1) * M'Last (2)) then
+            --  If we've moved more than the number of tiles in the map, it's
+            --  probably a loop.
             return True;
          end if;
 
@@ -107,7 +105,6 @@ procedure Day6_2 is
          end if;
 
          if M (Next.Y, Next.X) = '#' then
-            Turn_Right (Guard.Facing); --  45 degrees
             Turn_Right (Guard.Facing); --  90 degrees
          else
             Guard.Position := Next;
