@@ -1,5 +1,3 @@
-pragma Ada_2022;
-with Ada.Exceptions;
 with Ada.Containers.Vectors;
 with Advent; use Advent;
 with Advent.Input;
@@ -110,7 +108,7 @@ begin
             --  Output.Log (Left'Image & " * " & Right'Image);
             Sum := Sum + Left * Right;
          exception
-            when E : Program_Error =>
+            when Program_Error =>
                null;
                --  Output.Log ("Error: " & Ada.Exceptions.Exception_Message (E));
                --  Delete_First (Tokens);

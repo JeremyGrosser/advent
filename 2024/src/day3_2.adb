@@ -119,7 +119,7 @@ begin
                   --  Output.Log (Left'Image & " * " & Right'Image);
                   Sum := Sum + Left * Right;
                exception
-                  when E : Program_Error =>
+                  when Program_Error =>
                      null;
                      --  Output.Log ("Error: " & Ada.Exceptions.Exception_Message (E));
                end;

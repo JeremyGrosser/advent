@@ -91,7 +91,7 @@ begin
       for X in 1 .. Columns - 2 loop
          A := To_String (M, Coordinate'(Y, X), South_East);
          B := To_String (M, Coordinate'(Y + 2, X), North_East);
-         if ((A = "MAS" or else A = "SAM") and then (B = "MAS" or else B = "SAM")) then
+         if (A = "MAS" or else A = "SAM") and then (B = "MAS" or else B = "SAM") then
             Sum := Sum + 1;
          end if;
       end loop;
