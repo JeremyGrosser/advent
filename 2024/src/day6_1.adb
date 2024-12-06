@@ -1,4 +1,4 @@
-pragma Ada_2022;
+pragma Style_Checks ("-t");
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;

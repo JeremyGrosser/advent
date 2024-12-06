@@ -1,4 +1,4 @@
-pragma Ada_2022;
+pragma Style_Checks ("-t");
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
@@ -118,7 +118,6 @@ procedure Day6_2 is
    Columns : constant Natural := Input.Read_Until (ASCII.LF)'Length;
    Rows    : constant Natural := Input.Length / Columns;
    M       : Map := Read_Map (Columns, Rows);
-   Next    : Coordinate;
    Sum     : Natural := 0;
 begin
    for Y in M'Range (1) loop
