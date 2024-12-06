@@ -74,3 +74,6 @@ check 5.1 input/test5.1 143
 solve 5.1 input/day5
 check 5.2 input/test5.1 123
 solve 5.2 input/day5
+
+check 6.1 input/test6.1 41
+solve 6.1 input/day6
