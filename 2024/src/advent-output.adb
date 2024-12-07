@@ -3,6 +3,7 @@ with AnsiAda;
 
 package body Advent.Output is
    package Int_IO is new Ada.Text_IO.Integer_IO (Integer);
+   package LLI_IO is new Ada.Text_IO.Integer_IO (Long_Long_Integer);
    Log_Enabled : Boolean := False;
 
    procedure Put
@@ -15,6 +16,17 @@ package body Advent.Output is
          Ada.Text_IO.New_Line;
       end if;
    end Put;
+
+   procedure Put_Long
+      (Item     : Long_Long_Integer;
+       New_Line : Boolean := True)
+   is
+   begin
+      LLI_IO.Put (Item, Width => 0);
+      if New_Line then
+         Ada.Text_IO.New_Line;
+      end if;
+   end Put_Long;
 
    procedure Start_Log is
    begin

@@ -79,3 +79,6 @@ check 6.1 input/test6.1 41
 solve 6.1 input/day6
 check 6.2 input/test6.1 6
 solve 6.2 input/day6
+
+check 7.1 input/test7.1 3749
+solve 7.1 input/day7

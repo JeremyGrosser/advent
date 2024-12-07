@@ -55,5 +55,8 @@ is
    function Get_Integer
       return Integer;
 
+   function Get_Long
+      return Long_Long_Integer;
+
    procedure Skip_Whitespace;
 end Advent.Input;
