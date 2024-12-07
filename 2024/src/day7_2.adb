@@ -1,40 +1,32 @@
-pragma Ada_2022;
-with Ada.Containers.Vectors;
+with Ada.Containers.Bounded_Vectors;
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
 procedure Day7_2 is
+   Max_Operands : constant := 16;
    subtype Int is Long_Long_Integer;
    Sum : Int := 0;
 
-   package Int_Vectors is new Ada.Containers.Vectors (Positive, Int);
+   package Int_Vectors is new Ada.Containers.Bounded_Vectors (Positive, Int);
    use Int_Vectors;
 
    type Operation is (Add, Mul, Concat);
-   package Operation_Vectors is new Ada.Containers.Vectors (Positive, Operation);
+   package Operation_Vectors is new Ada.Containers.Bounded_Vectors (Positive, Operation);
    use Operation_Vectors;
 
    procedure Generate
       (Test_Value : Int;
        Operands : Int_Vectors.Vector)
    is
-      N : constant Natural := Natural (Length (Operands)) - 1;
-
       function Solve
          (Operations : Operation_Vectors.Vector)
          return Boolean
       is
-         Result : Int := First_Element (Operands);
-         I : Positive := 2;
-         J : Positive := 1;
+         Result : Int := Operands (1);
       begin
-         --  Output.Log (Test_Value'Image);
-         --  Output.Log (Operands'Image);
-         --  Output.Log (Operations'Image);
-
-         while I <= Last_Index (Operands) loop
-            case Operations (J) is
+         for I in 2 .. Last_Index (Operands) loop
+            case Operations (I - 1) is
                when Add =>
                   Result := Result + Operands (I);
                when Mul =>
@@ -47,45 +39,44 @@ procedure Day7_2 is
                   elsif Operands (I) in Int (100) .. Int (999) then
                      Result := Result * 1000 + Operands (I);
                   else
-                     raise Program_Error with "what";
+                     raise Program_Error with "we only expect 3 digit operands to concat";
                   end if;
             end case;
-            I := I + 1;
-            J := J + 1;
          end loop;
 
          return Result = Test_Value;
       end Solve;
 
       function Inner
-         (Current   : Operation_Vectors.Vector;
+         (Current   : in out Operation_Vectors.Vector;
           Remaining : Natural)
           return Boolean
       is
-         X : Operation_Vectors.Vector := Copy (Current);
       begin
          if Remaining = 0 then
             return Solve (Current);
          else
             for Op in Operation'Range loop
-               Append (X, Op);
-               if Inner (X, Remaining - 1) then
+               Append (Current, Op);
+               if Inner (Current, Remaining - 1) then
                   return True;
                end if;
-               Delete_Last (X);
+               Delete_Last (Current);
             end loop;
             return False;
          end if;
       end Inner;
+
+      N : constant Natural := Natural (Length (Operands)) - 1;
+      X : Operation_Vectors.Vector (Capacity => Max_Operands);
    begin
-      if Inner ([], N) then
-         Output.Log (Test_Value'Image);
+      if Inner (X, N) then
          Sum := Sum + Test_Value;
       end if;
    end Generate;
 
    Test_Value : Int;
-   Operands : Int_Vectors.Vector;
+   Operands : Int_Vectors.Vector (Capacity => Max_Operands);
 begin
    while not Input.End_Of_Input loop
       case Input.Peek is

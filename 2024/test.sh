@@ -81,6 +81,8 @@ check 6.2 input/test6.1 6
 solve 6.2 input/day6
 
 check 7.1 input/test7.1 3749
-solve 7.1 input/day7
+#solve 7.1 input/day7
+check 7.1 input/day7 2654749936343
 check 7.2 input/test7.1 11387
-solve 7.2 input/day7
+#solve 7.2 input/day7
+check 7.2 input/day7 124060392153684
