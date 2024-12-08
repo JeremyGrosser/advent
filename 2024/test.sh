@@ -85,5 +85,7 @@ fi
 #check 7.2 input/test7.1 11387
 #solve 7.2 input/day7
 
-check 8.1 input/test8.1 42
+check 8.1 input/test8.1.1 2
+check 8.1 input/test8.1.2 4
+check 8.1 input/test8.1 14
 solve 8.1 input/day8
