@@ -25,6 +25,7 @@ procedure Day8_2 is
    function "+" (Left, Right : Coordinate) return Coordinate
    is ((Left.Y + Right.Y, Left.X + Right.X));
 
+   --  This is not a good hash function, but it is *a* hash function.
    function Hash (Pos : Coordinate) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (Pos.Y * Width + Pos.X));
 
