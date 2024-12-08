@@ -89,3 +89,5 @@ check 8.1 input/test8.1.1 2
 check 8.1 input/test8.1.2 4
 check 8.1 input/test8.1 14
 solve 8.1 input/day8
+check 8.2 input/test8.1 34
+solve 8.2 input/day8
