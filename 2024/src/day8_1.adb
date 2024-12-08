@@ -1,4 +1,5 @@
-with Ada.Containers.Vectors;
+with Ada.Containers.Hashed_Sets;
+with Ada.Containers;
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
@@ -24,12 +25,18 @@ procedure Day8_1 is
    function "*" (Left : Integer; Right : Coordinate) return Coordinate
    is ((Left * Right.Y, Left * Right.X));
 
-   package Coordinate_Vectors is new Ada.Containers.Vectors (Positive, Coordinate);
-   use Coordinate_Vectors;
-   type Frequency_Map is array (Frequency) of Coordinate_Vectors.Vector;
+   function Hash (Pos : Coordinate) return Ada.Containers.Hash_Type
+   is (Ada.Containers.Hash_Type (Pos.Y * Width + Pos.X));
+
+   package Coordinate_Sets is new Ada.Containers.Hashed_Sets
+      (Element_Type        => Coordinate,
+       Hash                => Hash,
+       Equivalent_Elements => "=");
+   use Coordinate_Sets;
+   type Frequency_Map is array (Frequency) of Coordinate_Sets.Set;
 
    Antennas  : Frequency_Map;
-   Antinodes : Coordinate_Vectors.Vector;
+   Antinodes : Coordinate_Sets.Set;
 
    procedure Add_Antinodes
       (A, B : Coordinate)
@@ -41,8 +48,8 @@ procedure Day8_1 is
       end if;
 
       Pos := 2 * A - B;
-      if In_Bounds (Pos) and then not Contains (Antinodes, Pos) then
-         Append (Antinodes, Pos);
+      if In_Bounds (Pos) then
+         Include (Antinodes, Pos);
       end if;
    end Add_Antinodes;
 
@@ -60,7 +67,7 @@ begin
          when '.' =>
             Pos.X := Pos.X + 1;
          when others =>
-            Append (Antennas (Frequency (Ch)), Pos);
+            Include (Antennas (Frequency (Ch)), Pos);
             Pos.X := Pos.X + 1;
       end case;
    end loop;
