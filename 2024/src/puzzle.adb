@@ -15,6 +15,7 @@ with Day7_2;
 with Day8_1;
 with Day8_2;
 with Day9_1;
+with Day9_2;
 
 package body Puzzle is
    Solutions : constant array (Day_Type, Part_Type) of Any_Solution :=
@@ -26,7 +27,7 @@ package body Puzzle is
        6 => (1 => Day6_1'Access, 2 => Day6_2'Access),
        7 => (1 => Day7_1'Access, 2 => Day7_2'Access),
        8 => (1 => Day8_1'Access, 2 => Day8_2'Access),
-       9 => (1 => Day9_1'Access, 2 => null),
+       9 => (1 => Day9_1'Access, 2 => Day9_2'Access),
        others => (others => null));
 
    function Get_Solution

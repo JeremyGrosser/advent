@@ -94,3 +94,5 @@ fi
 
 check 9.1 input/test9.1 1928
 solve 9.1 input/day9
+check 9.2 input/test9.1 2858
+solve 9.2 input/day9
