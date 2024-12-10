@@ -86,30 +86,10 @@ procedure Day10_2 is
       end if;
    end Longest_Path;
 
-   procedure Print
-      (H : Coordinate_Maps.Map;
-       Path : Coordinate_Vectors.Vector)
-   is
-      M : array (1 .. Rows, 1 .. Columns) of Character := (others => (others => '.'));
-      Num : constant array (0 .. 9) of Character := "0123456789";
-   begin
-      for Step of Path loop
-         M (Step.Y, Step.X) := Num (Element (H, Step) mod 10);
-      end loop;
-
-      for Y in M'Range (1) loop
-         for X in M'Range (2) loop
-            Output.Log ("" & M (Y, X), False);
-         end loop;
-         Output.Log ("");
-      end loop;
-      Output.Log ("");
-   end Print;
-
    HM    : Coordinate_Maps.Map;
    Ch    : Character;
    Pos   : Coordinate;
-   Sum   : Natural := 0;
+   Path  : Coordinate_Vectors.Vector with Unreferenced;
 begin
    Input.Seek (0, Input.Seek_Start);
    for Y in 1 .. Rows loop
@@ -137,14 +117,7 @@ begin
 
    for Start of Trailheads loop
       for Finish of Peaks loop
-         declare
-            Path : constant Coordinate_Vectors.Vector := Longest_Path (HM, Start, Finish);
-         begin
-            if not Is_Empty (Path) then
-               Print (HM, Path);
-               Sum := Sum + 1;
-            end if;
-         end;
+         Path := Longest_Path (HM, Start, Finish);
       end loop;
    end loop;
 
