@@ -1,8 +1,5 @@
 pragma Ada_2022;
-with Ada.Text_IO;
-with Ada.Integer_Text_IO;
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Vectors;
 with Ada.Containers;
 with Advent; use Advent;
 with Advent.Input;
@@ -38,30 +35,6 @@ procedure Day9_2 is
        Element_Type => Span,
        Hash => Hash,
        Equivalent_Keys => "=");
-
-   package Position_Vectors is new Ada.Containers.Vectors
-      (Index_Type   => Positive,
-       Element_Type => Position);
-   use Position_Vectors;
-
-   procedure Print
-      (M    : Position_Block_Id_Maps.Map;
-       Last : Position)
-   is
-      use Ada.Text_IO;
-      use Ada.Integer_Text_IO;
-      use Position_Block_Id_Maps;
-   begin
-      New_Line (Standard_Error);
-      for I in 0 .. Last loop
-         if Contains (M, I) then
-            Put (Standard_Error, Integer (Element (M, I)), Width => 0);
-         else
-            Put (Standard_Error, '.');
-         end if;
-      end loop;
-      New_Line (Standard_Error);
-   end Print;
 
    function Num (Ch : Character) return Natural
    is (Character'Pos (Ch) - Character'Pos ('0'));
@@ -165,7 +138,6 @@ begin
          end loop;
       end loop;
    end;
-
 
    for Cursor in Position_Block_Id_Maps.Iterate (Blocks) loop
       Pos := Position_Block_Id_Maps.Key (Cursor);

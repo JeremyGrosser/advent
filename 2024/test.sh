@@ -92,7 +92,10 @@ fi
 #check 8.2 input/test8.1 34
 #solve 8.2 input/day8
 
-check 9.1 input/test9.1 1928
-solve 9.1 input/day9
-check 9.2 input/test9.1 2858
-solve 9.2 input/day9
+#check 9.1 input/test9.1 1928
+#solve 9.1 input/day9
+#check 9.2 input/test9.1 2858
+#solve 9.2 input/day9
+
+check 10.1 input/test10 42
+solve 10.1 input/day10
