@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Containers;
@@ -46,7 +45,6 @@ procedure Day10_2 is
        From, To : Coordinate)
       return Coordinate_Vectors.Vector
    is
-      Best_Dir       : Direction := Up;
       Best_Distance  : Natural := 0;
       Best_Path      : Coordinate_Vectors.Vector := Empty_Vector;
 
@@ -54,14 +52,16 @@ procedure Day10_2 is
       Slope       : Integer := 10;
       Next_Distance : Natural := 0;
       Path : Coordinate_Vectors.Vector := Empty_Vector;
-
    begin
       for Dir in Direction'Range loop
          Next_Step := From + Move (Dir);
          if Contains (M, Next_Step) then
             Slope := Element (M, Next_Step) - Element (M, From);
             if Slope = 1 then
-               Path := [From, Next_Step];
+               Clear (Path);
+               Append (Path, From);
+               Append (Path, Next_Step);
+
                if Next_Step = To then
                   Num_Paths := Num_Paths + 1;
                else
@@ -73,7 +73,6 @@ procedure Day10_2 is
                   if Next_Distance > Best_Distance then
                      Best_Distance := Next_Distance;
                      Best_Path := Path;
-                     Best_Dir := Dir;
                   end if;
                end if;
             end if;
@@ -83,7 +82,7 @@ procedure Day10_2 is
       if not Is_Empty (Best_Path) and then Last_Element (Best_Path) = To then
          return Best_Path;
       else
-         return [];
+         return Empty_Vector;
       end if;
    end Longest_Path;
 
@@ -142,7 +141,6 @@ begin
             Path : constant Coordinate_Vectors.Vector := Longest_Path (HM, Start, Finish);
          begin
             if not Is_Empty (Path) then
-               Output.Log (Finish'Image);
                Print (HM, Path);
                Sum := Sum + 1;
             end if;

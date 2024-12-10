@@ -1,6 +1,3 @@
-pragma Ada_2022;
-with Ada.Text_IO;
-with Ada.Integer_Text_IO;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Containers;
@@ -29,23 +26,6 @@ procedure Day9_1 is
       (Index_Type   => Positive,
        Element_Type => Position);
    use Position_Vectors;
-
-   procedure Print
-      (M    : Block_Maps.Map;
-       Last : Position)
-   is
-      use Ada.Text_IO;
-      use Ada.Integer_Text_IO;
-   begin
-      for I in 0 .. Last loop
-         if Contains (M, I) then
-            Put (Standard_Error, Integer (Element (M, I)), Width => 0);
-         else
-            Put (Standard_Error, '.');
-         end if;
-      end loop;
-      New_Line;
-   end Print;
 
    function Is_Contiguous
       (M    : Block_Maps.Map;
