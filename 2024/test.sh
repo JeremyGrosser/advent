@@ -100,3 +100,5 @@ fi
 check 10.1 input/test10.2 2
 check 10.1 input/test10 36
 solve 10.1 input/day10
+check 10.2 input/test10.3 3
+solve 10.2 input/day10
