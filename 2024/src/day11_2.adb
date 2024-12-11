@@ -1,40 +1,35 @@
 pragma Ada_2022;
-with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers;
 with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
 procedure Day11_2 is
-   subtype Int is Long_Long_Integer;
-
-   function Hash (I : Int) return Ada.Containers.Hash_Type
-   is (Ada.Containers.Hash_Type (I mod 2 ** 32));
-
-   package Int_Maps is new Ada.Containers.Hashed_Maps
-      (Key_Type => Int,
-       Element_Type => Int,
-       Hash => Hash,
-       Equivalent_Keys => "=");
-   use Int_Maps;
+   type Int is mod 2 ** 64;
 
    package Int_Vectors is new Ada.Containers.Vectors (Positive, Int);
    use Int_Vectors;
 
-   function Strip_Leading
-      (Ch : Character;
-       Str : String)
-       return String
+   function To_String
+      (N : Int)
+      return String
    is
+      Num : constant String := "0123456789";
+      Max_Digits : constant := 16;
+      S : String (1 .. Max_Digits);
+      I : Natural := S'Last;
+      X : Int := N;
    begin
-      for I in Str'Range loop
-         if Str (I) /= Ch then
-            return Str (I .. Str'Last);
-         end if;
+      loop
+         S (I) := Num (Num'First + Natural (X mod 10));
+         X := X / 10;
+         exit when X = 0;
+         I := I - 1;
       end loop;
-      return "" & Ch;
-   end Strip_Leading;
+      return S (I .. S'Last);
+   end To_String;
 
    function Blink
       (Stone : Int)
@@ -45,7 +40,7 @@ procedure Day11_2 is
          return [1];
       else
          declare
-            Str   : constant String := Strip_Leading (' ', Stone'Image);
+            Str   : constant String := To_String (Stone);
             Split : constant Natural := Str'Last - Str'Length / 2;
          begin
             if Str'Length >= 2 and then Str'Length mod 2 = 0 then
@@ -68,15 +63,26 @@ procedure Day11_2 is
       return Ada.Containers.Hash_Type
    is
       use Ada.Containers;
+
+      function Shift_Right
+         (Item   : Hash_Type;
+          Amount : Natural)
+          return Hash_Type
+      with Import, Convention => Intrinsic;
+
+      A : Hash_Type := Hash_Type (Item.Stone mod 2 ** 32);
+      B : constant Hash_Type := Hash_Type (Item.Steps);
    begin
-      return Hash (Item.Stone) * Hash_Type (Item.Steps);
+      A := A xor B * 2654435769; --  golden ratio prime 2**32
+      A := Shift_Right (A, 16) xor A;
+      return A;
    end Cache_Hash;
 
    package Int_Vector_Maps is new Ada.Containers.Hashed_Maps
-      (Key_Type => Cache_Key,
-       Element_Type => Int,
-       Hash => Cache_Hash,
-       Equivalent_Keys => "=");
+      (Key_Type         => Cache_Key,
+       Element_Type     => Int,
+       Hash             => Cache_Hash,
+       Equivalent_Keys  => "=");
    use Int_Vector_Maps;
 
    Cache : Int_Vector_Maps.Map;
@@ -117,16 +123,16 @@ procedure Day11_2 is
       return Element (Cache, Key);
    end Fast_Forward_Cached;
 
-   Stones : Int_Maps.Map;
+   Stones : Int_Vectors.Vector;
    Sum : Int := 0;
 begin
    while not Input.End_Of_Input loop
-      Insert (Stones, Int'Value (Input.Read_Until (" " & ASCII.LF)), 1);
+      Append (Stones, Int'Value (Input.Read_Until (" " & ASCII.LF)));
    end loop;
 
-   for Cursor in Iterate (Stones) loop
-      Sum := Sum + Fast_Forward_Cached (Key (Cursor), 75);
+   for Stone of Stones loop
+      Sum := Sum + Fast_Forward_Cached (Stone, 75);
    end loop;
 
-   Output.Put_Long (Sum);
+   Output.Put_Long (Long_Long_Integer (Sum));
 end Day11_2;
