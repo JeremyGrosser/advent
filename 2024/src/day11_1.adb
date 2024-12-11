@@ -37,13 +37,6 @@ procedure Day11_1 is
                Left  : constant String := Strip_Leading ('0', Stone (Stone'First .. Split));
                Right : constant String := Strip_Leading ('0', Stone (Split + 1 .. Stone'Last));
             begin
-               Output.Log ("Stone: " & Stone);
-               Output.Log ("Stone'First: " & Stone'First'Image);
-               Output.Log ("Split: " & Split'Image);
-               Output.Log ("Stone'Last: " & Stone'Last'Image);
-               Output.Log ("Left:  " & Left);
-               Output.Log ("Right: " & Left);
-               Output.Log ("");
                Append (X, Left);
                Append (X, Right);
             end;
@@ -66,7 +59,6 @@ begin
    end loop;
 
    for I in 1 .. 25 loop
-      Output.Log (Stones'Image);
       Blink (Stones);
    end loop;
 
