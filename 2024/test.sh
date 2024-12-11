@@ -97,8 +97,12 @@ fi
 #check 9.2 input/test9.1 2858
 #solve 9.2 input/day9
 
-check 10.1 input/test10.2 2
-check 10.1 input/test10 36
-solve 10.1 input/day10
-check 10.2 input/test10.3 3
-solve 10.2 input/day10
+#check 10.1 input/test10.2 2
+#check 10.1 input/test10 36
+#solve 10.1 input/day10
+#check 10.2 input/test10.3 3
+#solve 10.2 input/day10
+
+check 11.1 input/test11.1 55312
+solve 11.1 input/day11
+solve 11.2 input/day11
