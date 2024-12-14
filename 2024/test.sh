@@ -107,5 +107,6 @@ fi
 #solve 11.1 input/day11
 #solve 11.2 input/day11
 
-check 14.1 input/test14 12
-solve 14.1 input/day14
+#check 14.1 input/test14 12
+#solve 14.1 input/day14
+solve 14.2 input/day14
