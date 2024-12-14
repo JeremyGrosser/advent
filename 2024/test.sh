@@ -103,6 +103,9 @@ fi
 #check 10.2 input/test10.3 3
 #solve 10.2 input/day10
 
-check 11.1 input/test11.1 55312
-solve 11.1 input/day11
-solve 11.2 input/day11
+#check 11.1 input/test11.1 55312
+#solve 11.1 input/day11
+#solve 11.2 input/day11
+
+check 14.1 input/test14 12
+solve 14.1 input/day14
