@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Advent; use Advent;
@@ -31,7 +30,6 @@ procedure Day15_1 is
       when '>' => Right,
       when others => raise Program_Error with Ch & " is not a direction");
 
-
    function Hash (Item : Coordinate) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (Item.Y * 1_024 + Item.X));
 
@@ -41,26 +39,6 @@ procedure Day15_1 is
        Hash             => Hash,
        Equivalent_Keys  => "=");
    use Coordinate_Maps;
-
-   procedure Print
-      (M       : Coordinate_Maps.Map;
-       Extents : Coordinate)
-   is
-      Pos : Coordinate;
-   begin
-      for Y in 0 .. Extents.Y loop
-         for X in 0 .. Extents.X loop
-            Pos := (Y, X);
-            if Contains (M, Pos) then
-               Output.Log ("" & Element (M, Pos), False);
-            else
-               Output.Log (".", False);
-            end if;
-         end loop;
-         Output.Log ("");
-      end loop;
-      Output.Log ("");
-   end Print;
 
    function Can_Move
       (M   : Coordinate_Maps.Map;
@@ -95,7 +73,7 @@ procedure Day15_1 is
       Ch : Character;
    begin
       if not Contains (M, Pos) then
-         raise Program_Error with "There is nothing at " & Pos'Image;
+         raise Program_Error with "There is nothing at " & Pos.Y'Image & "," & Pos.X'Image;
       end if;
 
       if Contains (M, Next) then
@@ -146,8 +124,6 @@ begin
    end loop;
 
    Extents.X := Extents.X - 1;
-
-   Print (Warehouse, Extents);
 
    loop
       exit when Input.End_Of_Input;

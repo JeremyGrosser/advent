@@ -1,4 +1,3 @@
-pragma Ada_2022;
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Advent; use Advent;
@@ -34,7 +33,6 @@ procedure Day15_2 is
       when '>' => Right,
       when others => raise Program_Error with Ch & " is not a direction");
 
-
    function Hash (Item : Coordinate) return Ada.Containers.Hash_Type
    is (Ada.Containers.Hash_Type (Item.Y * 1024 + Integer (Item.X * 2.0)));
 
@@ -44,31 +42,6 @@ procedure Day15_2 is
        Hash             => Hash,
        Equivalent_Keys  => "=");
    use Coordinate_Maps;
-
-   procedure Print
-      (M       : Coordinate_Maps.Map;
-       Extents : Coordinate)
-   is
-      Pos : Coordinate;
-   begin
-      Pos.Y := 0;
-      loop
-         exit when Pos.Y > Extents.Y;
-         Pos.X := 0.0;
-         loop
-            exit when Pos.X > Extents.X;
-            if Contains (M, Pos) then
-               Output.Log ("" & Element (M, Pos), False);
-            else
-               Output.Log (".", False);
-            end if;
-            Pos.X := Pos.X + 0.5;
-         end loop;
-         Pos.Y := Pos.Y + 1;
-         Output.Log ("");
-      end loop;
-      Output.Log ("");
-   end Print;
 
    function Can_Move
       (M   : Coordinate_Maps.Map;
@@ -119,7 +92,7 @@ procedure Day15_2 is
       Ch : Character;
    begin
       if not Contains (M, Pos) then
-         raise Program_Error with "There is nothing at " & Pos'Image;
+         raise Program_Error with "There is nothing at " & Pos.Y'Image & "," & Pos.X'Image;
       end if;
 
       if Contains (M, Next) then
@@ -145,7 +118,7 @@ procedure Day15_2 is
    function GPS_Coordinate
       (Pos : Coordinate)
       return Natural
-   is (Integer (Pos.Y) * 100 + Integer (Pos.X * 2.0));
+   is (Pos.Y * 100 + Integer (Pos.X * 2.0));
 
    Warehouse : Coordinate_Maps.Map;
    Extents   : Coordinate := (0, 0.0);
@@ -189,10 +162,8 @@ begin
    Extents.X := Extents.X - 0.5;
 
    loop
-      Print (Warehouse, Extents);
       exit when Input.End_Of_Input;
       Input.Get (Ch);
-      Output.Log (Ch & "");
       if Ch /= ASCII.LF then
          Dir := To_Direction (Ch);
          if Can_Move (Warehouse, Robot, Dir) then
