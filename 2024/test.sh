@@ -114,3 +114,6 @@ fi
 check 15.1 input/test15.1 10092
 check 15.1 input/test15.2 2028
 solve 15.1 input/day15
+#check 15.2 input/test15.3 105
+check 15.2 input/test15.1 9021
+solve 15.2 input/day15
