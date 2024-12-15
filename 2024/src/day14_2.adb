@@ -1,5 +1,4 @@
 pragma Ada_2022;
-with AnsiAda;
 with Ada.Containers.Vectors;
 with Advent; use Advent;
 with Advent.Input;
@@ -28,7 +27,6 @@ procedure Day14_2 is
    end record;
 
    package Robot_Vectors is new Ada.Containers.Vectors (Positive, Robot);
-   Robots : Robot_Vectors.Vector;
    use Robot_Vectors;
 
    function Step
@@ -101,7 +99,7 @@ procedure Day14_2 is
    Min_Safety_I : Natural;
    SF : Natural;
 
-   Sum : Natural := 0;
+   Robots, Initial : Robot_Vectors.Vector;
    R : Robot;
 begin
    loop
@@ -115,17 +113,22 @@ begin
       Robot_Vectors.Append (Robots, R);
    end loop;
 
-   for I in 1 .. 10000 loop
+   Initial := Robots;
+
+   for I in 1 .. 20000 loop
       Robots := Step (Robots);
       SF := Safety_Factor (Robots);
       if SF < Min_Safety then
          Min_Safety := SF;
          Min_Safety_I := I;
-         Print (Robots);
-         Output.Log (I'Image);
-         Output.Log ("---------------------------");
       end if;
    end loop;
+
+   Robots := Initial;
+   for I in 1 .. Min_Safety_I loop
+      Robots := Step (Robots);
+   end loop;
+   Print (Robots);
 
    Output.Put (Min_Safety_I);
 end Day14_2;
