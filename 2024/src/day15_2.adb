@@ -121,7 +121,6 @@ procedure Day15_2 is
    is (Pos.Y * 100 + Integer (Pos.X * 2.0));
 
    Warehouse : Coordinate_Maps.Map;
-   Extents   : Coordinate := (0, 0.0);
    Robot     : Coordinate;
 
    Sum : Natural := 0;
@@ -134,7 +133,6 @@ begin
       case Ch is
          when ASCII.LF =>
             exit when Prev = ASCII.LF;
-            Extents := Pos;
             Pos.Y := Pos.Y + 1;
             Pos.X := 0.0;
          when '#' =>
@@ -158,8 +156,6 @@ begin
       end case;
       Prev := Ch;
    end loop;
-
-   Extents.X := Extents.X - 0.5;
 
    loop
       exit when Input.End_Of_Input;
