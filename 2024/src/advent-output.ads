@@ -7,6 +7,10 @@ package Advent.Output is
       (Item     : Long_Long_Integer;
        New_Line : Boolean := True);
 
+   procedure Put
+      (Item     : String;
+       New_Line : Boolean := True);
+
    procedure Log
       (Item     : String;
        New_Line : Boolean := True);

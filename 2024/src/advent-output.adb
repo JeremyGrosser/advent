@@ -28,6 +28,17 @@ package body Advent.Output is
       end if;
    end Put_Long;
 
+   procedure Put
+      (Item     : String;
+       New_Line : Boolean := True)
+   is
+   begin
+      Ada.Text_IO.Put (Item);
+      if New_Line then
+         Ada.Text_IO.New_Line;
+      end if;
+   end Put;
+
    procedure Start_Log is
    begin
       Ada.Text_IO.Put (Ada.Text_IO.Standard_Error, AnsiAda.Foreground (AnsiAda.Light_Cyan));

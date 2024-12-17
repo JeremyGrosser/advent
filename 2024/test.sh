@@ -20,7 +20,7 @@ check() {
         exit 1
     fi
 
-    if [ ! $result -eq $3 ]; then
+    if [ ! "$result" = "$3" ]; then
         echo -e "$1 FAIL \e[1m\e[31m$result\e[0m /= $3"
         exit 1
     #else
@@ -111,9 +111,12 @@ fi
 #solve 14.1 input/day14
 #solve 14.2 input/day14
 
-check 15.1 input/test15.1 10092
-check 15.1 input/test15.2 2028
-solve 15.1 input/day15
+#check 15.1 input/test15.1 10092
+#check 15.1 input/test15.2 2028
+#solve 15.1 input/day15
 #check 15.2 input/test15.3 105
-check 15.2 input/test15.1 9021
-solve 15.2 input/day15
+#check 15.2 input/test15.1 9021
+#solve 15.2 input/day15
+
+check 17.1 input/test17 4,6,3,5,6,3,5,2,1,0
+solve 17.1 input/day17
