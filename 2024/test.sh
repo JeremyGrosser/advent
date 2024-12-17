@@ -120,3 +120,5 @@ fi
 
 check 17.1 input/test17 4,6,3,5,6,3,5,2,1,0
 solve 17.1 input/day17
+check 17.2 input/test17.3 117440
+solve 17.2 input/day17
