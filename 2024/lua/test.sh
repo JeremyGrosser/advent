@@ -56,8 +56,8 @@ solve 1.2 ../input/day1
 
 check 2.1 ../input/test2.1 2
 solve 2.1 ../input/day2
-#check 2.2 ../input/test2.1 4
-#solve 2.2 ../input/day2
+check 2.2 ../input/test2.1 4
+solve 2.2 ../input/day2
 
 #check 3.1 ../input/test3.1 161
 #solve 3.1 ../input/day3
