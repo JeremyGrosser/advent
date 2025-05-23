@@ -5,8 +5,8 @@ function solve()
     local right = {}
 
     while not end_of_input() do
-        table.insert(left, next_num())
-        table.insert(right, next_num())
+        table.insert(left, next_number())
+        table.insert(right, next_number())
     end
 
     local sum = 0
