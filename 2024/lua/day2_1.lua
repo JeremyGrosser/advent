@@ -36,7 +36,7 @@ function solve()
     local report = {}
     local safe = 0
     while not end_of_input() do
-        if peek_char() == string.byte('\n') then
+        if peek_byte() == string.byte('\n') then
             if check_report(report) then
                 safe = safe + 1
             end

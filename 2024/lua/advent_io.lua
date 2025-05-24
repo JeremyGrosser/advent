@@ -18,7 +18,7 @@ function end_of_input()
     return (i > #input)
 end
 
-function peek_char()
+function peek_byte()
     if not end_of_input() then
         return input:byte(i)
     else
@@ -26,7 +26,7 @@ function peek_char()
     end
 end
 
-function next_char()
+function next_byte()
     if not end_of_input() then
         local ch = input:byte(i)
         i = i + 1
@@ -38,7 +38,7 @@ end
 
 function skip_whitespace()
     while not end_of_input() do
-        local ch = peek_char()
+        local ch = peek_byte()
         if ch == string.byte(' ') or
            ch == string.byte('\r') or
            ch == string.byte('\n')
@@ -58,7 +58,7 @@ function next_number()
     local num = 0
     skip_whitespace()
     while true do
-        local ch = peek_char()
+        local ch = peek_byte()
         if is_number(ch) then
             num = (num * 10) + (ch - string.byte('0'))
             i = i + 1
