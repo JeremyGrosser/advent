@@ -23,12 +23,12 @@ project Advent2021 is
       "d8_1.adb",
       "d10_1.adb",
       "d11_1.adb",
-      "d11_2.adb"
+      "d11_2.adb",
+      "d21_1.adb"
    );
 
    package Compiler is
       for Switches ("Ada") use (
-         "-gnatwa",              --  All warnings
          "-gnatVa",              --  All validity checks
          "-gnatyg",              --  GNAT Style checks
          "-gnatyM120",           --  Maximum line length
