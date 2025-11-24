@@ -1,10 +1,11 @@
 with Day1_1;
 with Day9_1;
+with Day9_2;
 
 package body Puzzle is
    Solutions : constant array (Day_Type, Part_Type) of Any_Solution :=
       (1 => (1 => Day1_1'Access, 2 => null),
-       9 => (1 => Day9_1'Access, 2 => null),
+       9 => (1 => Day9_1'Access, 2 => Day9_2'Access),
        others => (others => null));
 
    function Get_Solution

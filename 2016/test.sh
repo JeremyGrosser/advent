@@ -1,40 +1,59 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-ALR="alr --no-tty --no-color"
-#TIMEOUT="timeout --preserve-status --verbose 10.0s"
-TIMEOUT=""
-binary="${PWD}/bin/main"
+ARGS=$@
 
-set -e
+check() {
+    cmd="bin/main $ARGS $1 $2"
+    echo "$cmd"
 
-assert() {
-    puzzle=$1
-    input=$2
-    expectation=$3
+    result="$($cmd)"
+    ret=$?
 
-    result=`$TIMEOUT $binary $puzzle $input`
+    if [ ! $ret -eq 0 ]; then
+        echo ""
+        echo "$1 ERROR $ret"
+        exit 1
+    fi
 
-    if [ "$result" != "$expectation" ]; then
-        echo -e " \e[1m\e[31mFAIL\e[0m $binary $input"
-        echo "Expected: $expectation"
-        echo "Result:   $result"
-        return 1
+    if [ -z "$result" ]; then
+        echo -e "$1 FAIL \e[1m\e[31m(null)\e[0m /= $3"
+        exit 1
+    fi
+
+    if [ ! "$result" = "$3" ]; then
+        echo -e "$1 FAIL \e[1m\e[31m$result\e[0m /= $3"
+        exit 1
+    #else
+    #    echo -e "$1 PASS \e[1m\e[92m$result\e[0m";
     fi
 }
 
 solve() {
-    puzzle=$1
-    input=$2
-    result=`$timeout $binary $puzzle $input`
-    echo -e " \e[1m\e[92m$result\e[0m"
+    cmd="bin/main $ARGS $1 $2"
+    echo "$cmd"
+
+    result="$($cmd)"
+    ret=$?
+
+    if [ ! $ret -eq 0 ]; then
+        echo ""
+        echo "$1 ERROR $ret"
+        exit 1
+    fi
+
+    echo -e "$1 \e[1m\e[92m$result\e[0m";
 }
 
-${ALR} build
+alr build --development
+ret=$?
+if [ ! $ret -eq 0 ]; then
+    exit $ret
+fi
 
-echo -n "1.1 "
-assert 1.1 input/day1_test 12
+check 1.1 input/day1_test 12
 solve 1.1 input/day1
 
-echo -n "9.1 "
-assert 9.1 input/day9_test 18
+check 9.1 input/day9_test 18
 solve 9.1 input/day9
+check 9.2 input/day9_test 20
+solve 9.2 input/day9
