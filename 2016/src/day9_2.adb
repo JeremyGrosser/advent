@@ -3,7 +3,7 @@ with Advent.Output;
 with Advent; use Advent;
 
 procedure Day9_2 is
-   type Big is range 0 .. 2**64-1;
+   type Big is range 0 .. 2 ** 64 - 1;
 
    function Parse_Natural
       (Str    : String;

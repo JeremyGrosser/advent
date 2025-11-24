@@ -1,3 +1,5 @@
+pragma Style_Checks ("M120");
+
 package Advent.Input
    with Elaborate_Body,
         SPARK_Mode => On
@@ -8,8 +10,20 @@ is
    function Is_Open
       return Boolean;
 
+   function Peek
+      (Offset : Positive := 1)
+      return Character;
+   --  Returns the Character at Offset distance from the cursor.
+   --  Defaults to the current cursor location (1 based)
+
+   function Lookahead
+      (N : Positive)
+       return String;
+   --  Returns the next N Characters starting from the cursor
+
    procedure Get
       (Item : out Character);
+   --  Returns the Character at the current cursor position, then increments the cursor position.
 
    type Seek_From is (Seek_Start, Seek_Current, Seek_End);
    subtype Seek_Offset is Integer;
@@ -44,14 +58,6 @@ is
    function Length
       return Natural;
 
-   function Peek
-      (Offset : Positive := 1)
-      return Character;
-
-   function Lookahead
-      (N : Positive)
-       return String;
-
    function Get_Integer
       return Integer;
 
@@ -59,4 +65,22 @@ is
       return Long_Long_Integer;
 
    procedure Skip_Whitespace;
+
+   function Match
+      (Prefix : String)
+      return Boolean;
+   --  If the N characters equal Prefix, Match advances the cursor and returns True.
+   --  Otherwise, it returns False and does not modify the cursor position.
+
+   procedure Expect
+      (Prefix : String);
+   --  If the next N characters don't equal Prefix, Expect throws a Program_Error exception
+
+   function Match
+      (Ch : Character)
+      return Boolean;
+
+   procedure Expect
+      (Ch : Character);
+
 end Advent.Input;

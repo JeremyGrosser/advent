@@ -1,3 +1,4 @@
+pragma Style_Checks ("M120");
 pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
 pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
 with System.Mmap;
@@ -228,11 +229,48 @@ is
       while not End_Of_Input loop
          Ch := Peek;
          case Ch is
-            when ' ' | ASCII.HT | ASCII.CR | ASCII.LF =>
+            when ' ' | HT | CR | LF =>
                Seek (1);
             when others =>
                exit;
          end case;
       end loop;
    end Skip_Whitespace;
+
+   function Match
+      (Prefix : String)
+      return Boolean
+   is
+   begin
+      if Lookahead (Prefix'Length) = Prefix then
+         Seek (Prefix'Length);
+         return True;
+      else
+         return False;
+      end if;
+   end Match;
+
+   function Match
+      (Ch : Character)
+      return Boolean
+   is (Match (Ch & ""));
+
+   procedure Expect
+      (Prefix : String)
+   is
+   begin
+      if not Match (Prefix) then
+         Seek (1);
+      else
+         raise Program_Error with "Expected """ & Prefix & """, got """ & Lookahead (Prefix'Length) & """";
+      end if;
+   end Expect;
+
+   procedure Expect
+      (Ch : Character)
+   is
+   begin
+      Expect (Ch & "");
+   end Expect;
+
 end Advent.Input;

@@ -1,3 +1,4 @@
+pragma Style_Checks ("M120");
 with Ada.Text_IO;
 with AnsiAda;
 

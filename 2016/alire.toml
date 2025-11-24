@@ -12,4 +12,7 @@ executables = ["main"]
 release.optimization = ["-O3", "-gnatn", "-gnatp", "-march=native"]
 
 [[depends-on]]
-ansiada = "^1.1.0"
+advent = "~0.1.0-dev"
+
+[[pins]]
+advent = { path='../advent' }
