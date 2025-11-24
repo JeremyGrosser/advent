@@ -54,3 +54,5 @@ fi
 
 check 4.1 input/day4_test 2
 solve 4.1 input/day4
+check 4.2 input/day4_test2 3
+solve 4.2 input/day4
