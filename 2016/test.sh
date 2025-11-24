@@ -3,7 +3,7 @@
 ALR="alr --no-tty --no-color"
 #TIMEOUT="timeout --preserve-status --verbose 10.0s"
 TIMEOUT=""
-binary="${PWD}/bin/advent2016"
+binary="${PWD}/bin/main"
 
 set -e
 
@@ -34,3 +34,7 @@ ${ALR} build
 echo -n "1.1 "
 assert 1.1 input/day1_test 12
 solve 1.1 input/day1
+
+echo -n "9.1 "
+assert 9.1 input/day9_test 18
+solve 9.1 input/day9

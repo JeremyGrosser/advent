@@ -1,5 +1,6 @@
-with Advent_IO; use Advent_IO;
-with Advent_IO.Integers; use Advent_IO.Integers;
+with Advent.Input;
+with Advent.Output;
+with Advent; use Advent;
 
 procedure Day1_1 is
 
@@ -35,50 +36,33 @@ procedure Day1_1 is
       end case;
    end Move;
 
-   Next_Ch : Character := ASCII.NUL;
-   Ch      : Character := ASCII.NUL;
-
-   procedure Advance is
-   begin
-      Ch := Next_Ch;
-      if not End_Of_Input then
-         Character'Read (Input, Next_Ch);
-      else
-         Next_Ch := ASCII.NUL;
-      end if;
-   end Advance;
-
-   function Peek
-      return Character
-   is (Next_Ch);
-
-   function Number
-      return Integer
+   function Read_Natural
+      return Natural
    is
-      subtype Digit is Character range '0' .. '9';
-      Val : constant array (Digit) of Integer := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-      N   : Integer := 0;
+      N : Natural := 0;
+      Ch : Character;
    begin
-      while Peek in Digit'Range loop
-         Advance;
-         N := (N * 10) + Val (Ch);
+      while not Input.End_Of_Input loop
+         Ch := Input.Peek;
+         exit when Ch not in '0' .. '9';
+         Input.Seek (1);
+         N := N * 10 + Character'Pos (Ch) - Character'Pos ('0');
       end loop;
-
       return N;
-   end Number;
+   end Read_Natural;
 
+   Ch : Character;
 begin
-   Advance;
-   while not End_Of_Input loop
-      Advance;
+   while not Input.End_Of_Input loop
+      Input.Get (Ch);
       case Ch is
          when 'L' =>
             Heading := Facing'Pred (Heading);
-            Steps := Number;
+            Steps := Read_Natural;
             Move (Heading, Steps);
          when 'R' =>
             Heading := Facing'Succ (Heading);
-            Steps := Number;
+            Steps := Read_Natural;
             Move (Heading, Steps);
          when ' ' | ',' =>
             null;
@@ -87,6 +71,5 @@ begin
       end case;
    end loop;
 
-   Put (Output, Distance (Start, Pos));
-   New_Line (Output);
+   Output.Put (Distance (Start, Pos));
 end Day1_1;

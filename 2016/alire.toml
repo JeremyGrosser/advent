@@ -6,7 +6,10 @@ authors = ["Jeremy Grosser"]
 maintainers = ["Jeremy Grosser <jeremy@synack.me>"]
 maintainers-logins = ["JeremyGrosser"]
 
-executables = ["advent2016"]
+executables = ["main"]
 
 [build-switches]
 release.optimization = ["-O3", "-gnatn", "-gnatp", "-march=native"]
+
+[[depends-on]]
+ansiada = "^1.1.0"
