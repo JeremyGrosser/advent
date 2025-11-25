@@ -260,8 +260,6 @@ is
    is
    begin
       if not Match (Prefix) then
-         Seek (1);
-      else
          raise Program_Error with "Expected """ & Prefix & """, got """ & Lookahead (Prefix'Length) & """";
       end if;
    end Expect;

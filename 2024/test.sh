@@ -122,3 +122,6 @@ fi
 #solve 17.1 input/day17
 #check 17.2 input/test17.3 117440
 #solve 17.2 input/day17
+
+check 25.1 input/test25 3
+solve 25.1 input/day25
