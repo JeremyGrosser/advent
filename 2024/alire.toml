@@ -16,3 +16,9 @@ ansiada = "^1.0.0"
 
 [build-switches]
 release.optimization = ["-gnatn2", "-gnatp", "-march=native", "-O3"]
+
+[[depends-on]]
+advent = "~0.1.0-dev"
+
+[[pins]]
+advent = { path='../advent' }
