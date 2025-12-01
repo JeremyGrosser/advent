@@ -52,5 +52,5 @@ if [ ! $ret -eq 0 ]; then
     exit $ret
 fi
 
-check 1.1 input/test1.1 1
+check 1.1 input/test1.1 3
 solve 1.1 input/day1
