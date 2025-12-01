@@ -13,9 +13,14 @@ executables = ["advent25"]
 
 [[depends-on]]
 advent = "~0.1.0-dev"
+gnatprove = "^15.1.0"
 
 [[pins]]
 advent = { path='../advent' }
 
 [build-switches]
 release.optimization = ["-gnatn2", "-gnatp", "-O2", "-march=native"]
+
+[[actions]]
+type = "post-build"
+command = ["gnatprove", "--mode=silver", "--level=4", "-j0", "--report=statistics"]

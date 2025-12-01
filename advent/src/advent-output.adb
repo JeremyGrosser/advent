@@ -2,7 +2,9 @@ pragma Style_Checks ("M120");
 with Ada.Text_IO;
 with AnsiAda;
 
-package body Advent.Output is
+package body Advent.Output
+   with SPARK_Mode => Off
+is
    package Int_IO is new Ada.Text_IO.Integer_IO (Integer);
    package LLI_IO is new Ada.Text_IO.Integer_IO (Long_Long_Integer);
 

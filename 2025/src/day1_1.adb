@@ -5,7 +5,7 @@ with Advent.Output;
 
 procedure Day1_1
    (Input  : in out Advent.Input.Buffer;
-    Output : in out Advent.Output.Buffer)
+    Output : Advent.Output.Buffer)
 is
    Dial : Integer := 50;
    Distance : Integer;
@@ -22,10 +22,16 @@ begin
             Negate := False;
             Input.Seek (1);
          when '0' .. '9' =>
-            Distance := Input.Get_Integer;
+            Input.Get_Integer (Distance);
+            if Distance not in 0 .. 1000 then
+               Output.Log ("Distance out of range: ", False);
+               Output.Log (Distance);
+               exit;
+            end if;
             if Negate then
                Distance := Distance * (-1);
             end if;
+            pragma Assert (Distance in -1000 .. 1000 and then Dial in -1_000_000 .. 1_000_000);
             Dial := Dial + Distance;
             while Dial < 0 loop
                Dial := Dial + 100;

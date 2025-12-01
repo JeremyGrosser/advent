@@ -1,6 +1,8 @@
 pragma Style_Checks ("M120");
 
-package body Advent.Input is
+package body Advent.Input
+   with SPARK_Mode => Off
+is
    use type System.Mmap.File_Size;
    use type System.Mmap.Mapped_File;
 
@@ -79,6 +81,7 @@ package body Advent.Input is
       Data_First : constant Natural := Natural (This.Offset) + 1;
       Data_Last  : Natural := Natural (This.Last);
    begin
+      Item := (others => NUL);
       Data_Last := Index (String (Data (Data_First .. Data_Last)), Stop);
       if Data_Last = 0 then
          --  Stop does not occur in remaining Data, return everything and
@@ -104,33 +107,6 @@ package body Advent.Input is
    begin
       Read_Until (This, "" & Stop, Item, Last);
    end Read_Until;
-
-   function Read_Until
-      (This : in out Buffer;
-       Stop : String)
-       return String
-   is
-      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
-      First : constant Natural := Natural (This.Offset) + 1;
-      Last  : Natural := Natural (This.Last);
-   begin
-      Last := Index (String (Data (First .. Last)), Stop);
-      if Last = 0 then
-         Last := Natural (This.Last);
-         This.Offset := System.Mmap.File_Size (Last + 1);
-      else
-         This.Offset := System.Mmap.File_Size (Last);
-         Last := Last - 1;
-      end if;
-
-      return String (Data (First .. Last));
-   end Read_Until;
-
-   function Read_Until
-      (This : in out Buffer;
-       Stop : Character)
-       return String
-   is (Read_Until (This, "" & Stop));
 
    function End_Of_Input
       (This : Buffer)
@@ -172,15 +148,15 @@ package body Advent.Input is
       return String (Data.all (First .. Last));
    end Lookahead;
 
-   function Get_Integer
-      (This : in out Buffer)
-       return Integer
+   procedure Get_Integer
+      (This : in out Buffer;
+       N    : out Integer)
    is
       Digit  : constant array (Character range '0' .. '9') of Natural := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-      I      : Integer := 0;
       Negate : Boolean := False;
       Ch     : Character;
    begin
+      N := 0;
       Skip_Whitespace (This);
 
       if Peek (This) = '-' then
@@ -190,25 +166,23 @@ package body Advent.Input is
 
       while not End_Of_Input (This) and then Peek (This) in '0' .. '9' loop
          Get (This, Ch);
-         I := I * 10 + Digit (Ch);
+         N := N * 10 + Digit (Ch);
       end loop;
 
       if Negate then
-         I := I * (-1);
+         N := N * (-1);
       end if;
-
-      return I;
    end Get_Integer;
 
-   function Get_Long
-      (This : in out Buffer)
-       return Long_Long_Integer
+   procedure Get_Long
+      (This : in out Buffer;
+       N    : out Long_Long_Integer)
    is
       Digit  : constant array (Character range '0' .. '9') of Long_Long_Integer := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-      I      : Long_Long_Integer := 0;
       Negate : Boolean := False;
       Ch     : Character;
    begin
+      N := 0;
       Skip_Whitespace (This);
 
       if Peek (This) = '-' then
@@ -218,14 +192,12 @@ package body Advent.Input is
 
       while not End_Of_Input (This) and then Peek (This) in '0' .. '9' loop
          Get (This, Ch);
-         I := I * 10 + Digit (Ch);
+         N := N * 10 + Digit (Ch);
       end loop;
 
       if Negate then
-         I := I * (-1);
+         N := N * (-1);
       end if;
-
-      return I;
    end Get_Long;
 
    procedure Skip_Whitespace
@@ -244,32 +216,14 @@ package body Advent.Input is
       end loop;
    end Skip_Whitespace;
 
-   function Match
-      (This   : in out Buffer;
-       Prefix : String)
-       return Boolean
-   is
-   begin
-      if Lookahead (This, Prefix'Length) = Prefix then
-         Seek (This, Prefix'Length);
-         return True;
-      else
-         return False;
-      end if;
-   end Match;
-
-   function Match
-      (This : in out Buffer;
-       Ch   : Character)
-       return Boolean
-   is (Match (This, Ch & ""));
-
    procedure Expect
       (This   : in out Buffer;
        Prefix : String)
    is
    begin
-      if not Match (This, Prefix) then
+      if Lookahead (This, Prefix'Length) = Prefix then
+         Seek (This, Prefix'Length);
+      else
          raise Program_Error with "Expected """ & Prefix & """, got """ & Lookahead (This, Prefix'Length) & """";
       end if;
    end Expect;

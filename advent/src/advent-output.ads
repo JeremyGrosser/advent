@@ -1,4 +1,6 @@
-package Advent.Output is
+package Advent.Output
+   with SPARK_Mode => On
+is
 
    type Buffer is private;
 
