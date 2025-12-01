@@ -8,11 +8,11 @@ procedure Day1_2
    (Input  : in out Advent.Input.Buffer;
     Output : Advent.Output.Buffer)
 is
-   type Pos is range 0 .. 99;
-   Dial : Pos := 50;
+   type Pos is mod 100;
+   Dial     : Pos := 50;
    Distance : Integer;
-   Negate : Boolean := False;
-   Count : Natural := 0;
+   Negate   : Boolean := False;
+   Count    : Natural := 0;
 begin
    while not Input.End_Of_Input loop
       Input.Skip_Whitespace;
@@ -25,25 +25,11 @@ begin
             Input.Seek (1);
          when '0' .. '9' =>
             Input.Get_Integer (Distance);
-            if Distance not in -1000 .. 1000 then
-               Output.Log ("Distance out of range: ", False);
-               Output.Log (Distance);
-               exit;
-            end if;
-
             for I in 1 .. Distance loop
                if Negate then
-                  if Dial = 0 then
-                     Dial := 99;
-                  else
-                     Dial := Dial - 1;
-                  end if;
+                  Dial := Dial - 1;
                else
-                  if Dial = 99 then
-                     Dial := 0;
-                  else
-                     Dial := Dial + 1;
-                  end if;
+                  Dial := Dial + 1;
                end if;
 
                if Dial = 0 then
