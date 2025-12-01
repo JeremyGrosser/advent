@@ -41,7 +41,8 @@ procedure Advent25 is
    type Argument_Type is (Puzzle, Filename, No_More);
    Required : Argument_Type := Puzzle;
 
-   Input : Advent.Input.Buffer;
+   Input  : Advent.Input.Buffer;
+   Output : Advent.Output.Buffer;
 begin
    CLI.Set_Exit_Status (255);
    for I in 1 .. CLI.Argument_Count loop
@@ -50,12 +51,12 @@ begin
       begin
          if Arg'Length > 2 and then Arg (1 .. 2) = "--" then
             if Arg (3 .. Arg'Last) = "verbose" then
-               Advent.Output.Enable_Log;
+               Advent.Output.Enable_Log (Output);
             end if;
          elsif Arg'Length > 1 and then Arg (1) = '-' then
             case Arg (2) is
                when 'v' =>
-                  Advent.Output.Enable_Log;
+                  Advent.Output.Enable_Log (Output);
                when others =>
                   raise Advent_Error with "Unknown flag: " & Arg (1 .. 2);
             end case;
@@ -86,7 +87,7 @@ begin
       raise Advent_Error with "Unable to open input file";
    end if;
 
-   Solution.all (Input);
+   Solution.all (Input, Output);
    CLI.Set_Exit_Status (0);
 exception
    when E : Advent_Error =>

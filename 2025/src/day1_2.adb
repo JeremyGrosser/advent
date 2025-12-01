@@ -2,10 +2,10 @@ pragma Style_Checks ("M120");
 pragma Extensions_Allowed (On);
 with Advent.Input;
 with Advent.Output;
-with Advent;
 
 procedure Day1_2
-   (Input : in out Advent.Input.Buffer)
+   (Input  : in out Advent.Input.Buffer;
+    Output : in out Advent.Output.Buffer)
 is
    Dial : Integer := 50;
    Distance : Integer;
@@ -44,5 +44,5 @@ begin
             raise Program_Error with "Invalid character in input: " & Input.Peek;
       end case;
    end loop;
-   Advent.Output.Put (Count);
+   Output.Put (Count);
 end Day1_2;

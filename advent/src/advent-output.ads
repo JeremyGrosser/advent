@@ -1,25 +1,39 @@
 package Advent.Output is
 
+   type Buffer is private;
+
    procedure Put
-      (Item     : Integer;
+      (This     : Buffer;
+       Item     : Integer;
        New_Line : Boolean := True);
 
    procedure Put_Long
-      (Item     : Long_Long_Integer;
+      (This     : Buffer;
+       Item     : Long_Long_Integer;
        New_Line : Boolean := True);
 
    procedure Put
-      (Item     : String;
+      (This     : Buffer;
+       Item     : String;
        New_Line : Boolean := True);
 
    procedure Log
-      (Item     : String;
+      (This     : Buffer;
+       Item     : String;
        New_Line : Boolean := True);
 
    procedure Log
-      (Item : Integer;
+      (This     : Buffer;
+       Item     : Integer;
        New_Line : Boolean := True);
 
-   procedure Enable_Log;
+   procedure Enable_Log
+      (This : in out Buffer);
+
+private
+
+   type Buffer is record
+      Log_Enabled : Boolean := False;
+   end record;
 
 end Advent.Output;
