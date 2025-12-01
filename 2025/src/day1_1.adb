@@ -23,7 +23,6 @@ begin
             if Negate then
                Distance := Distance * (-1);
             end if;
-            Output.Log ("Rotate " & Distance'Image);
             Dial := Dial + Distance;
             while Dial < 0 loop
                Dial := Dial + 100;
@@ -31,7 +30,6 @@ begin
             while Dial > 99 loop
                Dial := Dial - 100;
             end loop;
-            Output.Log (Dial'Image);
             if Dial = 0 then
                Count := Count + 1;
             end if;
