@@ -3,9 +3,7 @@ pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
 pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
 with System.Mmap;
 
-package body Advent.Input
-   with SPARK_Mode => Off
-is
+package body Advent.Input is
    use type System.Mmap.File_Size;
    use type System.Mmap.Mapped_File;
 

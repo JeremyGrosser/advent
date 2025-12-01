@@ -1,9 +1,7 @@
 pragma Style_Checks ("M120");
 
-package Advent.Input
-   with Elaborate_Body,
-        SPARK_Mode => On
-is
+package Advent.Input is
+
    procedure Open
       (Filename : String);
 
