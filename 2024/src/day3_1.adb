@@ -1,9 +1,12 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day3_1 is
+procedure Day3_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    type Token_Type is (T_MUL, T_Left_Paren, T_Right_Paren, T_Number, T_Comma, T_Extra);
 
    type Token is record

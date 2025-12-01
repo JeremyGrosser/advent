@@ -1,8 +1,11 @@
-with Advent; use Advent;
+pragma Extensions_Allowed (On);
 with Advent.Input;
 with Advent.Output;
 
-procedure Day4_2 is
+procedure Day4_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    type Map is array (Positive range <>, Positive range <>) of Character;
    type Coordinate is record
       Y, X : Integer;
@@ -14,7 +17,6 @@ procedure Day4_2 is
    is
       M : Map (1 .. Height, 1 .. Width);
    begin
-      Input.Seek (0, Input.Seek_Start);
       for Y in M'Range (1) loop
          for X in M'Range (2) loop
             Input.Get (M (Y, X));
@@ -81,7 +83,7 @@ procedure Day4_2 is
       return S;
    end To_String;
 
-   Columns : constant Natural := Input.Read_Until (ASCII.LF)'Length;
+   Columns : constant Natural := Input.Line_Length;
    Rows    : constant Natural := Input.Length / Columns;
    M       : constant Map := Read_Map (Columns, Rows);
    A, B    : String (1 .. 3);

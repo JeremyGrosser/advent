@@ -20,12 +20,12 @@ with Day10_1;
 with Day10_2;
 with Day11_1;
 with Day11_2;
-with Day14_1;
-with Day14_2;
-with Day15_1;
-with Day15_2;
-with Day17_1;
-with Day25_1;
+--  with Day14_1;
+--  with Day14_2;
+--  with Day15_1;
+--  with Day15_2;
+--  with Day17_1;
+--  with Day25_1;
 
 package body Puzzle is
    Solutions : constant array (Day_Type, Part_Type) of Any_Solution :=
@@ -40,10 +40,10 @@ package body Puzzle is
        9 => (1 => Day9_1'Access, 2 => Day9_2'Access),
        10 => (1 => Day10_1'Access, 2 => Day10_2'Access),
        11 => (1 => Day11_1'Access, 2 => Day11_2'Access),
-       14 => (1 => Day14_1'Access, 2 => Day14_2'Access),
-       15 => (1 => Day15_1'Access, 2 => Day15_2'Access),
-       17 => (1 => Day17_1'Access, 2 => null),
-       25 => (1 => Day25_1'Access, 2 => null),
+--       14 => (1 => Day14_1'Access, 2 => Day14_2'Access),
+--       15 => (1 => Day15_1'Access, 2 => Day15_2'Access),
+--       17 => (1 => Day17_1'Access, 2 => null),
+--       25 => (1 => Day25_1'Access, 2 => null),
        others => (others => null));
 
    function Get_Solution

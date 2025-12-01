@@ -1,9 +1,12 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Bounded_Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day7_2 is
+procedure Day7_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    Max_Operands : constant := 16;
    subtype Int is Long_Long_Integer;
    Sum : Int := 0;
@@ -26,7 +29,7 @@ procedure Day7_2 is
          Result : Int := Operands (1);
       begin
          for I in 2 .. Last_Index (Operands) loop
-            case Operations (I - 1) is
+            case Element (Operations, I - 1) is
                when Add =>
                   Result := Result + Operands (I);
                when Mul =>
@@ -77,11 +80,13 @@ procedure Day7_2 is
 
    Test_Value : Int;
    Operands : Int_Vectors.Vector (Capacity => Max_Operands);
+   N : Int;
 begin
    while not Input.End_Of_Input loop
       case Input.Peek is
          when '0' .. '9' =>
-            Append (Operands, Input.Get_Long);
+            Input.Get_Long (N);
+            Append (Operands, N);
          when ASCII.LF =>
             Input.Seek (1);
             Test_Value := First_Element (Operands);

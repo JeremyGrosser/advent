@@ -1,10 +1,13 @@
 pragma Ada_2022;
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day7_1 is
+procedure Day7_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    subtype Int is Long_Long_Integer;
    Sum : Int := 0;
 
@@ -34,7 +37,7 @@ procedure Day7_1 is
          --  Output.Log (Operations'Image);
 
          while I <= Last_Index (Operands) loop
-            case Operations (J) is
+            case Operation_Vectors.Element (Operations, J) is
                when Add =>
                   Result := Result + Operands (I);
                when Mul =>
@@ -52,7 +55,7 @@ procedure Day7_1 is
           Remaining : Natural)
           return Boolean
       is
-         X : Operation_Vectors.Vector := Copy (Current);
+         X : Operation_Vectors.Vector := Operation_Vectors.Copy (Current);
       begin
          if Remaining = 0 then
             return Solve (Current);
@@ -76,11 +79,13 @@ procedure Day7_1 is
 
    Test_Value : Int;
    Operands : Int_Vectors.Vector;
+   N : Int;
 begin
    while not Input.End_Of_Input loop
       case Input.Peek is
          when '0' .. '9' =>
-            Append (Operands, Input.Get_Long);
+            Input.Get_Long (N);
+            Append (Operands, N);
          when ASCII.LF =>
             Input.Seek (1);
             Test_Value := First_Element (Operands);

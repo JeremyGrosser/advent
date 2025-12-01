@@ -1,11 +1,14 @@
 pragma Ada_2022;
+pragma Extensions_Allowed (On);
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day9_2 is
+procedure Day9_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    type Position is new Natural;
    type Block_Id is new Natural;
    subtype Long is Long_Long_Integer;

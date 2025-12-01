@@ -1,12 +1,15 @@
 pragma Ada_2022;
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day11_2 is
+procedure Day11_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    type Int is mod 2 ** 64;
 
    package Int_Vectors is new Ada.Containers.Vectors (Positive, Int);
@@ -125,9 +128,11 @@ procedure Day11_2 is
 
    Stones : Int_Vectors.Vector;
    Sum : Int := 0;
+   N : Long_Long_Integer;
 begin
    while not Input.End_Of_Input loop
-      Append (Stones, Int'Value (Input.Read_Until (" " & ASCII.LF)));
+      Input.Get_Long (N);
+      Append (Stones, Int (N));
    end loop;
 
    for Stone of Stones loop

@@ -1,12 +1,15 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Containers;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day10_1 is
-   Columns : constant Natural := Input.Read_Until (ASCII.LF)'Length;
+procedure Day10_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
+   Columns : constant Natural := Input.Line_Length;
    Rows    : constant Natural := Input.Length / Columns;
 
    type Coordinate is record
@@ -106,7 +109,6 @@ procedure Day10_1 is
    Pos   : Coordinate;
    Sum   : Natural := 0;
 begin
-   Input.Seek (0, Input.Seek_Start);
    for Y in 1 .. Rows loop
       for X in 1 .. Columns loop
          Input.Get (Ch);

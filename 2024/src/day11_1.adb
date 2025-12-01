@@ -1,10 +1,13 @@
 pragma Ada_2022;
+pragma Extensions_Allowed (On);
 with Ada.Containers.Indefinite_Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day11_1 is
+procedure Day11_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    subtype Long is Long_Long_Integer;
    package String_Vectors is new Ada.Containers.Indefinite_Vectors (Positive, String);
    use String_Vectors;
@@ -53,9 +56,12 @@ procedure Day11_1 is
    end Blink;
 
    Stones : String_Vectors.Vector;
+   Item : String (1 .. 32);
+   Last : Natural;
 begin
    while not Input.End_Of_Input loop
-      Append (Stones, Input.Read_Until (" " & ASCII.LF));
+      Input.Read_Until (" " & ASCII.LF, Item, Last);
+      Append (Stones, Item (1 .. Last));
    end loop;
 
    for I in 1 .. 25 loop

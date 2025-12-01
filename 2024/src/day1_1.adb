@@ -1,9 +1,12 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day1_1 is
+procedure Day1_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    package Natural_Vectors is new Ada.Containers.Vectors (Positive, Natural);
    package Sorting is new Natural_Vectors.Generic_Sorting ("<");
    use Sorting;
@@ -12,11 +15,12 @@ procedure Day1_1 is
    Sum : Natural := 0;
 begin
    while not Input.End_Of_Input loop
+      Input.Skip_Whitespace;
       declare
          L, R : Natural;
       begin
-         L := Natural'Value (Input.Read_Until (" "));
-         R := Natural'Value (Input.Read_Until (ASCII.LF));
+         Input.Get_Integer (L);
+         Input.Get_Integer (R);
          Append (Left, L);
          Append (Right, R);
       end;

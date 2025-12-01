@@ -122,6 +122,20 @@ is
        return Natural
    is (Natural (This.Last) - 1);
 
+   function Line_Length
+      (This : Buffer)
+       return Natural
+   is
+      Remaining : constant Natural := Length (This) - Tell (This);
+   begin
+      for I in 1 .. Remaining loop
+         if Peek (This, I) = ASCII.LF then
+            return I - 1;
+         end if;
+      end loop;
+      return Remaining;
+   end Line_Length;
+
    function Peek
       (This   : Buffer;
        Offset : Positive := 1)

@@ -1,10 +1,13 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
 with Ada.Containers.Ordered_Maps;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day5_2 is
+procedure Day5_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    Sum : Natural := 0;
 
    type Page_Number is new Natural;
@@ -92,10 +95,15 @@ procedure Day5_2 is
    Update : Page_Vectors.Vector;
    Page : Page_Number;
    R : Rule;
+   N : Natural;
 begin
    while not Input.End_Of_Input and then Input.Peek /= ASCII.LF loop
-      Page := Page_Number'Value (Input.Read_Until ('|'));
-      R.Before := Page_Number'Value (Input.Read_Until (ASCII.LF));
+      Input.Get_Integer (N);
+      Page := Page_Number (N);
+      Input.Expect ('|');
+      Input.Get_Integer (N);
+      R.Before := Page_Number (N);
+      Input.Expect (ASCII.LF);
       if not Contains (Rules, Page) then
          Include (Rules, Page, Rules_Vector.Empty_Vector);
       end if;

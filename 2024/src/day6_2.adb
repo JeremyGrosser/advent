@@ -1,9 +1,12 @@
 pragma Style_Checks ("-t");
-with Advent; use Advent;
+pragma Extensions_Allowed (On);
 with Advent.Input;
 with Advent.Output;
 
-procedure Day6_2 is
+procedure Day6_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    type Map is array (Positive range <>, Positive range <>) of Character;
 
    type Coordinate is record
@@ -36,7 +39,7 @@ procedure Day6_2 is
    is
       M : Map (1 .. Height, 1 .. Width);
    begin
-      Input.Seek (0, Input.Seek_Start);
+      Input.Seek (0, Advent.Input.Seek_Start);
       for Y in M'Range (1) loop
          for X in M'Range (2) loop
             Input.Get (M (Y, X));
@@ -112,7 +115,7 @@ procedure Day6_2 is
       end loop;
    end Is_Stuck;
 
-   Columns : constant Natural := Input.Read_Until (ASCII.LF)'Length;
+   Columns : constant Natural := Input.Line_Length;
    Rows    : constant Natural := Input.Length / Columns;
    M       : Map := Read_Map (Columns, Rows);
    Sum     : Natural := 0;

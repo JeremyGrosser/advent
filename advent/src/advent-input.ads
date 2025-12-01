@@ -77,6 +77,11 @@ is
        return Natural
    with Global => null;
 
+   function Line_Length
+      (This : Buffer)
+      return Natural
+   with Global => null;
+
    procedure Get_Integer
       (This : in out Buffer;
        N    : out Integer)

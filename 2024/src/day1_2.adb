@@ -1,10 +1,13 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
 with Ada.Containers.Ordered_Maps;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day1_2 is
+procedure Day1_2
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
    package Natural_Vectors is new Ada.Containers.Vectors (Positive, Natural);
    use Natural_Vectors;
 
@@ -16,11 +19,12 @@ procedure Day1_2 is
    Sum : Natural := 0;
 begin
    while not Input.End_Of_Input loop
+      Input.Skip_Whitespace;
       declare
          L, R : Natural;
       begin
-         L := Natural'Value (Input.Read_Until (" "));
-         R := Natural'Value (Input.Read_Until (ASCII.LF));
+         Input.Get_Integer (L);
+         Input.Get_Integer (R);
          Append (Left, L);
 
          if not Contains (Right, R) then

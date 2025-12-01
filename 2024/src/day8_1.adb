@@ -1,11 +1,14 @@
+pragma Extensions_Allowed (On);
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day8_1 is
-   Width  : constant Natural := Input.Read_Until (ASCII.LF)'Length;
+procedure Day8_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
+   Width  : constant Natural := Input.Line_Length;
    Height : constant Natural := Input.Length / Width;
 
    type Frequency is new Character;
@@ -56,8 +59,6 @@ procedure Day8_1 is
    Pos : Coordinate := (0, 0);
    Ch  : Character;
 begin
-   Input.Seek (0, Input.Seek_Start);
-
    while not Input.End_Of_Input loop
       Input.Get (Ch);
       case Ch is

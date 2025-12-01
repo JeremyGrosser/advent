@@ -1,10 +1,13 @@
 pragma Ada_2022;
+pragma Extensions_Allowed (On);
 with Ada.Containers.Vectors;
-with Advent; use Advent;
 with Advent.Input;
 with Advent.Output;
 
-procedure Day2_1 is
+procedure Day2_1
+   (Input  : in out Advent.Input.Buffer;
+    Output : Advent.Output.Buffer)
+is
 
    type Report is array (Positive range <>) of Natural;
 
@@ -14,9 +17,11 @@ procedure Day2_1 is
       package Natural_Vectors is new Ada.Containers.Vectors (Positive, Natural);
       use Natural_Vectors;
       Rep : Natural_Vectors.Vector;
+      N : Integer;
    begin
       loop
-         Append (Rep, Input.Get_Integer);
+         Input.Get_Integer (N);
+         Append (Rep, N);
          exit when Input.End_Of_Input or else Input.Peek = ASCII.LF;
       end loop;
 
