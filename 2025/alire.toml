@@ -16,3 +16,6 @@ advent = "~0.1.0-dev"
 
 [[pins]]
 advent = { path='../advent' }
+
+[build-switches]
+release.optimization = ["-gnatn2", "-gnatp", "-O2", "-march=native"]
