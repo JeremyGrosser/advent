@@ -1,84 +1,118 @@
 pragma Style_Checks ("M120");
+pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
+pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
+private with System.Mmap;
 
 package Advent.Input is
 
+   type Buffer is private;
+
    procedure Open
-      (Filename : String);
+      (This     : in out Buffer;
+       Filename : String);
 
    function Is_Open
-      return Boolean;
+      (This : Buffer)
+       return Boolean;
 
    function Peek
-      (Offset : Positive := 1)
-      return Character;
+      (This   : Buffer;
+       Offset : Positive := 1)
+       return Character;
    --  Returns the Character at Offset distance from the cursor.
    --  Defaults to the current cursor location (1 based)
 
    function Lookahead
-      (N : Positive)
+      (This : Buffer;
+       N    : Positive)
        return String;
    --  Returns the next N Characters starting from the cursor
 
    procedure Get
-      (Item : out Character);
+      (This : in out Buffer;
+       Item : out Character);
    --  Returns the Character at the current cursor position, then increments the cursor position.
 
    type Seek_From is (Seek_Start, Seek_Current, Seek_End);
    subtype Seek_Offset is Integer;
    procedure Seek
-      (Offset : Seek_Offset;
+      (This   : in out Buffer;
+       Offset : Seek_Offset;
        From   : Seek_From := Seek_Current);
 
    function Tell
-      return Seek_Offset;
+      (This : Buffer)
+       return Seek_Offset;
 
    procedure Read_Until
-      (Stop : String; --  matches "any" character in Stop
+      (This : in out Buffer;
+       Stop : String; --  matches "any" character in Stop
        Item : out String;
        Last : out Natural);
 
    procedure Read_Until
-      (Stop : Character;
+      (This : in out Buffer;
+       Stop : Character;
        Item : out String;
        Last : out Natural);
 
    function Read_Until
-      (Stop : Character)
+      (This : in out Buffer;
+       Stop : Character)
        return String;
 
    function Read_Until
-      (Stop : String)
+      (This : in out Buffer;
+       Stop : String)
       return String;
 
    function End_Of_Input
-      return Boolean;
+      (This : Buffer)
+       return Boolean;
 
    function Length
-      return Natural;
+      (This : Buffer)
+       return Natural;
 
    function Get_Integer
-      return Integer;
+      (This : in out Buffer)
+       return Integer;
 
    function Get_Long
-      return Long_Long_Integer;
+      (This : in out Buffer)
+       return Long_Long_Integer;
 
-   procedure Skip_Whitespace;
+   procedure Skip_Whitespace
+      (This : in out Buffer);
 
    function Match
-      (Prefix : String)
-      return Boolean;
+      (This   : in out Buffer;
+       Prefix : String)
+       return Boolean;
    --  If the N characters equal Prefix, Match advances the cursor and returns True.
    --  Otherwise, it returns False and does not modify the cursor position.
 
    procedure Expect
-      (Prefix : String);
+      (This   : in out Buffer;
+       Prefix : String);
    --  If the next N characters don't equal Prefix, Expect throws a Program_Error exception
 
    function Match
-      (Ch : Character)
+      (This : in out Buffer;
+       Ch   : Character)
       return Boolean;
 
    procedure Expect
-      (Ch : Character);
+      (This : in out Buffer;
+       Ch   : Character);
+
+private
+
+   type Buffer is record
+      File   : System.Mmap.Mapped_File := System.Mmap.Invalid_Mapped_File;
+      Region : System.Mmap.Mapped_Region := System.Mmap.Invalid_Mapped_Region;
+      Offset : System.Mmap.File_Size := 0;
+      Last   : System.Mmap.File_Size := 0;
+   end record;
 
 end Advent.Input;

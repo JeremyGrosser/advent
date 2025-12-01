@@ -1,60 +1,57 @@
 pragma Style_Checks ("M120");
-pragma Warnings (Off, """System.Mmap"" is an internal GNAT unit");
-pragma Warnings (Off, "use of this unit is non-portable and version-dependent");
-with System.Mmap;
 
 package body Advent.Input is
    use type System.Mmap.File_Size;
    use type System.Mmap.Mapped_File;
 
-   File     : System.Mmap.Mapped_File := System.Mmap.Invalid_Mapped_File;
-   Region   : System.Mmap.Mapped_Region := System.Mmap.Invalid_Mapped_Region;
-   G_Offset : System.Mmap.File_Size := 0;
-   G_Last   : System.Mmap.File_Size := 0;
-
    procedure Open
-      (Filename : String)
+      (This     : in out Buffer;
+       Filename : String)
    is
    begin
-      File := System.Mmap.Open_Read_No_Exception (Filename);
-      if File /= System.Mmap.Invalid_Mapped_File then
-         Region := System.Mmap.Read (File);
-         G_Last := System.Mmap.Length (File);
+      This.File := System.Mmap.Open_Read_No_Exception (Filename);
+      if This.File /= System.Mmap.Invalid_Mapped_File then
+         This.Region := System.Mmap.Read (This.File);
+         This.Last := System.Mmap.Length (This.File);
       end if;
    end Open;
 
    function Is_Open
-      return Boolean
-   is (File /= System.Mmap.Invalid_Mapped_File);
+      (This : Buffer)
+       return Boolean
+   is (This.File /= System.Mmap.Invalid_Mapped_File);
 
    procedure Get
-      (Item : out Character)
+      (This : in out Buffer;
+       Item : out Character)
    is
-      Data : constant System.Mmap.Str_Access := System.Mmap.Data (Region);
+      Data : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
    begin
-      G_Offset := G_Offset + 1;
-      Item := Data (Natural (G_Offset));
+      This.Offset := This.Offset + 1;
+      Item := Data (Natural (This.Offset));
    end Get;
 
    procedure Seek
-      (Offset : Seek_Offset;
+      (This   : in out Buffer;
+       Offset : Seek_Offset;
        From   : Seek_From := Seek_Current)
    is
       Off : constant System.Mmap.File_Size := System.Mmap.File_Size (Offset);
    begin
       case From is
          when Seek_Start =>
-            G_Offset := Off;
+            This.Offset := Off;
          when Seek_Current =>
-            G_Offset := G_Offset + Off;
+            This.Offset := This.Offset + Off;
          when Seek_End =>
-            G_Offset := G_Last - Off;
+            This.Offset := This.Last - Off;
       end case;
    end Seek;
 
    function Tell
-      return Seek_Offset
-   is (Seek_Offset (G_Offset));
+      (This : Buffer)
+       return Seek_Offset
+   is (Seek_Offset (This.Offset));
 
    function Index
       (S       : String;
@@ -73,23 +70,24 @@ package body Advent.Input is
    end Index;
 
    procedure Read_Until
-      (Stop : String;
+      (This : in out Buffer;
+       Stop : String;
        Item : out String;
        Last : out Natural)
    is
-      Data       : constant System.Mmap.Str_Access := System.Mmap.Data (Region);
-      Data_First : constant Natural := Natural (G_Offset) + 1;
-      Data_Last  : Natural := Natural (G_Last);
+      Data       : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
+      Data_First : constant Natural := Natural (This.Offset) + 1;
+      Data_Last  : Natural := Natural (This.Last);
    begin
       Data_Last := Index (String (Data (Data_First .. Data_Last)), Stop);
       if Data_Last = 0 then
          --  Stop does not occur in remaining Data, return everything and
          --  advance offset past the end of file
-         Data_Last := Natural (G_Last);
-         G_Offset := G_Last + 1;
+         Data_Last := Natural (This.Last);
+         This.Offset := This.Last + 1;
       else
          --  Advance the offset to Last
-         G_Offset := System.Mmap.File_Size (Data_Last);
+         This.Offset := System.Mmap.File_Size (Data_Last);
          Data_Last := Data_Last - 1;
       end if;
 
@@ -98,28 +96,30 @@ package body Advent.Input is
    end Read_Until;
 
    procedure Read_Until
-      (Stop : Character;
+      (This : in out Buffer;
+       Stop : Character;
        Item : out String;
        Last : out Natural)
    is
    begin
-      Read_Until ("" & Stop, Item, Last);
+      Read_Until (This, "" & Stop, Item, Last);
    end Read_Until;
 
    function Read_Until
-      (Stop : String)
+      (This : in out Buffer;
+       Stop : String)
        return String
    is
-      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Region);
-      First : constant Natural := Natural (G_Offset) + 1;
-      Last  : Natural := Natural (G_Last);
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
+      First : constant Natural := Natural (This.Offset) + 1;
+      Last  : Natural := Natural (This.Last);
    begin
       Last := Index (String (Data (First .. Last)), Stop);
       if Last = 0 then
-         Last := Natural (G_Last);
-         G_Offset := System.Mmap.File_Size (Last + 1);
+         Last := Natural (This.Last);
+         This.Offset := System.Mmap.File_Size (Last + 1);
       else
-         G_Offset := System.Mmap.File_Size (Last);
+         This.Offset := System.Mmap.File_Size (Last);
          Last := Last - 1;
       end if;
 
@@ -127,63 +127,69 @@ package body Advent.Input is
    end Read_Until;
 
    function Read_Until
-      (Stop : Character)
-      return String
-   is (Read_Until ("" & Stop));
+      (This : in out Buffer;
+       Stop : Character)
+       return String
+   is (Read_Until (This, "" & Stop));
 
    function End_Of_Input
-      return Boolean
+      (This : Buffer)
+       return Boolean
    is
       use System.Mmap;
    begin
-      return G_Last = 0 or else G_Offset >= G_Last - 1;
+      return This.Last = 0 or else This.Offset >= This.Last - 1;
    end End_Of_Input;
 
    function Length
-      return Natural
-   is (Natural (G_Last) - 1);
+      (This : Buffer)
+       return Natural
+   is (Natural (This.Last) - 1);
 
    function Peek
-      (Offset : Positive := 1)
+      (This   : Buffer;
+       Offset : Positive := 1)
        return Character
    is
-      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Region);
-      First : constant Natural := Natural (G_Offset);
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
+      First : constant Natural := Natural (This.Offset);
    begin
       return Data.all (First + Offset);
    end Peek;
 
    function Lookahead
-      (N : Positive)
-      return String
+      (This : Buffer;
+       N    : Positive)
+       return String
    is
-      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (Region);
-      First : constant Natural := Natural (G_Offset) + 1;
+      Data  : constant System.Mmap.Str_Access := System.Mmap.Data (This.Region);
+      First : constant Natural := Natural (This.Offset) + 1;
       Last  : Natural := First + N - 1;
    begin
-      if Last > Natural (G_Last) then
-         Last := Natural (G_Last);
+      if Last > Natural (This.Last) then
+         Last := Natural (This.Last);
       end if;
       return String (Data.all (First .. Last));
    end Lookahead;
 
    function Get_Integer
-      return Integer
+      (This : in out Buffer)
+       return Integer
    is
       Digit  : constant array (Character range '0' .. '9') of Natural := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
       I      : Integer := 0;
       Negate : Boolean := False;
       Ch     : Character;
    begin
-      Skip_Whitespace;
+      Skip_Whitespace (This);
 
-      if Peek = '-' then
+      if Peek (This) = '-' then
          Negate := True;
-         Seek (1);
+         Seek (This, 1);
       end if;
 
-      while not End_Of_Input and then Peek in '0' .. '9' loop
-         Get (Ch);
+      while not End_Of_Input (This) and then Peek (This) in '0' .. '9' loop
+         Get (This, Ch);
          I := I * 10 + Digit (Ch);
       end loop;
 
@@ -195,22 +201,23 @@ package body Advent.Input is
    end Get_Integer;
 
    function Get_Long
-      return Long_Long_Integer
+      (This : in out Buffer)
+       return Long_Long_Integer
    is
       Digit  : constant array (Character range '0' .. '9') of Long_Long_Integer := (0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
       I      : Long_Long_Integer := 0;
       Negate : Boolean := False;
       Ch     : Character;
    begin
-      Skip_Whitespace;
+      Skip_Whitespace (This);
 
-      if Peek = '-' then
+      if Peek (This) = '-' then
          Negate := True;
-         Seek (1);
+         Seek (This, 1);
       end if;
 
-      while not End_Of_Input and then Peek in '0' .. '9' loop
-         Get (Ch);
+      while not End_Of_Input (This) and then Peek (This) in '0' .. '9' loop
+         Get (This, Ch);
          I := I * 10 + Digit (Ch);
       end loop;
 
@@ -221,14 +228,16 @@ package body Advent.Input is
       return I;
    end Get_Long;
 
-   procedure Skip_Whitespace is
+   procedure Skip_Whitespace
+      (This : in out Buffer)
+   is
       Ch : Character;
    begin
-      while not End_Of_Input loop
-         Ch := Peek;
+      while not End_Of_Input (This) loop
+         Ch := Peek (This);
          case Ch is
             when ' ' | HT | CR | LF =>
-               Seek (1);
+               Seek (This, 1);
             when others =>
                exit;
          end case;
@@ -236,12 +245,13 @@ package body Advent.Input is
    end Skip_Whitespace;
 
    function Match
-      (Prefix : String)
-      return Boolean
+      (This   : in out Buffer;
+       Prefix : String)
+       return Boolean
    is
    begin
-      if Lookahead (Prefix'Length) = Prefix then
-         Seek (Prefix'Length);
+      if Lookahead (This, Prefix'Length) = Prefix then
+         Seek (This, Prefix'Length);
          return True;
       else
          return False;
@@ -249,24 +259,27 @@ package body Advent.Input is
    end Match;
 
    function Match
-      (Ch : Character)
-      return Boolean
-   is (Match (Ch & ""));
+      (This : in out Buffer;
+       Ch   : Character)
+       return Boolean
+   is (Match (This, Ch & ""));
 
    procedure Expect
-      (Prefix : String)
+      (This   : in out Buffer;
+       Prefix : String)
    is
    begin
-      if not Match (Prefix) then
-         raise Program_Error with "Expected """ & Prefix & """, got """ & Lookahead (Prefix'Length) & """";
+      if not Match (This, Prefix) then
+         raise Program_Error with "Expected """ & Prefix & """, got """ & Lookahead (This, Prefix'Length) & """";
       end if;
    end Expect;
 
    procedure Expect
-      (Ch : Character)
+      (This : in out Buffer;
+       Ch   : Character)
    is
    begin
-      Expect (Ch & "");
+      Expect (This, Ch & "");
    end Expect;
 
 end Advent.Input;

@@ -40,6 +40,8 @@ procedure Advent25 is
    package CLI renames Ada.Command_Line;
    type Argument_Type is (Puzzle, Filename, No_More);
    Required : Argument_Type := Puzzle;
+
+   Input : Advent.Input.Buffer;
 begin
    CLI.Set_Exit_Status (255);
    for I in 1 .. CLI.Argument_Count loop
@@ -63,7 +65,7 @@ begin
                   Set_Puzzle (Arg);
                   Required := Argument_Type'Succ (Required);
                when Filename =>
-                  Advent.Input.Open (Arg);
+                  Advent.Input.Open (Input, Arg);
                   Required := Argument_Type'Succ (Required);
                when No_More =>
                   raise Advent_Error with "Too many arguments!";
@@ -80,11 +82,11 @@ begin
       raise Advent_Error with "No solution selected";
    end if;
 
-   if not Advent.Input.Is_Open then
+   if not Advent.Input.Is_Open (Input) then
       raise Advent_Error with "Unable to open input file";
    end if;
 
-   Solution.all;
+   Solution.all (Input);
    CLI.Set_Exit_Status (0);
 exception
    when E : Advent_Error =>
