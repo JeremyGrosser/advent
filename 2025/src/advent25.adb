@@ -1,3 +1,4 @@
+pragma Style_Checks ("M120");
 with Ada.Command_Line;
 with Ada.Strings.Fixed;
 with Ada.Exceptions;

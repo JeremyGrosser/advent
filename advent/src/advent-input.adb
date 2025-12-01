@@ -138,7 +138,7 @@ is
    is
       use System.Mmap;
    begin
-      return G_Offset >= G_Last - 1;
+      return G_Last = 0 or else G_Offset >= G_Last - 1;
    end End_Of_Input;
 
    function Length
