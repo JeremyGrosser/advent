@@ -56,3 +56,5 @@ check 1.1 input/test1.1 3
 solve 1.1 input/day1
 check 1.2 input/test1.1 6
 solve 1.2 input/day1
+check 2.1 input/test2 1227775554
+solve 2.1 input/day2
