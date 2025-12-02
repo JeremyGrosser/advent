@@ -20,6 +20,7 @@ advent = { path='../advent' }
 
 [build-switches]
 release.optimization = ["-gnatn2", "-gnatp", "-O2", "-march=native"]
+development.optimization = ["-O0", "-g"]
 
 [[actions]]
 type = "post-build"
