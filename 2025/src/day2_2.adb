@@ -37,7 +37,6 @@ is
        Pattern : String)
        return Boolean
    is
-      Step : constant Natural := Pattern'Length;
       I : Natural := S'First;
    begin
       while I in S'Range loop
@@ -57,11 +56,9 @@ is
    begin
       for Len in 1 .. S'Length / 2 loop
          if Is_Repeating (S, S (S'First .. S'First + Len - 1)) then
-            Output.Log (N'Image & " True len " & Len'Image);
             return True;
          end if;
       end loop;
-      Output.Log (N'Image & " False");
       return False;
    end Is_Invalid;
 
@@ -72,7 +69,6 @@ begin
       Input.Get_Long (First);
       Input.Expect ('-');
       Input.Get_Long (Last);
-      Output.Log (To_String (First) & " .. " & To_String (Last));
       for I in First .. Last loop
          if Is_Invalid (I) then
             Sum := Sum + I;
